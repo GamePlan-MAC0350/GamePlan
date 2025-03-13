@@ -1,2 +1,5 @@
 # GamePlan
-Este repositório possui o projeto GamePlan da disciplina MAC0350.
+
+GamePlan é um sistema Web que têm como objetivo facilitar a organização de campeonatos esportivos.
+
+
