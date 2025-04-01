@@ -10,4 +10,4 @@ GamePlan é um sistema Web que têm como objetivo facilitar a organização de c
 
 ## Esboço do Diagrama de Classes
 
-![Diagrama de classes](https://drive.google.com/file/d/1hMPQZ4aKup4XnW90gn0Omr156jfI8GlX/view?usp=sharing)
+![Diagrama de classes](Diagrama_de_Classes.jpg)
