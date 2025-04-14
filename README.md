@@ -11,3 +11,9 @@ GamePlan é um sistema Web que têm como objetivo facilitar a organização de c
 ## Esboço do Diagrama de Classes
 
 ![Diagrama de classes](Diagrama_de_Classes.jpg)
+
+## Tecnologias
+
+- Frontend: Javascript
+- Backend: Kotlin
+- Banco de Dados: PostgreSQL
