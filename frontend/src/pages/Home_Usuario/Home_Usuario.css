@@ -1,0 +1,30 @@
+/* Estilo para a página Home_Usuario */
+body {
+  background-color: #f0f8ff; /* Cor de fundo azul claro */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2.5rem; /* Texto maior */
+  color: #333333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+button {
+  padding: 15px 30px; /* Botões maiores */
+  font-size: 1.2rem; /* Texto maior nos botões */
+  background-color: #4682b4; /* Azul escuro */
+  color: #ffffff; /* Texto branco */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px;
+}
+
+button:hover {
+  background-color: #5a9bd3; /* Azul mais claro ao passar o mouse */
+}

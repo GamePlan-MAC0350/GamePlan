@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './Forms.css';
 function Forms() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -15,7 +15,13 @@ function Forms() {
     // Aqui você pode fazer a lógica para enviar pro backend
   };
 
-  
+  useEffect(() => {
+    document.body.classList.add('forms-page');
+    return () => {
+      document.body.classList.remove('forms-page');
+    };
+  }, []);
+
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h1>Preencha seus dados: </h1>
