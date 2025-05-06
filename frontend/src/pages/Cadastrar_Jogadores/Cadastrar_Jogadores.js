@@ -1,0 +1,136 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Cadastrar_Jogadores.css';
+function Cadastrar_Jogadores() {
+  const navigate = useNavigate();
+  const [nome, setNome] = useState('');
+  const [nacionalidade, setNacionalidade] = useState('');
+  const [time, setTime] = useState('');
+  const [posicao, setPosição] = useState('');
+  const [altura, setAltura] = useState('');
+  const [dataNascimento, setDataNascimento] = useState('');
+  const [numeroCamisa, setNumeroCamisa] = useState('');
+  const [peDominante, setPeDominante] = useState('');
+
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Nome: ${nome}\nTime: ${time}\nNacionalidade: ${nacionalidade}\nPosição: ${posicao}\nAltura: ${altura}\nData de Nascimento: ${dataNascimento}\nNúmero da camisa: ${numeroCamisa}\nPé Dominante: ${peDominante}`);
+    // Aqui você pode fazer a lógica para enviar pro backend
+  };
+
+  useEffect(() => {
+    document.body.classList.add('forms-page');
+    return () => {
+      document.body.classList.remove('forms-page');
+    };
+  }, []);
+
+  return (
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <h1>Preencha os dados do jogador: </h1>
+      <form onSubmit={handleSubmit}>
+      <div>
+        <p>Nome completo:
+          <input
+            type="String"
+            placeholder="Nome, ex: Cristiano Ronaldo"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <div>
+        <p>Time:
+          <input
+            type="String"
+            placeholder="Time, ex: Manchester United"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <div>
+        <p>Nacionalidade:
+          <input
+            type="String"
+            placeholder="Nacionalidade, ex: Português"
+            value={nacionalidade}
+            onChange={(e) => setNacionalidade(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <div>
+        <p>Posição:
+          <input
+            type="String"
+            placeholder="Posição, ex: Atacante, Meia, Lateral, Zagueiro, Goleiro"
+            value={posicao}
+            onChange={(e) => setPosição(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <div>
+        <p>Altura:
+          <input
+            type="integer"
+            placeholder="Altura em cm, ex: 180"
+            value={altura}
+            onChange={(e) => setAltura(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <div>
+        <p>Data de Nascimento:
+          <input
+            type="String"
+            placeholder="Data de Nascimento, ex: 30/01/2000"
+            value={dataNascimento}
+            onChange={(e) => setDataNascimento(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <div>
+        <p>Número da camisa:
+          <input
+            type="integer"
+            placeholder="Número da camisa, ex: 7"
+            value={numeroCamisa}
+            onChange={(e) => setNumeroCamisa(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <div>
+        <p>Pé Dominante:
+          <input
+            type="integer"
+            placeholder="Pé Dominante, ex: Direito ou Esquerdo"
+            value={peDominante}
+            onChange={(e) => setPeDominante(e.target.value)}
+            required
+            style={{ padding: '8px', margin: '10px' }}
+          />
+          </p>
+        </div>
+        <button type="submit" style={{ padding: '8px 16px' }}>
+          Registar Jogador       </button>
+      </form>
+    </div>
+  );
+}
+
+export default Cadastrar_Jogadores;

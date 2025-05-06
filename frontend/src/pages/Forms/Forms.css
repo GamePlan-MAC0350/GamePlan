@@ -22,6 +22,7 @@ form {
 /* Campos de entrada */
 input[type="text"],
 input[type="email"],
+input[type="String"],
 input[type="password"] {
   width: 100%;
   padding: 10px;

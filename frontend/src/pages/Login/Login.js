@@ -17,10 +17,15 @@ function Login() {
     e.preventDefault();
     alert(`Email: ${email}\nSenha: ${senha}`);
     // Aqui você pode fazer a lógica para enviar pro backend
+
+    goToHomeTreindador();
   };
 
   const goToForms = () => {
     navigate('/forms');
+  };
+  const goToHomeTreindador = () => {
+    navigate('/home_treinador');
   };
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>

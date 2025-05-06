@@ -30,7 +30,7 @@ function Forms() {
         <p>Nome completo:
           <input
             type="String"
-            placeholder="Nome"
+            placeholder="Nome, ex: Cristiano Ronaldo"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
@@ -42,7 +42,7 @@ function Forms() {
         <p>Time:
           <input
             type="String"
-            placeholder="Time"
+            placeholder="Time, ex: Manchester United"
             value={time}
             onChange={(e) => setTime(e.target.value)}
             required
@@ -54,7 +54,7 @@ function Forms() {
         <p>Nacionalidade:
           <input
             type="String"
-            placeholder="Nacionalidade"
+            placeholder="Nacionalidade, ex: Brasileiro"
             value={nacionalidade}
             onChange={(e) => setNacionalidade(e.target.value)}
             required

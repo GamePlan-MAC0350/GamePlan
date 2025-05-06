@@ -1,0 +1,58 @@
+/* Estilo para a página Home_Usuario */
+.home-treinador-page body {
+    background-color: #f0f8ff; /* Cor de fundo azul claro */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+.home-treinador-page h1 {
+    font-size: 3.5rem; /* Texto maior */
+    color: #333333;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .home-treinador-page button {
+    padding: 20px; /* Ajuste para botões retangulares */
+    font-size: 1.2rem;
+    background-color: #4682b4;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px; /* Bordas levemente arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #5a9bd3; /* Azul mais claro ao passar o mouse */
+}
+
+.home-treinador-page {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.home-treinador-page .button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.button-grid button {
+    padding: 20px; /* Ajuste para botões retangulares */
+    font-size: 16px;
+    border: none;
+    border-radius: 5px; /* Bordas levemente arredondadas */
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.home-treinador-page .button-grid button:hover {
+  background-color: #0056b3;
+}
