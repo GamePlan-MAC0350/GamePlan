@@ -9,6 +9,9 @@ function HomeTreinador() {
     const goToCadastrarJogadores = () => {
         navigate('/Cadastrar_Jogadores');
       };
+    const goToCriarCampeonato = () => {
+      navigate('/Criar_Campeonato');
+    };
   return (
     <div className="home-treinador-page">
       <h1>O que você deseja fazer?</h1>
@@ -19,7 +22,7 @@ function HomeTreinador() {
         <button>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
-        <button>Criar Campeonato</button>
+        <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
     </div>
   );
