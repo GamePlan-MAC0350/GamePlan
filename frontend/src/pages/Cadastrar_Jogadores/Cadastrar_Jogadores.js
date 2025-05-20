@@ -20,9 +20,9 @@ function Cadastrar_Jogadores() {
   };
 
   useEffect(() => {
-    document.body.classList.add('forms-page');
+    document.body.classList.add('cadastrar-jogadores-page');
     return () => {
-      document.body.classList.remove('forms-page');
+      document.body.classList.remove('cadastrar-jogadores-page');
     };
   }, []);
 

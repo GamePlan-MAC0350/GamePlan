@@ -12,11 +12,14 @@ function HomeTreinador() {
     const goToCriarCampeonato = () => {
       navigate('/Criar_Campeonato');
     };
+    const goToPesquisarJogador = () => {
+      navigate('/Pesquisar_Jogador');
+    };
   return (
     <div className="home-treinador-page">
       <h1>O que você deseja fazer?</h1>
       <div className="button-grid">
-        <button>Pesquisar Jogadores</button>
+        <button onClick={goToPesquisarJogador}>Pesquisar Jogadores </button>
         <button>Pesquisar Times</button>
         <button>Pesquisar Campeonatos</button>
         <button>Modificar Táticas</button>

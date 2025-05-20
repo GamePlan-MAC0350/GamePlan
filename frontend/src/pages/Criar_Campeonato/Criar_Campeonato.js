@@ -20,9 +20,9 @@ function Criar_Campeonato() {
   };
 
   useEffect(() => {
-    document.body.classList.add('forms-page');
+    document.body.classList.add('criar-campeonato-page');
     return () => {
-      document.body.classList.remove('forms-page');
+      document.body.classList.remove('criar-campeonato-page');
     };
   }, []);
 

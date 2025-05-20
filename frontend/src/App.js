@@ -7,6 +7,8 @@ import Home_Usuario from './pages/Home_Usuario/Home_Usuario';
 import Home_Treinador from './pages/Home_Treinador/Home_Treinador';
 import Cadastrar_Jogadores from './pages/Cadastrar_Jogadores/Cadastrar_Jogadores';
 import Criar_Campeonato from './pages/Criar_Campeonato/Criar_Campeonato';
+import Pesquisar_Jogador from './pages/Pesquisar_Jogador/Pesquisar_Jogador';
+
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
         <Route path="/home_treinador" element={<Home_Treinador />} />
         <Route path="/cadastrar_jogadores" element={<Cadastrar_Jogadores />} />
         <Route path="/criar_campeonato" element={<Criar_Campeonato />} />
+        <Route path="/pesquisar_jogador" element={<Pesquisar_Jogador />} />
+
 
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
