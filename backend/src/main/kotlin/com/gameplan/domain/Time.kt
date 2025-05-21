@@ -20,7 +20,11 @@ class Time (
     private var tatica: Tatica,
     private var tecnico: Tecnico
 ) {
-    // ✅ GETTERS
+
+    // Lista interna de jogadores
+    private var jogadores: MutableList<Jogador> = mutableListOf()
+
+    // Getters
     fun getId(): Int = id
     fun getNome(): String = nome
     fun getNacionalidade(): String = nacionalidade
@@ -35,8 +39,9 @@ class Time (
     fun getPontos(): Int = pontos
     fun getTatica(): Tatica = tatica
     fun getTecnico(): Tecnico = tecnico
+    fun getJogadores(): List<Jogador> = jogadores
 
-    // ✅ SETTERS
+    // Setters
     fun setId(novoId: Int) { id = novoId }
     fun setNome(novoNome: String) { nome = novoNome }
     fun setNacionalidade(novaNacionalidade: String) { nacionalidade = novaNacionalidade }
@@ -52,12 +57,51 @@ class Time (
     fun setTatica(novaTatica: Tatica) { tatica = novaTatica }
     fun setTecnico(novoTecnico: Tecnico) { tecnico = novoTecnico }
 
-    // ✅ Método para exibir os dados do time
+    /**
+     * Adiciona um jogador à lista do time.
+     */
+    fun adicionarJogador(jogador: Jogador) {
+        jogadores.add(jogador)
+    }
+
+    /**
+     * Remove um jogador pelo nome.
+     */
+    fun removerJogadorPorNome(nome: String): Boolean {
+        return jogadores.removeIf { it.getNome().equals(nome, ignoreCase = true) }
+    }
+
+    /**
+     * Busca um jogador pelo nome.
+     */
+    fun buscarJogadorPorNome(nome: String): Jogador? {
+        return jogadores.find { it.getNome().equals(nome, ignoreCase = true) }
+    }
+
+    /**
+     * Lista todos os jogadores.
+     */
+    fun listarJogadores(): List<Jogador> {
+        return jogadores.toList()
+    }
+
+    /**
+     * Retorna o jogador com mais gols.
+     */
+    fun jogadorComMaisGols(): Jogador? {
+        return jogadores.maxByOrNull { it.getGolsTotais() }
+    }
+
+    /**
+     * Exibe os dados do time
+     */
     fun exibirTime() {
         println("Time: $nome ($nacionalidade) | Fundado em: $data_fundacao")
         println("Artilheiro: ${artilheiro.getNome()} | Maior Assistente: ${maior_assistente.getNome()}")
         println("Partidas: $partidas_jogadas | Vitórias: $vitorias | Derrotas: $derrotas | Pontos: $pontos")
         println("Gols Marcados: $gols_marcados | Gols Sofridos: $gols_sofridos")
         println("Técnico: ${tecnico.getNome()} | Tática: ${tatica.getPlanoDeJogo()}")
+        println("Jogadores no elenco:")
+        jogadores.forEach { println("- ${it.getNome()}") }
     }
 }
