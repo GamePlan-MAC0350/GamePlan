@@ -1,5 +1,9 @@
 package GamePlan.model
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.Period
+
 class Jogador (
     private var id: Int,
     private var nome: String,
@@ -47,6 +51,22 @@ class Jogador (
     fun setMinutosJogadosTotais(novosMinutos: Int) { minutos_jogados_totais = novosMinutos }
     fun setCartoesAmarelos(novosCartoes: Int) { cartoes_amarelos = novosCartoes }
     fun setCartoesVermelhos(novosCartoes: Int) { cartoes_vermelhos = novosCartoes }
+
+    /**
+     * Calcula a idade do jogador com base na data de nascimento.
+     *
+     * A data de nascimento deve estar no formato "dd/MM/yyyy".
+     * A função utiliza a data atual do sistema para calcular a idade em anos completos.
+     *
+     * @return A idade do jogador em anos.
+     * @throws DateTimeParseException se a data de nascimento estiver em um formato inválido.
+     */
+    fun calcularIdade(): Int {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dataNasc = LocalDate.parse(data_nascimento, formatter)
+        val hoje = LocalDate.now()
+        return Period.between(dataNasc, hoje).years
+    }
 
     // Exibir dados
     fun exibirDados() {
