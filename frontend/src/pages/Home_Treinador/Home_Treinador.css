@@ -1,58 +1,61 @@
-/* Estilo para a página Home_Usuario */
-.home-treinador-page body {
-    background-color: #f0f8ff; /* Cor de fundo azul claro */
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-.home-treinador-page h1 {
-    font-size: 3.5rem; /* Texto maior */
-    color: #333333;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .home-treinador-page button {
-    padding: 20px; /* Ajuste para botões retangulares */
-    font-size: 1.2rem;
-    background-color: #4682b4;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px; /* Bordas levemente arredondadas */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 10px;
-}
-
-button:hover {
-    background-color: #5a9bd3; /* Azul mais claro ao passar o mouse */
-}
-
 .home-treinador-page {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 0; /* Remove espaço superior */
+  padding-top: 10px; /* Pequeno padding */
 }
 
+/* Estilo para o container dos botões */
 .home-treinador-page .button-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
+  display: flex; /* Alinha lado a lado */
+  justify-content: center; /* Centraliza horizontalmente */
+  gap: 10px; /* Espaçamento entre botões */
+  position: fixed; /* Fixa no topo */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f8ff; /* Mesma cor de fundo da página */
+  padding: 10px;
+  z-index: 1000; /* Garante que fique acima de outros elementos */
 }
 
-.button-grid button {
-    padding: 20px; /* Ajuste para botões retangulares */
-    font-size: 16px;
-    border: none;
-    border-radius: 5px; /* Bordas levemente arredondadas */
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+/* Botões pequenos e retangulares */
+.home-treinador-page .button-grid button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #64b5f6;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
 }
 
 .home-treinador-page .button-grid button:hover {
-  background-color: #0056b3;
+  background-color: #42a5f5;
 }
+
+.home-treinador-page .botao-destaque {
+  background-color: #28a745 !important;  /* Verde, por exemplo */
+  color: white;
+}
+
+.home-treinador-page .botao-destaque:hover {
+  background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
+}
+
+.botao-imagem {
+  background-color: transparent !important;
+  width: 40px;
+  height: 40px;
+  background-color: none;
+  background-image: url('../../assets/images/game.png') !important;
+  background-size: contain;     /* Faz caber inteira */
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  
+}
+

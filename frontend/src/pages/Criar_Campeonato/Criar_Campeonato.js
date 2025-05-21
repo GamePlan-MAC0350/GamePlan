@@ -12,7 +12,18 @@ function Criar_Campeonato() {
   
   
 
-  
+  const goToCadastrarJogadores = () => {
+    navigate('/Cadastrar_Jogadores');
+  };
+const goToCriarCampeonato = () => {
+  navigate('/Criar_Campeonato');
+};
+const goToHomeTreinador = () => {
+  navigate('/Home_Treinador');
+};
+const goToHome = () => {
+  navigate('/');
+};
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Por favor, verifique os dados do campeonato:\n\nNome: ${nome}\nPrêmio: ${premio}\nNúmero de times: ${numTimes}\nData de início: ${dataComeco}\nData da final: ${dataFinal}\nData máxima para inscrição: ${dataInscricao}`);
@@ -27,7 +38,22 @@ function Criar_Campeonato() {
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+
+    <div className="criar_campeonato-page">
+      <h1></h1>
+
+      <div className="button-grid">
+        <button className="botao-imagem" onClick={goToHome}></button>
+        <button onClick={goToHomeTreinador} >Pesquisar Jogadores </button>
+        <button>Pesquisar Times</button>
+        <button>Pesquisar Campeonatos</button>
+        <button>Modificar Táticas</button>
+        <button>Registrar Resultados</button>
+        <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
+        <button className="botao-destaque">Criar Campeonato</button>
+      </div>
+
+    <div style={{ textAlign: 'center', marginTop: '150px' }}>
       <h1>Preencha os dados do campeonato: </h1>
       <form onSubmit={handleSubmit}>
       <div>
@@ -105,6 +131,7 @@ function Criar_Campeonato() {
         <button type="submit" style={{ padding: '8px 16px' }}>
           Criar Campeonato</button>
       </form>
+    </div>
     </div>
   );
 }

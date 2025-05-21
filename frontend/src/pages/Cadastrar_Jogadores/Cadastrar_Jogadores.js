@@ -12,7 +12,19 @@ function Cadastrar_Jogadores() {
   const [numeroCamisa, setNumeroCamisa] = useState('');
   const [peDominante, setPeDominante] = useState('');
 
-  
+  const goToCadastrarJogadores = () => {
+    navigate('/Cadastrar_Jogadores');
+  };
+const goToCriarCampeonato = () => {
+  navigate('/Criar_Campeonato');
+};
+const goToHomeTreinador = () => {
+  navigate('/Home_Treinador');
+};
+
+const goToHome = () => {
+  navigate('/');
+};
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Nome: ${nome}\nTime: ${time}\nNacionalidade: ${nacionalidade}\nPosição: ${posicao}\nAltura: ${altura}\nData de Nascimento: ${dataNascimento}\nNúmero da camisa: ${numeroCamisa}\nPé Dominante: ${peDominante}`);
@@ -27,7 +39,22 @@ function Cadastrar_Jogadores() {
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+
+    <div className="cadastrar-jogadores-page">
+      <h1></h1>
+
+      <div className="button-grid">
+        <button className="botao-imagem" onClick={goToHome}></button>
+        <button onClick={goToHomeTreinador} >Pesquisar Jogadores </button>
+        <button>Pesquisar Times</button>
+        <button>Pesquisar Campeonatos</button>
+        <button>Modificar Táticas</button>
+        <button>Registrar Resultados</button>
+        <button className="botao-destaque">Cadastrar Jogadores </button>
+        <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
+      </div>
+
+    <div style={{ textAlign: 'center', marginTop: '150px' }}>
       <h1>Preencha os dados do jogador: </h1>
       <form onSubmit={handleSubmit}>
       <div>
@@ -130,6 +157,7 @@ function Cadastrar_Jogadores() {
           Registar Jogador       </button>
       </form>
     </div>
+  </div>
   );
 }
 
