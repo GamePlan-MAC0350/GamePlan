@@ -25,6 +25,15 @@ const goToHomeTreinador = () => {
 const goToHome = () => {
   navigate('/');
 };
+
+const goToPesquisarTimesTreinador = () => {
+  navigate('/Pesquisar_Times_Treinador');
+};
+
+const goToPesquisarCampeonatosTreinador = () => {
+  navigate('/Pesquisar_Campeonatos_Treinador');
+};
+
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Nome: ${nome}\nTime: ${time}\nNacionalidade: ${nacionalidade}\nPosição: ${posicao}\nAltura: ${altura}\nData de Nascimento: ${dataNascimento}\nNúmero da camisa: ${numeroCamisa}\nPé Dominante: ${peDominante}`);
@@ -46,8 +55,8 @@ const goToHome = () => {
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
         <button onClick={goToHomeTreinador} >Pesquisar Jogadores </button>
-        <button>Pesquisar Times</button>
-        <button>Pesquisar Campeonatos</button>
+        <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
+        <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
         <button>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button className="botao-destaque">Cadastrar Jogadores </button>
@@ -61,7 +70,7 @@ const goToHome = () => {
         <p>Nome completo:
           <input
             type="String"
-            placeholder="Nome, ex: Cristiano Ronaldo"
+            placeholder="ex: Cristiano Ronaldo"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
@@ -73,7 +82,7 @@ const goToHome = () => {
         <p>Time:
           <input
             type="String"
-            placeholder="Time, ex: Manchester United"
+            placeholder="ex: Manchester United"
             value={time}
             onChange={(e) => setTime(e.target.value)}
             required
@@ -85,7 +94,7 @@ const goToHome = () => {
         <p>Nacionalidade:
           <input
             type="String"
-            placeholder="Nacionalidade, ex: Português"
+            placeholder="ex: Português"
             value={nacionalidade}
             onChange={(e) => setNacionalidade(e.target.value)}
             required
@@ -97,7 +106,7 @@ const goToHome = () => {
         <p>Posição:
           <input
             type="String"
-            placeholder="Posição, ex: Atacante, Meia, Lateral, Zagueiro, Goleiro"
+            placeholder="ex: Atacante, Meia, Lateral, Zagueiro, Goleiro"
             value={posicao}
             onChange={(e) => setPosição(e.target.value)}
             required
@@ -106,10 +115,10 @@ const goToHome = () => {
           </p>
         </div>
         <div>
-        <p>Altura:
+        <p>Altura em cm:
           <input
             type="integer"
-            placeholder="Altura em cm, ex: 180"
+            placeholder="ex: 180"
             value={altura}
             onChange={(e) => setAltura(e.target.value)}
             required
@@ -121,7 +130,7 @@ const goToHome = () => {
         <p>Data de Nascimento:
           <input
             type="String"
-            placeholder="Data de Nascimento, ex: 30/01/2000"
+            placeholder="ex: 30/01/2000"
             value={dataNascimento}
             onChange={(e) => setDataNascimento(e.target.value)}
             required
@@ -133,7 +142,7 @@ const goToHome = () => {
         <p>Número da camisa:
           <input
             type="integer"
-            placeholder="Número da camisa, ex: 7"
+            placeholder="ex: 7"
             value={numeroCamisa}
             onChange={(e) => setNumeroCamisa(e.target.value)}
             required
@@ -145,7 +154,7 @@ const goToHome = () => {
         <p>Pé Dominante:
           <input
             type="integer"
-            placeholder="Pé Dominante, ex: Direito ou Esquerdo"
+            placeholder="ex: Direito ou Esquerdo"
             value={peDominante}
             onChange={(e) => setPeDominante(e.target.value)}
             required

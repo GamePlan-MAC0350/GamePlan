@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Home_Treinador.css';
+import './Pesquisar_Times_Treinador.css';
 
 
 
-function HomeTreinador() {
+function PesquisarTimesTreinador() {
     const navigate = useNavigate();
     const goToCadastrarJogadores = () => {
         navigate('/Cadastrar_Jogadores');
@@ -15,36 +15,37 @@ function HomeTreinador() {
     const goToHome = () => {
       navigate('/');
     };
-    const goToPesquisarTimesTreinador = () => {
-      navigate('/Pesquisar_Times_Treinador');
+    const goToHomeTreinador = () => {
+      navigate('/Home_Treinador');
     };
+
     const goToPesquisarCampeonatosTreinador = () => {
       navigate('/Pesquisar_Campeonatos_Treinador');
     };
   
 
-    const [nome, setNome] = useState('');
+    const [nomeTime, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`Nome do jogador: ${nome}`);
+        alert(`Nome do time: ${nomeTime}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };
     
       useEffect(() => {
-        document.body.classList.add('home-treinador-page');
+        document.body.classList.add('pesquisar-times-treinador-page');
         return () => {
-        document.body.classList.remove('home-treinador-page');
+        document.body.classList.remove('pesquisar-times-treinador-page');
         };
       }, []);
   return (
-    <div className="home-treinador-page">
+    <div className="pesquisar-times-treinador-page">
       <h1></h1>
 
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
-        <button className="botao-destaque" >Pesquisar Jogadores </button>
-        <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
+        <button   onClick={goToHomeTreinador}>Pesquisar Jogadores </button>
+        <button className="botao-destaque">Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
         <button>Modificar Táticas</button>
         <button>Registrar Resultados</button>
@@ -54,14 +55,14 @@ function HomeTreinador() {
 
       
       <div style={{ textAlign: 'center', marginTop: '150px' }}>
-      <h1>Pesquise o jogador: </h1>
+      <h1>Pesquise o time: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-            <p>Nome do jogador: </p>
+            <p>Nome do time: </p>
             <input
             type="text"
-            placeholder="ex: Cristiano Ronaldo"
-            value={nome}
+            placeholder="ex: Real Madrid"
+            value={nomeTime}
             onChange={(e) => setNome(e.target.value)}
             required
             />
@@ -75,4 +76,4 @@ function HomeTreinador() {
   );
 }
 
-export default HomeTreinador;
+export default PesquisarTimesTreinador;

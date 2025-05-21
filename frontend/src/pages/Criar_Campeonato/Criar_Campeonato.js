@@ -24,6 +24,14 @@ const goToHomeTreinador = () => {
 const goToHome = () => {
   navigate('/');
 };
+const goToPesquisarTimesTreinador = () => {
+  navigate('/Pesquisar_Times_Treinador');
+};
+
+const goToPesquisarCampeonatosTreinador = () => {
+  navigate('/Pesquisar_Campeonatos_Treinador');
+};
+
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Por favor, verifique os dados do campeonato:\n\nNome: ${nome}\nPrêmio: ${premio}\nNúmero de times: ${numTimes}\nData de início: ${dataComeco}\nData da final: ${dataFinal}\nData máxima para inscrição: ${dataInscricao}`);
@@ -45,8 +53,8 @@ const goToHome = () => {
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
         <button onClick={goToHomeTreinador} >Pesquisar Jogadores </button>
-        <button>Pesquisar Times</button>
-        <button>Pesquisar Campeonatos</button>
+        <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
+        <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
         <button>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
@@ -60,7 +68,7 @@ const goToHome = () => {
         <p>Nome do campeonato:
           <input
             type="String"
-            placeholder="Nome, ex: Campeonato Brasileiro"
+            placeholder="ex: Campeonato Brasileiro"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
@@ -72,7 +80,7 @@ const goToHome = () => {
         <p>Prêmio:
           <input
             type="String"
-            placeholder="Prêmio, ex: R$ 1000,00"
+            placeholder="ex: R$ 1000,00"
             value={premio}
             onChange={(e) => setPremio(e.target.value)}
             required
@@ -84,7 +92,7 @@ const goToHome = () => {
         <p>Número de times:
           <input
             type="integer"
-            placeholder="Número de times, ex: 32"
+            placeholder="ex: 32"
             value={numTimes}
             onChange={(e) => setNumTimes(e.target.value)}
             required
@@ -96,7 +104,7 @@ const goToHome = () => {
         <p>Data do começo do campeonato:
           <input
             type="String"
-            placeholder="Data do começo do campeonato, ex: 30/01/2025"
+            placeholder="ex: 30/01/2025"
             value={dataComeco}
             onChange={(e) => setDataComeco(e.target.value)}
             required
@@ -108,7 +116,7 @@ const goToHome = () => {
         <p>Data da final do campeonato:
           <input
             type="String"
-            placeholder="Data da final do campeonato, ex: 30/02/2025"
+            placeholder="ex: 30/02/2025"
             value={dataFinal}
             onChange={(e) => setDataFinal(e.target.value)}
             required
@@ -120,7 +128,7 @@ const goToHome = () => {
         <p>Data máxima para inscrição:
           <input
             type="String"
-            placeholder="Data máxima para inscrição, ex: 30/01/2025"
+            placeholder="ex: 30/01/2025"
             value={dataInscricao}
             onChange={(e) => setDataInscricao(e.target.value)}
             required

@@ -10,6 +10,10 @@ import Criar_Campeonato from './pages/Criar_Campeonato/Criar_Campeonato';
 import Pesquisar_Jogador from './pages/Pesquisar_Jogador/Pesquisar_Jogador';
 import Pesquisar_Times_Usuario from './pages/Pesquisar_Times_Usuario/Pesquisar_Times_Usuario';
 import Pesquisar_Campeonatos_Usuario from './pages/Pesquisar_Campeonatos_Usuario/Pesquisar_Campeonatos_Usuario';
+import Pesquisar_Times_Treinador from './pages/Pesquisar_Times_Treinador/Pesquisar_Times_Treinador';
+import Pesquisar_Campeonatos_Treinador from './pages/Pesquisar_Campeonatos_Treinador/Pesquisar_Campeonatos_Treinador';
+
+
 
 
 
@@ -29,6 +33,10 @@ function App() {
         <Route path="/pesquisar_jogador" element={<Pesquisar_Jogador />} />
         <Route path="/pesquisar_times_usuario" element={<Pesquisar_Times_Usuario />} />
         <Route path="/pesquisar_campeonatos_usuario" element={<Pesquisar_Campeonatos_Usuario />} />
+        <Route path="/pesquisar_times_treinador" element={<Pesquisar_Times_Treinador />} />
+        <Route path="/pesquisar_campeonatos_treinador" element={<Pesquisar_Campeonatos_Treinador />} />
+
+
 
 
 

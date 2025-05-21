@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Home_Treinador.css';
+import './Pesquisar_Campeonatos_Treinador.css';
 
 
 
-function HomeTreinador() {
+function PesquisarCampeonatosTreinador() {
     const navigate = useNavigate();
     const goToCadastrarJogadores = () => {
         navigate('/Cadastrar_Jogadores');
@@ -15,37 +15,37 @@ function HomeTreinador() {
     const goToHome = () => {
       navigate('/');
     };
-    const goToPesquisarTimesTreinador = () => {
-      navigate('/Pesquisar_Times_Treinador');
+    const goToHomeTreinador = () => {
+      navigate('/Home_Treinador');
     };
-    const goToPesquisarCampeonatosTreinador = () => {
-      navigate('/Pesquisar_Campeonatos_Treinador');
-    };
-  
 
-    const [nome, setNome] = useState('');
+    const goToPesquisarTimesTreinador = () => {
+        navigate('/Pesquisar_Times_Treinador');
+      };
+
+    const [nomeCampeonato, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`Nome do jogador: ${nome}`);
+        alert(`Nome do campeonato: ${nomeCampeonato}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };
     
       useEffect(() => {
-        document.body.classList.add('home-treinador-page');
+        document.body.classList.add('pesquisar-campeonatos-treinador-page');
         return () => {
-        document.body.classList.remove('home-treinador-page');
+        document.body.classList.remove('pesquisar-campeonatos-treinador-page');
         };
       }, []);
   return (
-    <div className="home-treinador-page">
+    <div className="pesquisar-campeonatos-treinador-page">
       <h1></h1>
 
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
-        <button className="botao-destaque" >Pesquisar Jogadores </button>
+        <button   onClick={goToHomeTreinador}>Pesquisar Jogadores </button>
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
-        <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
+        <button className="botao-destaque">Pesquisar Campeonatos</button>
         <button>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
@@ -54,14 +54,14 @@ function HomeTreinador() {
 
       
       <div style={{ textAlign: 'center', marginTop: '150px' }}>
-      <h1>Pesquise o jogador: </h1>
+      <h1>Pesquise o campeonato: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-            <p>Nome do jogador: </p>
+            <p>Nome do campeonato: </p>
             <input
             type="text"
-            placeholder="ex: Cristiano Ronaldo"
-            value={nome}
+            placeholder="ex: Champions League"
+            value={nomeCampeonato}
             onChange={(e) => setNome(e.target.value)}
             required
             />
@@ -75,4 +75,4 @@ function HomeTreinador() {
   );
 }
 
-export default HomeTreinador;
+export default PesquisarCampeonatosTreinador;
