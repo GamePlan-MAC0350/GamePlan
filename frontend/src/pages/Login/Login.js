@@ -18,13 +18,13 @@ function Login() {
     alert(`Email: ${email}\nSenha: ${senha}`);
     // Aqui você pode fazer a lógica para enviar pro backend
 
-    goToHomeTreindador();
+    goToHomeTreinador();
   };
 
   const goToForms = () => {
     navigate('/forms');
   };
-  const goToHomeTreindador = () => {
+  const goToHomeTreinador = () => {
     navigate('/home_treinador');
   };
   return (

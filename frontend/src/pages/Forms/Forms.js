@@ -12,7 +12,13 @@ function Forms() {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Nome: ${nome}\nTime: ${time}\nNacionalidade: ${nacionalidade}\nEmail: ${email}\nSenha: ${senha}`);
+
+    goToHomeTreinador();
     // Aqui você pode fazer a lógica para enviar pro backend
+  };
+  
+  const goToHomeTreinador = () => {
+    navigate('/home_treinador');
   };
 
   useEffect(() => {
@@ -30,7 +36,7 @@ function Forms() {
         <p>Nome completo:
           <input
             type="String"
-            placeholder="Nome, ex: Cristiano Ronaldo"
+            placeholder="ex: Cristiano Ronaldo"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
@@ -42,7 +48,7 @@ function Forms() {
         <p>Time:
           <input
             type="String"
-            placeholder="Time, ex: Manchester United"
+            placeholder="ex: Manchester United"
             value={time}
             onChange={(e) => setTime(e.target.value)}
             required
@@ -54,7 +60,7 @@ function Forms() {
         <p>Nacionalidade:
           <input
             type="String"
-            placeholder="Nacionalidade, ex: Brasileiro"
+            placeholder="ex: Brasileiro"
             value={nacionalidade}
             onChange={(e) => setNacionalidade(e.target.value)}
             required
