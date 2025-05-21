@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Home_Usuario.css';
+import './Pesquisar_Times_Usuario.css';
 
 
 
-function HomeUsuario() {
+function PesquisarTimesUsuario() {
     const navigate = useNavigate();
-    const goToPesquisarTimesUsuario = () => {
-      navigate('/pesquisar_times_usuario');
+    const goToHomeUsuario = () => {
+      navigate('/home_usuario');
     };
     const goToHome = () => {
       navigate('/');
@@ -15,41 +15,41 @@ function HomeUsuario() {
 
   
 
-    const [nome, setNome] = useState('');
+    const [nomeTime, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`Nome do jogador: ${nome}`);
+        alert(`Nome do jogador: ${nomeTime}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };
     
       useEffect(() => {
-        document.body.classList.add('home-usuario-page');
+        document.body.classList.add('pesquisar-times-usuario-page');
         return () => {
-        document.body.classList.remove('home-usuario-page');
+        document.body.classList.remove('pesquisar-times-usuario-page');
         };
       }, []);
   return (
-    <div className="home-usuario-page">
+    <div className="pesquisar-times-usuario-page">
       <h1></h1>
 
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
-        <button className="botao-destaque" >Pesquisar Jogadores </button>
-        <button onClick={goToPesquisarTimesUsuario}>Pesquisar Times</button>
+        <button onClick={goToHomeUsuario}>Pesquisar Jogadores </button>
+        <button className="botao-destaque">Pesquisar Times</button>
         <button>Pesquisar Campeonatos</button>
       </div>
 
       
       <div style={{ textAlign: 'center', marginTop: '150px' }}>
-      <h1>Pesquise o jogador: </h1>
+      <h1>Pesquise o time: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-            <p>Nome do jogador: </p>
+            <p>Nome do time: </p>
             <input
             type="text"
-            placeholder="ex: Cristiano Ronaldo"
-            value={nome}
+            placeholder="ex: Real Madrid"
+            value={nomeTime}
             onChange={(e) => setNome(e.target.value)}
             required
             />
@@ -63,4 +63,4 @@ function HomeUsuario() {
   );
 }
 
-export default HomeUsuario;
+export default PesquisarTimesUsuario;
