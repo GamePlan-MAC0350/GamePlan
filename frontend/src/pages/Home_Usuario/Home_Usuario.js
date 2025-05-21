@@ -12,6 +12,9 @@ function HomeUsuario() {
     const goToHome = () => {
       navigate('/');
     };
+    const goToPesquisarCampeonatosUsuario = () => {
+      navigate('/pesquisar_campeonatos_usuario');
+    };
 
   
 
@@ -37,7 +40,7 @@ function HomeUsuario() {
         <button className="botao-imagem" onClick={goToHome}></button>
         <button className="botao-destaque" >Pesquisar Jogadores </button>
         <button onClick={goToPesquisarTimesUsuario}>Pesquisar Times</button>
-        <button>Pesquisar Campeonatos</button>
+        <button onClick={goToPesquisarCampeonatosUsuario}>Pesquisar Campeonatos</button>
       </div>
 
       
