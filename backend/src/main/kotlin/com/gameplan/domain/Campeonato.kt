@@ -71,6 +71,23 @@ class Campeonato(
         return times.sortedByDescending { it.getPontos() }
     }
 
+    fun gerarChaveamento(): List<Pair<Time, Time>> {
+        val chaveamento = mutableListOf<Pair<Time, Time>>()
+        val timesOrdenados = ordenaTimes() // Usa os times já ordenados
+
+        var i = 0
+        var j = timesOrdenados.size - 1
+
+        while (i < j) {
+            val confronto = Pair(timesOrdenados[i], timesOrdenados[j])
+            chaveamento.add(confronto)
+            i++
+            j--
+        }
+
+        return chaveamento
+    }
+
     // Método para exibir informações do campeonato
     fun exibirCampeonato() {
         println("Campeonato ID: $id")
