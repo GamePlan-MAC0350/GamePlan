@@ -93,6 +93,13 @@ class Time (
     }
 
     /**
+     * Retorna o jogador com mais assistências.
+     */
+    fun jogadorComMaisAssistencias(): Jogador? {
+        return jogadores.maxByOrNull { it.getAssistenciasTotais() }
+    }
+
+    /**
      * Exibe os dados do time
      */
     fun exibirTime() {
