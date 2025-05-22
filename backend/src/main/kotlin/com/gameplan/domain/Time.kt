@@ -100,6 +100,14 @@ class Time (
     }
 
     /**
+     * Retorna o jogador com mais assistências e gols totais.
+     */
+    fun jogadorComMaisParticipacoesEmGols(): Jogador? {
+        return jogadores.maxByOrNull { it.getAssistenciasTotais() + it.getGolsTotais() }
+    }
+
+
+    /**
      * Exibe os dados do time
      */
     fun exibirTime() {
