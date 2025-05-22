@@ -64,7 +64,7 @@ class Campeonato(
     }
 
     fun definirPontos(numero_times: Int) {
-        setPontos(NUM_MAX_TIMES / numero_times * PONTUACAO_MAXIMA)
+        setPontos(numero_times / NUM_MAX_TIMES * PONTUACAO_MAXIMA)
     }
 
     // Método para exibir informações do campeonato
