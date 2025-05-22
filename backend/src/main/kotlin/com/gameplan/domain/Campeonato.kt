@@ -63,8 +63,12 @@ class Campeonato(
         times.forEach { println("- ${it.getNome()}") }
     }
 
-    fun definirPontos(numero_times: Int) {
+    fun definirPontos() {
         setPontos(numero_times / NUM_MAX_TIMES * PONTUACAO_MAXIMA)
+    }
+
+    fun ordenaTimes(): List<Time> {
+        return times.sortedByDescending { it.getPontos() }
     }
 
     // Método para exibir informações do campeonato
