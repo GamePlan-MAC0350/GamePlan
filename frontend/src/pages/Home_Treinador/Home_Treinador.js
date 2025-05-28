@@ -21,7 +21,9 @@ function HomeTreinador() {
     const goToPesquisarCampeonatosTreinador = () => {
       navigate('/Pesquisar_Campeonatos_Treinador');
     };
-  
+    const goToModificarTatica = () => {
+      navigate('/Modificar_Tatica');
+    };
 
     const [nome, setNome] = useState('');
       
@@ -46,7 +48,7 @@ function HomeTreinador() {
         <button className="botao-destaque" >Pesquisar Jogadores </button>
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
-        <button>Modificar Táticas</button>
+        <button onClick={goToModificarTatica}>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>

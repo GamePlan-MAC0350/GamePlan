@@ -12,6 +12,9 @@ import Pesquisar_Times_Usuario from './pages/Pesquisar_Times_Usuario/Pesquisar_T
 import Pesquisar_Campeonatos_Usuario from './pages/Pesquisar_Campeonatos_Usuario/Pesquisar_Campeonatos_Usuario';
 import Pesquisar_Times_Treinador from './pages/Pesquisar_Times_Treinador/Pesquisar_Times_Treinador';
 import Pesquisar_Campeonatos_Treinador from './pages/Pesquisar_Campeonatos_Treinador/Pesquisar_Campeonatos_Treinador';
+import Modificar_Tatica from './pages/Modificar_Tatica/Modificar_Tatica';
+
+
 
 
 
@@ -35,6 +38,7 @@ function App() {
         <Route path="/pesquisar_campeonatos_usuario" element={<Pesquisar_Campeonatos_Usuario />} />
         <Route path="/pesquisar_times_treinador" element={<Pesquisar_Times_Treinador />} />
         <Route path="/pesquisar_campeonatos_treinador" element={<Pesquisar_Campeonatos_Treinador />} />
+        <Route path="/modificar_tatica" element={<Modificar_Tatica />} />
 
 
 

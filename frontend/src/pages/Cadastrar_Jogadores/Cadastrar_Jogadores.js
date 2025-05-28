@@ -33,7 +33,9 @@ const goToPesquisarTimesTreinador = () => {
 const goToPesquisarCampeonatosTreinador = () => {
   navigate('/Pesquisar_Campeonatos_Treinador');
 };
-
+const goToModificarTatica = () => {
+  navigate('/Modificar_Tatica');
+};
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Nome: ${nome}\nTime: ${time}\nNacionalidade: ${nacionalidade}\nPosição: ${posicao}\nAltura: ${altura}\nData de Nascimento: ${dataNascimento}\nNúmero da camisa: ${numeroCamisa}\nPé Dominante: ${peDominante}`);
@@ -57,7 +59,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         <button onClick={goToHomeTreinador} >Pesquisar Jogadores </button>
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
-        <button>Modificar Táticas</button>
+        <button onClick={goToModificarTatica}>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button className="botao-destaque">Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
@@ -117,7 +119,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         <div>
         <p>Altura em cm:
           <input
-            type="integer"
+            type="Integer"
             placeholder="ex: 180"
             value={altura}
             onChange={(e) => setAltura(e.target.value)}
@@ -141,7 +143,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         <div>
         <p>Número da camisa:
           <input
-            type="integer"
+            type="Integer"
             placeholder="ex: 7"
             value={numeroCamisa}
             onChange={(e) => setNumeroCamisa(e.target.value)}
@@ -153,7 +155,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         <div>
         <p>Pé Dominante:
           <input
-            type="integer"
+            type="String"
             placeholder="ex: Direito ou Esquerdo"
             value={peDominante}
             onChange={(e) => setPeDominante(e.target.value)}

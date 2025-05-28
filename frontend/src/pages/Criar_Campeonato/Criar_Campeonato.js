@@ -31,6 +31,9 @@ const goToPesquisarTimesTreinador = () => {
 const goToPesquisarCampeonatosTreinador = () => {
   navigate('/Pesquisar_Campeonatos_Treinador');
 };
+const goToModificarTatica = () => {
+  navigate('/Modificar_Tatica');
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,7 +58,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         <button onClick={goToHomeTreinador} >Pesquisar Jogadores </button>
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
-        <button>Modificar Táticas</button>
+        <button onClick={goToModificarTatica}>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button className="botao-destaque">Criar Campeonato</button>
@@ -91,7 +94,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         <div>
         <p>Número de times:
           <input
-            type="integer"
+            type="Integer"
             placeholder="ex: 32"
             value={numTimes}
             onChange={(e) => setNumTimes(e.target.value)}

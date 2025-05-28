@@ -23,6 +23,9 @@ function PesquisarCampeonatosTreinador() {
         navigate('/Pesquisar_Times_Treinador');
       };
 
+    const goToModificarTatica = () => {
+      navigate('/Modificar_Tatica');
+    };
     const [nomeCampeonato, setNome] = useState('');
       
       const handleSubmit = (e) => {
@@ -46,7 +49,7 @@ function PesquisarCampeonatosTreinador() {
         <button   onClick={goToHomeTreinador}>Pesquisar Jogadores </button>
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
         <button className="botao-destaque">Pesquisar Campeonatos</button>
-        <button>Modificar Táticas</button>
+        <button onClick={goToModificarTatica}>Modificar Táticas</button>
         <button>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
