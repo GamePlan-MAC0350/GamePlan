@@ -3,6 +3,9 @@ package GamePlan.model
 import GamePlan.model.Jogador
 import GamePlan.model.Time
 
+const val PONTUACAO_MAXIMA = 2000
+const val NUM_MAX_TIMES = 128
+
 class Campeonato(
     private var id: Int,
     private var numero_times: Int,
@@ -34,7 +37,9 @@ class Campeonato(
     fun setId(novoId: Int) { id = novoId }
     fun setNumeroTimes(novoNumero: Int) { numero_times = novoNumero }
     fun setPremio(novoPremio: String) { premio = novoPremio }
+
     fun setPontos(novosPontos: Int) { pontos = novosPontos }
+
     fun setDataComeco(novaData: String) { data_comeco = novaData }
     fun setDataFinal(novaData: String) { data_final = novaData }
     fun setDataInscricao(novaData: String) { data_inscricao = novaData }
@@ -56,6 +61,31 @@ class Campeonato(
     fun listarTimes() {
         println("Times inscritos no campeonato:")
         times.forEach { println("- ${it.getNome()}") }
+    }
+
+    fun definirPontos() {
+        setPontos(numero_times / NUM_MAX_TIMES * PONTUACAO_MAXIMA)
+    }
+
+    fun ordenaTimes(): List<Time> {
+        return times.sortedByDescending { it.getPontos() }
+    }
+
+    fun gerarChaveamento(): List<Pair<Time, Time>> {
+        val chaveamento = mutableListOf<Pair<Time, Time>>()
+        val timesOrdenados = ordenaTimes() // Usa os times já ordenados
+
+        var i = 0
+        var j = timesOrdenados.size - 1
+
+        while (i < j) {
+            val confronto = Pair(timesOrdenados[i], timesOrdenados[j])
+            chaveamento.add(confronto)
+            i++
+            j--
+        }
+
+        return chaveamento
     }
 
     // Método para exibir informações do campeonato
