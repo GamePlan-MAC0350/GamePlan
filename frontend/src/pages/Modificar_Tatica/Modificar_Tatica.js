@@ -75,7 +75,7 @@ const goToPesquisarCampeonatosTreinador = () => {
       <h1>Modifique a Tática: </h1>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1px' }}>
         <div style={{ width: '45%' }}>
-          <h2></h2>
+          
           <form onSubmit={handleSubmit}>
             <div>
               <p>Defina o plano de jogo:
@@ -141,7 +141,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         </div>
 
         <div style={{ width: '50%' }}>
-          <h2></h2>
+          
           <form onSubmit={handleSubmit}>
             <div>
               <h4>Defina o nível de pressão:
