@@ -25,10 +25,15 @@ function HomeTreinador() {
       navigate('/Modificar_Tatica');
     };
 
+    const goToMostrarJogador = () => {
+      navigate('/Mostrar_Jogador_Treinador', { state: { nomeJog: nome} });
+    };
+
     const [nome, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
+        goToMostrarJogador();
         alert(`Nome do jogador: ${nome}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };
@@ -41,7 +46,7 @@ function HomeTreinador() {
       }, []);
   return (
     <div className="home-treinador-page">
-      <h1></h1>
+      
 
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
