@@ -15,6 +15,8 @@ import Pesquisar_Campeonatos_Treinador from './pages/Pesquisar_Campeonatos_Trein
 import Modificar_Tatica from './pages/Modificar_Tatica/Modificar_Tatica';
 import Mostrar_Jogador_Treinador from './pages/Mostrar_Jogador_Treinador/Mostrar_Jogador_Treinador';
 import Mostrar_Jogador_Usuario from './pages/Mostrar_Jogador_Usuario/Mostrar_Jogador_Usuario';  
+import MostrarTimeTreinador from './pages/Mostrar_Time_Treinador/Mostrar_Time_Treinador';
+import MostrarTimeUsuario from './pages/Mostrar_Time_Usuario/Mostrar_Time_Usuario';
 
 
 
@@ -37,6 +39,8 @@ function App() {
         <Route path="/modificar_tatica" element={<Modificar_Tatica />} />
         <Route path="/mostrar_jogador_treinador" element={<Mostrar_Jogador_Treinador />} />
         <Route path="/mostrar_jogador_usuario" element={<Mostrar_Jogador_Usuario />} />
+        <Route path="/mostrar_time_treinador" element={<MostrarTimeTreinador />} />
+        <Route path="/mostrar_time_usuario" element={<MostrarTimeUsuario />} />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>

@@ -26,10 +26,15 @@ function PesquisarTimesTreinador() {
     const goToModificarTatica = () => {
       navigate('/Modificar_Tatica');
     };
+
+    const goToMostrarTime = () => {
+      navigate('/Mostrar_Time_Treinador', { state: { nomeT: nomeTime} });
+    };
     const [nomeTime, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
+        goToMostrarTime();
         alert(`Nome do time: ${nomeTime}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };

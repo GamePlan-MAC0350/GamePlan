@@ -16,13 +16,16 @@ function PesquisarTimesUsuario() {
         navigate('/pesquisar_campeonatos_usuario');
       };
     
-
+      const goToMostrarTime = () => {
+        navigate('/Mostrar_Time_Usuario', { state: { nomeT: nomeTime} });
+      };
   
 
     const [nomeTime, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
+        goToMostrarTime();
         alert(`Nome do time: ${nomeTime}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };
