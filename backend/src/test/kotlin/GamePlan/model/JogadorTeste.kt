@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+import java.time.LocalDate
 
 class JogadorTest {
 
@@ -103,5 +104,34 @@ class JogadorTest {
         assertTrue(output.contains("Jogador: Cristiano Ronaldo, Posição: Atacante, Número: 7"))
         assertTrue(output.contains("Gols: 850, Assistências: 220, Partidas: 1100"))
         assertTrue(output.contains("Cartões Amarelos: 70, Cartões Vermelhos: 11"))
+    }
+
+    @Test
+    fun `deve calcular a idade corretamente`() {
+        // Data de nascimento no formato dd/MM/yyyy
+        val jogador = Jogador(
+            id = 4,
+            nome = "Jogador Teste",
+            altura = 180,
+            nacionalidade = "Teste",
+            data_nascimento = "01/01/2000",
+            numero_da_camisa = 99,
+            posicao = "Zagueiro",
+            pe_dominante = "Direito",
+            gols_totais = 0,
+            assistencias_totais = 0,
+            partidas_jogadas_totais = 0,
+            minutos_jogados_totais = 0,
+            cartoes_amarelos = 0,
+            cartoes_vermelhos = 0
+        )
+
+        // Calcula a idade esperado com base na data atual do sistema
+        val formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dataNasc = java.time.LocalDate.parse(jogador.getDataNascimento(), formatter)
+        val hoje = LocalDate.now()
+        val idadeEsperada = java.time.Period.between(dataNasc, hoje).years
+
+        assertEquals(idadeEsperada, jogador.calcularIdade())
     }
 }
