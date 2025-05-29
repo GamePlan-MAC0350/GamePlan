@@ -1,0 +1,144 @@
+.mostrar-jogador-usuario-page {
+    text-align: center;
+    margin-top: 0; /* Remove espaço superior */
+    padding-top: 10px; /* Pequeno padding */
+  }
+  
+  /* Estilo para o container dos botões */
+  .mostrar-jogador-usuario-page .button-grid {
+    display: flex; /* Alinha lado a lado */
+    justify-content: center; /* Centraliza horizontalmente */
+    gap: 10px; /* Espaçamento entre botões */
+    position: fixed; /* Fixa no topo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f0f8ff; /* Mesma cor de fundo da página */
+    padding: 10px;
+    z-index: 1000; /* Garante que fique acima de outros elementos */
+  }
+  
+  /* Botões pequenos e retangulares */
+  .mostrar-jogador-usuario-page .button-grid button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #64b5f6;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+  }
+  
+  .mostrar-jogador-usuario-page .button-grid button:hover {
+    background-color: #42a5f5;
+  }
+  
+  .mostrar-jogador-usuario-page .botao-destaque {
+    background-color: #28a745 !important;  /* Verde, por exemplo */
+    color: white;
+  }
+  
+  .mostrar-jogador-usuario-page .botao-destaque:hover {
+    background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
+  }
+  
+  
+  
+  body {
+    background-color: #f0f8ff; /* Cor de fundo azul claro */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    font-size: 2.5rem; /* Texto maior */
+    color: #333333;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 15px 30px; /* Botões maiores */
+    font-size: 1.2rem; /* Texto maior nos botões */
+    background-color: #4682b4; /* Azul escuro */
+    color: #ffffff; /* Texto branco */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+  }
+  
+  button:hover {
+    background-color: #5a9bd3; /* Azul mais claro ao passar o mouse */
+  }
+
+
+  .jogador-info {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .jogador-info h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 26px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    color: #333;
+  }
+  
+  /* GRID */
+  .jogador-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  /* CARD INDIVIDUAL */
+  .jogador-card {
+    background-color: #f5f8ff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 5px solid #64b5f6;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .jogador-card p {
+    margin: 5px 0;
+    font-size: 15px;
+  }
+  
+  .jogador-card p strong {
+    color: #222;
+  }
+
+  .jogador-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .jogador-nome {
+    font-size: 32px;
+    font-weight: bold;
+    color: #222;
+    margin: 0;
+  }
+  
+  .jogador-time {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4a90e2;
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
+  
+  

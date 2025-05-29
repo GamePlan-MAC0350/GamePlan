@@ -16,12 +16,17 @@ function HomeUsuario() {
       navigate('/pesquisar_campeonatos_usuario');
     };
 
+    const goToMostrarJogador = () => {
+      navigate('/mostrar_jogador_usuario', { state: { nomeJog: nome} });
+    }
+
   
 
     const [nome, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
+        goToMostrarJogador();
         alert(`Nome do jogador: ${nome}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };
