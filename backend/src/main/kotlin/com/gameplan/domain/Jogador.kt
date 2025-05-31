@@ -4,6 +4,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.Period
 
+import GamePlan.model.Time
+
 class Jogador (
     private var id: Int,
     private var nome: String,
@@ -18,7 +20,8 @@ class Jogador (
     private var partidas_jogadas_totais: Int,
     private var minutos_jogados_totais: Int,
     private var cartoes_amarelos: Int,
-    private var cartoes_vermelhos: Int
+    private var cartoes_vermelhos: Int,
+    private var time: Time
 ) {
     // Getters
     fun getId(): Int = id
@@ -35,6 +38,7 @@ class Jogador (
     fun getMinutosJogadosTotais(): Int = minutos_jogados_totais
     fun getCartoesAmarelos(): Int = cartoes_amarelos
     fun getCartoesVermelhos(): Int = cartoes_vermelhos
+    fun getTime(): Time = time
 
     // Setters
     fun setId(novoId: Int) { id = novoId }
@@ -51,6 +55,7 @@ class Jogador (
     fun setMinutosJogadosTotais(novosMinutos: Int) { minutos_jogados_totais = novosMinutos }
     fun setCartoesAmarelos(novosCartoes: Int) { cartoes_amarelos = novosCartoes }
     fun setCartoesVermelhos(novosCartoes: Int) { cartoes_vermelhos = novosCartoes }
+    fun setTime(novoTime: Time) { time = novoTime }
 
     /**
      * Calcula a idade do jogador com base na data de nascimento.
@@ -71,6 +76,7 @@ class Jogador (
     // Exibir dados
     fun exibirDados() {
         println("Jogador: $nome, Posição: $posicao, Número: $numero_da_camisa")
+        println("Time: ${time.getNome()}")
         println("Gols: $gols_totais, Assistências: $assistencias_totais, Partidas: $partidas_jogadas_totais")
         println("Cartões Amarelos: $cartoes_amarelos, Cartões Vermelhos: $cartoes_vermelhos")
     }
