@@ -9,7 +9,8 @@ class Tecnico (
     private var data_nascimento: String,
     private var email: String,
     private var time: Time,
-    private var data_contratacao: String
+    private var data_contratacao: String,
+    private var senha: String
 ) {
     // Getters
     fun getId(): Int = id
@@ -19,6 +20,7 @@ class Tecnico (
     fun getEmail(): String = email
     fun getTime(): Time = time
     fun getDataContratacao(): String = data_contratacao
+    fun getSenha(): String = senha
 
     // Setters
     fun setId(novoId: Int) { id = novoId }
@@ -28,6 +30,7 @@ class Tecnico (
     fun setEmail(novoEmail: String) { email = novoEmail }
     fun setTime(novoTime: Time) { time = novoTime }
     fun setDataContratacao(novaData: String) { data_contratacao = novaData }
+    fun setSenha(novaSenha: String) {senha = novaSenha}
 
     // Método para exibir os dados do técnico
     fun exibirTecnico() {
