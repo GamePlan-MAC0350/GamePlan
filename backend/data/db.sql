@@ -75,7 +75,7 @@ CREATE TABLE Partida (
     time_2 INT REFERENCES Team(id),
     gols_time_1 INT NOT NULL DEFAULT 0,
     gols_time_2 INT NOT NULL DEFAULT 0,
-    local VARCHAR(255) NOT NULL,
+    lugar VARCHAR(255) NOT NULL,
     data_partida VARCHAR(255) NOT NULL,
     hora_partida VARCHAR(255) NOT NULL,
     empate BOOLEAN NOT NULL DEFAULT FALSE,
