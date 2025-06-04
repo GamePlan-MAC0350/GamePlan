@@ -28,6 +28,7 @@ function MostrarTimeTreinador() {
       navigate('/Modificar_Tatica');
     };
     const [nomeTime, setNome] = useState('');
+    const [jogadores, setJogadores] = useState([]); // Estado para armazenar jogadores
       
     var time = {
         nome: 'Real Madrid',
@@ -44,31 +45,6 @@ function MostrarTimeTreinador() {
         empates: 50, // Adicionei um valor padrão para evitar undefined
         pontos: 1500,
     }
-
-    var jogadores = [
-        'Cristiano Ronaldo',
-        'Karim Benzema',
-        'Luka Modric',  
-        'Sergio Ramos',
-        'Toni Kroos',
-        'Luka Jovic',
-        'Eden Hazard',
-        'Vinicius Junior',
-        'Thibaut Courtois',
-        'Casemiro',
-        'David Alaba',
-        'Ferland Mendy',
-        'Marco Asensio',
-        'Rodrygo Goes',
-        'Federico Valverde',
-        'Isco Alarcon',
-        'Nacho Fernandez',
-        'Dani Carvajal',
-        'Jesus Vallejo',
-        'Marco Asensio',
-        'Andriy Lunin',
-        'Eduardo Camavinga',
-    ];
 
     var tatica={
         plano_de_jogo: 'posse de bola',
@@ -98,6 +74,27 @@ function MostrarTimeTreinador() {
 
         if (nomeRecebido) {
             setNome(nomeRecebido);
+        }
+
+        // Chamada ao backend para buscar jogadores
+        if (nomeRecebido) {
+            fetch(`http://localhost:8080/team/${nomeRecebido}/players`) 
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar jogadores');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data && data.players) {
+                        setJogadores(data.players);
+                    } else {
+                        console.error('Resposta inesperada do backend:', data);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Erro:', error);
+                });
         }
 
         return () => {

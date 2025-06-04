@@ -14,6 +14,10 @@ import java.sql.DriverManager
 import org.slf4j.event.*
 
 fun Application.configureSerialization() {
+    install(ContentNegotiation) {
+        json()
+    }
+
     routing {
         get("/json/kotlinx-serialization") {
                 call.respond(mapOf("hello" to "world"))
