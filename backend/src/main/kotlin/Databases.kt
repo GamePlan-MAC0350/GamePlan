@@ -114,14 +114,28 @@ fun Application.configureDatabases() {
                 val rawBody = call.receiveText()
                 println("[DEBUG] Corpo recebido em /times: $rawBody")
                 val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.TimeDTO>(rawBody)
-                val statement = dbConnection.prepareStatement("INSERT INTO Team (nome, nacionalidade, data_fundacao, tecnico) VALUES (?, ?, ?, ?)")
+                val statement = dbConnection.prepareStatement(
+                    "INSERT INTO Team (nome, nacionalidade, data_fundacao, tecnico) VALUES (?, ?, ?, ?)",
+                    java.sql.Statement.RETURN_GENERATED_KEYS
+                )
                 statement.setString(1, dto.nome)
                 statement.setString(2, dto.nacionalidade)
                 statement.setString(3, dto.dataFundacao)
                 statement.setObject(4, dto.tecnicoId)
-                val rows = statement.executeUpdate()
-                println("[DEBUG] Linhas inseridas em Team: $rows")
-                call.respond(HttpStatusCode.Created)
+                statement.executeUpdate()
+                val generatedKeys = statement.generatedKeys
+                var id: Int? = null
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getInt(1)
+                }
+                val responseDto = com.gameplan.dto.TimeDTO(
+                    id = id,
+                    nome = dto.nome,
+                    nacionalidade = dto.nacionalidade,
+                    dataFundacao = dto.dataFundacao,
+                    tecnicoId = dto.tecnicoId
+                )
+                call.respond(HttpStatusCode.Created, responseDto)
             } catch (e: Exception) {
                 println("[ERROR] Erro ao processar /times: ${e.message}")
                 call.respond(HttpStatusCode.BadRequest, "Erro ao processar time: ${e.message}")

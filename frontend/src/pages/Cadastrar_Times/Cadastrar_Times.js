@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { TimeContext } from '../../context/TimeContext';
 import './Cadastrar_Times.css';
 function Cadastrar_Times() {
   const navigate = useNavigate();
   const location = useLocation();
   const tecnicoId = location.state?.tecnicoId;
+  const { setTimeId } = useContext(TimeContext);
   const [nome, setNome] = useState('');
   const [nacionalidade, setNacionalidade] = useState('');
   const [dataFundacao, setDataFundacao] = useState('');
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ function Cadastrar_Times() {
       nome: nome,
       nacionalidade: nacionalidade,
       dataFundacao: dataFundacao,
-      tecnicoId: tecnicoId // Associa o técnico ao time
+      tecnicoId: tecnicoId
     };
     try {
       const response = await fetch('http://localhost:8080/times', {
@@ -25,6 +26,8 @@ function Cadastrar_Times() {
         body: JSON.stringify(time)
       });
       if (response.ok) {
+        const data = await response.json();
+        setTimeId(data.id);
         goToHomeTreinador();
       } else {
         alert('Erro ao criar time!');

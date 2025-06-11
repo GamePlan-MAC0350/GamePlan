@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Modificar_Tatica.css';
+import { TimeContext } from '../../context/TimeContext';
+
 function Modificar_Tatica() {
+  const { timeId } = useContext(TimeContext);
   const navigate = useNavigate();
   const [plano_jogo, setPlanoJogo] = useState('');
   const [conduta, setConduta] = useState('');
@@ -73,6 +76,7 @@ const goToPesquisarCampeonatosTreinador = () => {
     
     <div style={{ textAlign: 'center', marginTop: '150px' }}>
       <h1>Modifique a Tática: </h1>
+      <p style={{color: 'green'}}>ID do time: {timeId}</p>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1px' }}>
         <div style={{ width: '45%' }}>
           

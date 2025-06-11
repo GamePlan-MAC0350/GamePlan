@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Criar_Campeonato.css';
+import { TimeContext } from '../../context/TimeContext';
+
 function Criar_Campeonato() {
   const navigate = useNavigate();
+  const { timeId } = useContext(TimeContext);
   const [nome, setNome] = useState('');
   const [premio, setPremio] = useState('');
   const [numTimes, setNumTimes] = useState('');
@@ -142,6 +145,7 @@ const goToModificarTatica = () => {
         <button type="submit" style={{ padding: '8px 16px' }}>
           Criar Campeonato</button>
       </form>
+      <p style={{color: 'green'}}>ID do time: {timeId}</p>
     </div>
     </div>
   );

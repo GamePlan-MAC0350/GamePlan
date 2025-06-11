@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Cadastrar_Jogadores.css';
+import { TimeContext } from '../../context/TimeContext';
+
 function Cadastrar_Jogadores() {
+  const { timeId } = useContext(TimeContext);
   const navigate = useNavigate();
   const [nome, setNome] = useState('');
   const [nacionalidade, setNacionalidade] = useState('');
@@ -67,6 +70,7 @@ const goToModificarTatica = () => {
 
     <div style={{ textAlign: 'center', marginTop: '150px' }}>
       <h1>Preencha os dados do jogador: </h1>
+      <p style={{color: 'green'}}>ID do time: {timeId}</p>
       <form onSubmit={handleSubmit}>
       <div>
         <p>Nome completo:
