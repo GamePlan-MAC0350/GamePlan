@@ -11,11 +11,10 @@ function Forms() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Monta o objeto conforme esperado pelo backend
     const tecnico = {
       nome: nome,
       nacionalidade: nacionalidade,
-      dataNascimento: dataNascimento, // Corrigido para camelCase
+      dataNascimento: dataNascimento,
       email: email,
       senha: senha
     };
@@ -26,7 +25,9 @@ function Forms() {
         body: JSON.stringify(tecnico)
       });
       if (response.ok) {
-        goToHomeTreinador();
+        const data = await response.json();
+        const tecnicoId = data.id;
+        goToCadastrarTimes(tecnicoId);
       } else {
         alert('Erro ao criar técnico!');
       }
@@ -35,8 +36,8 @@ function Forms() {
     }
   };
   
-  const goToHomeTreinador = () => {
-    navigate('/home_treinador');
+  const goToCadastrarTimes = (tecnicoId) => {
+    navigate('/cadastrar_times', { state: { tecnicoId } });
   };
 
   useEffect(() => {

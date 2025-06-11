@@ -110,24 +110,22 @@ fun Application.configureDatabases() {
 
         // CRUD para Time
         post("/times") {
-            val dto = call.receive<TimeDTO>()
-            val statement = dbConnection.prepareStatement("INSERT INTO Team (nome, nacionalidade, data_fundacao, artilheiro, maior_assistente, partidas_jogadas_totais, gols_marcados, gols_sofridos, pontos, vitorias, derrotas, tatica, tecnico, campeonato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-            statement.setString(1, dto.nome)
-            statement.setString(2, dto.nacionalidade)
-            statement.setString(3, dto.dataFundacao)
-            statement.setObject(4, dto.artilheiroId)
-            statement.setObject(5, dto.maiorAssistenteId)
-            statement.setInt(6, dto.partidasJogadas)
-            statement.setInt(7, dto.golsMarcados)
-            statement.setInt(8, dto.golsSofridos)
-            statement.setInt(9, dto.pontos)
-            statement.setInt(10, dto.vitorias)
-            statement.setInt(11, dto.derrotas)
-            statement.setObject(12, dto.taticaId)
-            statement.setObject(13, dto.tecnicoId)
-            statement.setObject(14, dto.campeonatoId)
-            statement.executeUpdate()
-            call.respond(HttpStatusCode.Created)
+            try {
+                val rawBody = call.receiveText()
+                println("[DEBUG] Corpo recebido em /times: $rawBody")
+                val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.TimeDTO>(rawBody)
+                val statement = dbConnection.prepareStatement("INSERT INTO Team (nome, nacionalidade, data_fundacao, tecnico) VALUES (?, ?, ?, ?)")
+                statement.setString(1, dto.nome)
+                statement.setString(2, dto.nacionalidade)
+                statement.setString(3, dto.dataFundacao)
+                statement.setObject(4, dto.tecnicoId)
+                val rows = statement.executeUpdate()
+                println("[DEBUG] Linhas inseridas em Team: $rows")
+                call.respond(HttpStatusCode.Created)
+            } catch (e: Exception) {
+                println("[ERROR] Erro ao processar /times: ${e.message}")
+                call.respond(HttpStatusCode.BadRequest, "Erro ao processar time: ${e.message}")
+            }
         }
 
         // CRUD para Tecnico
@@ -144,15 +142,30 @@ fun Application.configureDatabases() {
                     dto.email,
                     dto.senha
                 )
-                val statement = dbConnection.prepareStatement("INSERT INTO Tecnico (nome, nacionalidade, data_nascimento, email, senha) VALUES (?, ?, ?, ?, ?)")
+                val statement = dbConnection.prepareStatement(
+                    "INSERT INTO Tecnico (nome, nacionalidade, data_nascimento, email, senha) VALUES (?, ?, ?, ?, ?)",
+                    java.sql.Statement.RETURN_GENERATED_KEYS
+                )
                 statement.setString(1, tecnico.getNome())
                 statement.setString(2, tecnico.getNacionalidade())
                 statement.setString(3, tecnico.getDataNascimento())
                 statement.setString(4, tecnico.getEmail())
                 statement.setString(5, tecnico.getSenha())
-                val rows = statement.executeUpdate()
-                println("[DEBUG] Linhas inseridas em Tecnico: $rows")
-                call.respond(HttpStatusCode.Created)
+                statement.executeUpdate()
+                val generatedKeys = statement.generatedKeys
+                var id: Int? = null
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getInt(1)
+                }
+                val responseDto = com.gameplan.dto.TecnicoDTO(
+                    id = id,
+                    nome = dto.nome,
+                    nacionalidade = dto.nacionalidade,
+                    dataNascimento = dto.dataNascimento,
+                    email = dto.email,
+                    senha = dto.senha
+                )
+                call.respond(HttpStatusCode.Created, responseDto)
             } catch (e: Exception) {
                 println("[ERROR] Erro ao processar /tecnicos: ${e.message}")
                 call.respond(HttpStatusCode.BadRequest, "Erro ao processar técnico: ${e.message}")
