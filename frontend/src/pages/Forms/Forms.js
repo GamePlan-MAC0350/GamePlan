@@ -7,14 +7,32 @@ function Forms() {
   const [senha, setSenha] = useState('');
   const [nome, setNome] = useState('');
   const [nacionalidade, setNacionalidade] = useState('');
-  const [time, setTime] = useState('');
+  const [dataNascimento, setDataNascimento] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Nome: ${nome}\nTime: ${time}\nNacionalidade: ${nacionalidade}\nEmail: ${email}\nSenha: ${senha}`);
-
-    goToHomeTreinador();
-    // Aqui você pode fazer a lógica para enviar pro backend
+    // Monta o objeto conforme esperado pelo backend
+    const tecnico = {
+      nome: nome,
+      nacionalidade: nacionalidade,
+      dataNascimento: dataNascimento, // Corrigido para camelCase
+      email: email,
+      senha: senha
+    };
+    try {
+      const response = await fetch('http://localhost:8080/tecnicos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tecnico)
+      });
+      if (response.ok) {
+        goToHomeTreinador();
+      } else {
+        alert('Erro ao criar técnico!');
+      }
+    } catch (err) {
+      alert('Erro de conexão com o backend!');
+    }
   };
   
   const goToHomeTreinador = () => {
@@ -45,12 +63,12 @@ function Forms() {
           </p>
         </div>
         <div>
-        <p>Time:
+        <p>Data de Nascimento:
           <input
             type="String"
-            placeholder="ex: Manchester United"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
+            placeholder="ex: 30/11/2000"
+            value={dataNascimento}
+            onChange={(e) => setDataNascimento(e.target.value)}
             required
             style={{ padding: '8px', margin: '10px' }}
           />
@@ -71,7 +89,7 @@ function Forms() {
         <div>
         <p>Email:
           <input
-            type="email"
+            type="String"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

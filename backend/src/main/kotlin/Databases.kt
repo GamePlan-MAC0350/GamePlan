@@ -1,9 +1,14 @@
 package com.example
 
+import GamePlan.model.Tecnico
+import com.gameplan.dto.CampeonatoDTO
+import com.gameplan.dto.JogadorDTO
+import com.gameplan.dto.TimeDTO
+import com.gameplan.dto.TecnicoDTO
+import com.gameplan.dto.TaticaDTO
+import com.gameplan.dto.PartidaDTO
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
@@ -11,69 +16,187 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.sql.Connection
 import java.sql.DriverManager
-import org.slf4j.event.*
 
 fun Application.configureDatabases() {
-    val dbConnection: Connection = connectToPostgres(embedded = true)
-    val cityService = CityService(dbConnection)
-    
+    val dbConnection: Connection = connectToPostgres(embedded = false)
+
     routing {
-    
-        // Create city
-        post("/cities") {
-            val city = call.receive<City>()
-            val id = cityService.create(city)
-            call.respond(HttpStatusCode.Created, id)
+        // CRUD para Campeonato
+        post("/campeonatos") {
+            val dto = call.receive<CampeonatoDTO>()
+            val statement = dbConnection.prepareStatement("INSERT INTO Campeonato (numero_times, premio, pontos, data_comeco, data_final, data_inscricao, campeao, artilheiro, maior_assistencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            statement.setInt(1, dto.numeroTimes)
+            statement.setString(2, dto.premio)
+            statement.setInt(3, dto.pontos)
+            statement.setString(4, dto.dataComeco)
+            statement.setString(5, dto.dataFinal)
+            statement.setString(6, dto.dataInscricao)
+            statement.setObject(7, dto.campeaoId)
+            statement.setObject(8, dto.artilheiroId)
+            statement.setObject(9, dto.maiorAssistenteId)
+            statement.executeUpdate()
+            call.respond(HttpStatusCode.Created)
         }
-    
-        // Read city
-        get("/cities/{id}") {
+
+        get("/campeonatos/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            try {
-                val city = cityService.read(id)
-                call.respond(HttpStatusCode.OK, city)
-            } catch (e: Exception) {
+            val statement = dbConnection.prepareStatement("SELECT * FROM Campeonato WHERE id = ?")
+            statement.setInt(1, id)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                val dto = CampeonatoDTO(
+                    id = resultSet.getInt("id"),
+                    numeroTimes = resultSet.getInt("numero_times"),
+                    premio = resultSet.getString("premio"),
+                    pontos = resultSet.getInt("pontos"),
+                    dataComeco = resultSet.getString("data_comeco"),
+                    dataFinal = resultSet.getString("data_final"),
+                    dataInscricao = resultSet.getString("data_inscricao"),
+                    campeaoId = resultSet.getObject("campeao") as? Int,
+                    artilheiroId = resultSet.getObject("artilheiro") as? Int,
+                    maiorAssistenteId = resultSet.getObject("maior_assistencia") as? Int
+                )
+                call.respond(HttpStatusCode.OK, dto)
+            } else {
                 call.respond(HttpStatusCode.NotFound)
             }
         }
-    
-        // Update city
-        put("/cities/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            val user = call.receive<City>()
-            cityService.update(id, user)
-            call.respond(HttpStatusCode.OK)
+
+        // CRUD para Jogador
+        post("/jogadores") {
+            val dto = call.receive<JogadorDTO>()
+            val statement = dbConnection.prepareStatement("INSERT INTO Jogador (nome, altura, nacionalidade, data_nascimento, numero_camisa, posicao, pe_dominante, gols_totais, assistencias_totais, cartoes_amarelos, cartoes_vermelhos, clube) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            statement.setString(1, dto.nome)
+            statement.setInt(2, dto.altura)
+            statement.setString(3, dto.nacionalidade)
+            statement.setString(4, dto.dataNascimento)
+            statement.setInt(5, dto.numeroCamisa)
+            statement.setString(6, dto.posicao)
+            statement.setString(7, dto.peDominante)
+            statement.setInt(8, dto.golsTotais)
+            statement.setInt(9, dto.assistenciasTotais)
+            statement.setInt(10, dto.cartoesAmarelos)
+            statement.setInt(11, dto.cartoesVermelhos)
+            statement.setObject(12, dto.clubeId)
+            statement.executeUpdate()
+            call.respond(HttpStatusCode.Created)
         }
-    
-        // Delete city
-        delete("/cities/{id}") {
+        get("/jogadores/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            cityService.delete(id)
-            call.respond(HttpStatusCode.OK)
+            val statement = dbConnection.prepareStatement("SELECT * FROM Jogador WHERE id = ?")
+            statement.setInt(1, id)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                val dto = JogadorDTO(
+                    id = resultSet.getInt("id"),
+                    nome = resultSet.getString("nome"),
+                    altura = resultSet.getInt("altura"),
+                    nacionalidade = resultSet.getString("nacionalidade"),
+                    dataNascimento = resultSet.getString("data_nascimento"),
+                    numeroCamisa = resultSet.getInt("numero_camisa"),
+                    posicao = resultSet.getString("posicao"),
+                    peDominante = resultSet.getString("pe_dominante"),
+                    golsTotais = resultSet.getInt("gols_totais"),
+                    assistenciasTotais = resultSet.getInt("assistencias_totais"),
+                    cartoesAmarelos = resultSet.getInt("cartoes_amarelos"),
+                    cartoesVermelhos = resultSet.getInt("cartoes_vermelhos"),
+                    clubeId = resultSet.getObject("clube") as? Int
+                )
+                call.respond(HttpStatusCode.OK, dto)
+            } else {
+                call.respond(HttpStatusCode.NotFound)
+            }
+        }
+
+        // CRUD para Time
+        post("/times") {
+            val dto = call.receive<TimeDTO>()
+            val statement = dbConnection.prepareStatement("INSERT INTO Team (nome, nacionalidade, data_fundacao, artilheiro, maior_assistente, partidas_jogadas_totais, gols_marcados, gols_sofridos, pontos, vitorias, derrotas, tatica, tecnico, campeonato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            statement.setString(1, dto.nome)
+            statement.setString(2, dto.nacionalidade)
+            statement.setString(3, dto.dataFundacao)
+            statement.setObject(4, dto.artilheiroId)
+            statement.setObject(5, dto.maiorAssistenteId)
+            statement.setInt(6, dto.partidasJogadas)
+            statement.setInt(7, dto.golsMarcados)
+            statement.setInt(8, dto.golsSofridos)
+            statement.setInt(9, dto.pontos)
+            statement.setInt(10, dto.vitorias)
+            statement.setInt(11, dto.derrotas)
+            statement.setObject(12, dto.taticaId)
+            statement.setObject(13, dto.tecnicoId)
+            statement.setObject(14, dto.campeonatoId)
+            statement.executeUpdate()
+            call.respond(HttpStatusCode.Created)
+        }
+
+        // CRUD para Tecnico
+        post("/tecnicos") {
+            try {
+                val rawBody = call.receiveText()
+                println("[DEBUG] Corpo recebido em /tecnicos: $rawBody")
+                val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.TecnicoDTO>(rawBody)
+                val tecnico = Tecnico(
+                    0,
+                    dto.nome,
+                    dto.nacionalidade,
+                    dto.dataNascimento,
+                    dto.email,
+                    dto.senha
+                )
+                val statement = dbConnection.prepareStatement("INSERT INTO Tecnico (nome, nacionalidade, data_nascimento, email, senha) VALUES (?, ?, ?, ?, ?)")
+                statement.setString(1, tecnico.getNome())
+                statement.setString(2, tecnico.getNacionalidade())
+                statement.setString(3, tecnico.getDataNascimento())
+                statement.setString(4, tecnico.getEmail())
+                statement.setString(5, tecnico.getSenha())
+                val rows = statement.executeUpdate()
+                println("[DEBUG] Linhas inseridas em Tecnico: $rows")
+                call.respond(HttpStatusCode.Created)
+            } catch (e: Exception) {
+                println("[ERROR] Erro ao processar /tecnicos: ${e.message}")
+                call.respond(HttpStatusCode.BadRequest, "Erro ao processar técnico: ${e.message}")
+            }
+        }
+
+        // CRUD para Tatica
+        post("/taticas") {
+            val dto = call.receive<TaticaDTO>()
+            val statement = dbConnection.prepareStatement("INSERT INTO Tatica (plano_jogo, conduta, instrucao_ataque, instrucao_defesa, instrucao_meio, pressao, estilo, tempo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+            statement.setString(1, dto.planoJogo)
+            statement.setString(2, dto.conduta)
+            statement.setString(3, dto.instrucaoAtaque)
+            statement.setString(4, dto.instrucaoDefesa)
+            statement.setString(5, dto.instrucaoMeio)
+            statement.setInt(6, dto.pressao)
+            statement.setInt(7, dto.estilo)
+            statement.setInt(8, dto.tempo)
+            statement.executeUpdate()
+            call.respond(HttpStatusCode.Created)
+        }
+
+        // CRUD para Partida
+        post("/partidas") {
+            val dto = call.receive<PartidaDTO>()
+            val statement = dbConnection.prepareStatement("INSERT INTO Partida (time_1, time_2, gols_time_1, gols_time_2, lugar, data_partida, hora_partida, empate, gols_time_1_penaltis, gols_time_2_penaltis, vencedor, campeonato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            statement.setInt(1, dto.time1Id)
+            statement.setInt(2, dto.time2Id)
+            statement.setInt(3, dto.golsTime1)
+            statement.setInt(4, dto.golsTime2)
+            statement.setString(5, dto.lugar)
+            statement.setString(6, dto.dataPartida)
+            statement.setString(7, dto.horaPartida)
+            statement.setBoolean(8, dto.empate)
+            statement.setInt(9, dto.golsTime1Penaltis)
+            statement.setInt(10, dto.golsTime2Penaltis)
+            statement.setObject(11, dto.vencedorId)
+            statement.setObject(12, dto.campeonatoId)
+            statement.executeUpdate()
+            call.respond(HttpStatusCode.Created)
         }
     }
 }
-/**
- * Makes a connection to a Postgres database.
- *
- * In order to connect to your running Postgres process,
- * please specify the following parameters in your configuration file:
- * - postgres.url -- Url of your running database process.
- * - postgres.user -- Username for database connection
- * - postgres.password -- Password for database connection
- *
- * If you don't have a database process running yet, you may need to [download]((https://www.postgresql.org/download/))
- * and install Postgres and follow the instructions [here](https://postgresapp.com/).
- * Then, you would be able to edit your url,  which is usually "jdbc:postgresql://host:port/database", as well as
- * user and password values.
- *
- *
- * @param embedded -- if [true] defaults to an embedded database for tests that runs locally in the same process.
- * In this case you don't have to provide any parameters in configuration file, and you don't have to run a process.
- *
- * @return [Connection] that represent connection to the database. Please, don't forget to close this connection when
- * your application shuts down by calling [Connection.close]
- * */
+
 fun Application.connectToPostgres(embedded: Boolean): Connection {
     Class.forName("org.postgresql.Driver")
     if (embedded) {
