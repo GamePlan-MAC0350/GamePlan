@@ -64,22 +64,51 @@ fun Application.configureDatabases() {
 
         // CRUD para Jogador
         post("/jogadores") {
-            val dto = call.receive<JogadorDTO>()
-            val statement = dbConnection.prepareStatement("INSERT INTO Jogador (nome, altura, nacionalidade, data_nascimento, numero_camisa, posicao, pe_dominante, gols_totais, assistencias_totais, cartoes_amarelos, cartoes_vermelhos, clube) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-            statement.setString(1, dto.nome)
-            statement.setInt(2, dto.altura)
-            statement.setString(3, dto.nacionalidade)
-            statement.setString(4, dto.dataNascimento)
-            statement.setInt(5, dto.numeroCamisa)
-            statement.setString(6, dto.posicao)
-            statement.setString(7, dto.peDominante)
-            statement.setInt(8, dto.golsTotais)
-            statement.setInt(9, dto.assistenciasTotais)
-            statement.setInt(10, dto.cartoesAmarelos)
-            statement.setInt(11, dto.cartoesVermelhos)
-            statement.setObject(12, dto.clubeId)
-            statement.executeUpdate()
-            call.respond(HttpStatusCode.Created)
+            try {
+                val rawBody = call.receiveText()
+                println("[DEBUG] Corpo recebido em /jogadores: $rawBody")
+                val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.JogadorDTO>(rawBody)
+                println("[DEBUG] DTO recebido: $dto")
+                val statement = dbConnection.prepareStatement("INSERT INTO Jogador (nome, altura, nacionalidade, data_nascimento, numero_camisa, posicao, pe_dominante, gols_totais, assistencias_totais, cartoes_amarelos, cartoes_vermelhos, clube) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", java.sql.Statement.RETURN_GENERATED_KEYS)
+                statement.setString(1, dto.nome)
+                statement.setInt(2, dto.altura)
+                statement.setString(3, dto.nacionalidade)
+                statement.setString(4, dto.dataNascimento)
+                statement.setInt(5, dto.numeroCamisa)
+                statement.setString(6, dto.posicao)
+                statement.setString(7, dto.peDominante)
+                statement.setInt(8, dto.golsTotais)
+                statement.setInt(9, dto.assistenciasTotais)
+                statement.setInt(10, dto.cartoesAmarelos)
+                statement.setInt(11, dto.cartoesVermelhos)
+                statement.setObject(12, dto.clubeId)
+                val rows = statement.executeUpdate()
+                val generatedKeys = statement.generatedKeys
+                var jogadorId: Int? = null
+                if (generatedKeys.next()) {
+                    jogadorId = generatedKeys.getInt(1)
+                }
+                println("[DEBUG] Jogador inserido com id: $jogadorId (linhas afetadas: $rows)")
+                val responseDto = com.gameplan.dto.JogadorDTO(
+                    id = jogadorId,
+                    nome = dto.nome,
+                    altura = dto.altura,
+                    nacionalidade = dto.nacionalidade,
+                    dataNascimento = dto.dataNascimento,
+                    numeroCamisa = dto.numeroCamisa,
+                    posicao = dto.posicao,
+                    peDominante = dto.peDominante,
+                    golsTotais = dto.golsTotais,
+                    assistenciasTotais = dto.assistenciasTotais,
+                    cartoesAmarelos = dto.cartoesAmarelos,
+                    cartoesVermelhos = dto.cartoesVermelhos,
+                    clubeId = dto.clubeId
+                )
+                call.respond(HttpStatusCode.Created, responseDto)
+            } catch (e: Exception) {
+                println("[ERROR] Erro ao processar /jogadores: ${e.message}")
+                call.respond(HttpStatusCode.BadRequest, "Erro ao processar jogador: ${e.message}")
+            }
         }
         get("/jogadores/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")

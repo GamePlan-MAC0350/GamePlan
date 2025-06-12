@@ -1,5 +1,8 @@
 package com.gameplan.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class JogadorDTO(
     val id: Int? = null,
     val nome: String,

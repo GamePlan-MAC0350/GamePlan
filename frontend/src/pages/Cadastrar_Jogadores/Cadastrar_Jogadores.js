@@ -8,7 +8,7 @@ function Cadastrar_Jogadores() {
   const navigate = useNavigate();
   const [nome, setNome] = useState('');
   const [nacionalidade, setNacionalidade] = useState('');
-  const [time, setTime] = useState('');
+
   const [posicao, setPosição] = useState('');
   const [altura, setAltura] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
@@ -39,10 +39,46 @@ const goToPesquisarCampeonatosTreinador = () => {
 const goToModificarTatica = () => {
   navigate('/Modificar_Tatica');
 };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Nome: ${nome}\nTime: ${time}\nNacionalidade: ${nacionalidade}\nPosição: ${posicao}\nAltura: ${altura}\nData de Nascimento: ${dataNascimento}\nNúmero da camisa: ${numeroCamisa}\nPé Dominante: ${peDominante}`);
-    // Aqui você pode fazer a lógica para enviar pro backend
+    // Monta o objeto do jogador
+    const jogador = {
+      nome,
+      altura: parseInt(altura),
+      nacionalidade,
+      dataNascimento,
+      numeroCamisa: parseInt(numeroCamisa),
+      posicao,
+      peDominante,
+      golsTotais: 0,
+      assistenciasTotais: 0,
+      cartoesAmarelos: 0,
+      cartoesVermelhos: 0,
+      clubeId: timeId // timeId do contexto
+    };
+    console.log('Enviando jogador para backend:', jogador);
+    try {
+      const response = await fetch('http://localhost:8080/jogadores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(jogador)
+      });
+      if (response.ok) {
+        alert('Jogador cadastrado com sucesso!');
+        setNome('');
+        setNacionalidade('');
+        setPosição('');
+        setAltura('');
+        setDataNascimento('');
+        setNumeroCamisa('');
+        setPeDominante('');
+      } else {
+        const erro = await response.text();
+        alert('Erro ao cadastrar jogador: ' + erro);
+      }
+    } catch (err) {
+      alert('Erro de conexão com o backend!');
+    }
   };
 
   useEffect(() => {
@@ -79,18 +115,6 @@ const goToModificarTatica = () => {
             placeholder="ex: Cristiano Ronaldo"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            required
-            style={{ padding: '8px', margin: '10px' }}
-          />
-          </p>
-        </div>
-        <div>
-        <p>Time:
-          <input
-            type="String"
-            placeholder="ex: Manchester United"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
             required
             style={{ padding: '8px', margin: '10px' }}
           />
