@@ -175,6 +175,34 @@ fun Application.configureDatabases() {
             }
         }
 
+        // GET /times/{id} - retorna DTO do time
+        get("/times/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            println("[DEBUG] GET /times/{id} chamado com id: $id")
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido")
+                return@get
+            }
+            val statement = dbConnection.prepareStatement("SELECT * FROM Team WHERE id = ?")
+            statement.setInt(1, id)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                val dto = com.gameplan.dto.TimeDTO(
+                    id = resultSet.getInt("id"),
+                    nome = resultSet.getString("nome"),
+                    nacionalidade = resultSet.getString("nacionalidade"),
+                    dataFundacao = resultSet.getString("data_fundacao"),
+                    tecnicoId = resultSet.getObject("tecnico") as? Int,
+                    taticaId = resultSet.getObject("tatica") as? Int
+                )
+                println("[DEBUG] Time encontrado: $dto")
+                call.respond(HttpStatusCode.OK, dto)
+            } else {
+                println("[DEBUG] Nenhum time encontrado com id: $id")
+                call.respond(HttpStatusCode.NotFound, "Time não encontrado")
+            }
+        }
+
         // CRUD para Tecnico
         post("/tecnicos") {
             try {
@@ -260,6 +288,81 @@ fun Application.configureDatabases() {
             } catch (e: Exception) {
                 println("[ERROR] Erro ao processar /taticas: ${e.message}")
                 call.respond(HttpStatusCode.BadRequest, "Erro ao processar tática: ${e.message}")
+            }
+        }
+
+        // GET /taticas/{id} - retorna DTO da tática
+        get("/taticas/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            println("[DEBUG] GET /taticas/{id} chamado com id: $id")
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido")
+                return@get
+            }
+            val statement = dbConnection.prepareStatement("SELECT * FROM Tatica WHERE id = ?")
+            statement.setInt(1, id)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                val dto = TaticaDTO(
+                    id = resultSet.getInt("id"),
+                    planoJogo = resultSet.getString("plano_jogo"),
+                    conduta = resultSet.getString("conduta"),
+                    instrucaoAtaque = resultSet.getString("instrucao_ataque"),
+                    instrucaoDefesa = resultSet.getString("instrucao_defesa"),
+                    instrucaoMeio = resultSet.getString("instrucao_meio"),
+                    pressao = resultSet.getInt("pressao"),
+                    estilo = resultSet.getInt("estilo"),
+                    tempo = resultSet.getInt("tempo")
+                )
+                println("[DEBUG] Tática encontrada: $dto")
+                call.respond(HttpStatusCode.OK, dto)
+            } else {
+                println("[DEBUG] Nenhuma tática encontrada com id: $id")
+                call.respond(HttpStatusCode.NotFound, "Tática não encontrada")
+            }
+        }
+
+        // PUT /taticas/{id} - atualiza tática existente
+        put("/taticas/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            println("[DEBUG] PUT /taticas/{id} chamado com id: $id")
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido")
+                return@put
+            }
+            val rawBody = call.receiveText()
+            println("[DEBUG] Corpo recebido em PUT /taticas/{id}: $rawBody")
+            val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.TaticaDTO>(rawBody)
+            val statement = dbConnection.prepareStatement(
+                "UPDATE Tatica SET plano_jogo = ?, conduta = ?, instrucao_ataque = ?, instrucao_defesa = ?, instrucao_meio = ?, pressao = ?, estilo = ?, tempo = ? WHERE id = ?"
+            )
+            statement.setString(1, dto.planoJogo)
+            statement.setString(2, dto.conduta)
+            statement.setString(3, dto.instrucaoAtaque)
+            statement.setString(4, dto.instrucaoDefesa)
+            statement.setString(5, dto.instrucaoMeio)
+            statement.setInt(6, dto.pressao)
+            statement.setInt(7, dto.estilo)
+            statement.setInt(8, dto.tempo)
+            statement.setInt(9, id)
+            val rows = statement.executeUpdate()
+            println("[DEBUG] Linhas afetadas na atualização da tática: $rows")
+            if (rows > 0) {
+                // Retorna o DTO atualizado com o id
+                val responseDto = com.gameplan.dto.TaticaDTO(
+                    id = id,
+                    planoJogo = dto.planoJogo,
+                    conduta = dto.conduta,
+                    instrucaoAtaque = dto.instrucaoAtaque,
+                    instrucaoDefesa = dto.instrucaoDefesa,
+                    instrucaoMeio = dto.instrucaoMeio,
+                    pressao = dto.pressao,
+                    estilo = dto.estilo,
+                    tempo = dto.tempo
+                )
+                call.respond(HttpStatusCode.OK, responseDto)
+            } else {
+                call.respond(HttpStatusCode.NotFound, "Tática não encontrada para atualização")
             }
         }
 
