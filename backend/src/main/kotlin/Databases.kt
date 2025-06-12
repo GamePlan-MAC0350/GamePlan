@@ -291,6 +291,111 @@ fun Application.configureDatabases() {
             }
         }
 
+        // GET /times?nome=... - busca time pelo nome e retorna info, tática e jogadores
+        get("/times") {
+            val nome = call.request.queryParameters["nome"]
+            println("[DEBUG] GET /times?nome chamado com nome: $nome")
+            if (nome == null) {
+                call.respond(HttpStatusCode.BadRequest, "Nome do time não informado")
+                return@get
+            }
+            val statement = dbConnection.prepareStatement("SELECT * FROM Team WHERE nome = ?")
+            statement.setString(1, nome)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                val timeId = resultSet.getInt("id")
+                println("[DEBUG] Time encontrado com id: $timeId")
+                // Buscar artilheiro e maior assistente (nomes)
+                var artilheiroNome: String? = null
+                var maiorAssistenteNome: String? = null
+                val artilheiroId = resultSet.getObject("artilheiro") as? Int
+                val maiorAssistenteId = resultSet.getObject("maior_assistente") as? Int
+                if (artilheiroId != null) {
+                    val artStmt = dbConnection.prepareStatement("SELECT nome FROM Jogador WHERE id = ?")
+                    artStmt.setInt(1, artilheiroId)
+                    val artRes = artStmt.executeQuery()
+                    if (artRes.next()) artilheiroNome = artRes.getString("nome")
+                    println("[DEBUG] Nome do artilheiro: $artilheiroNome")
+                }
+                if (maiorAssistenteId != null) {
+                    val assStmt = dbConnection.prepareStatement("SELECT nome FROM Jogador WHERE id = ?")
+                    assStmt.setInt(1, maiorAssistenteId)
+                    val assRes = assStmt.executeQuery()
+                    if (assRes.next()) maiorAssistenteNome = assRes.getString("nome")
+                    println("[DEBUG] Nome do maior assistente: $maiorAssistenteNome")
+                }
+                // Buscar tática
+                val taticaId = resultSet.getObject("tatica") as? Int
+                var taticaDto: com.gameplan.dto.TaticaDTO? = null
+                if (taticaId != null) {
+                    val taticaStmt = dbConnection.prepareStatement("SELECT * FROM Tatica WHERE id = ?")
+                    taticaStmt.setInt(1, taticaId)
+                    val taticaRes = taticaStmt.executeQuery()
+                    if (taticaRes.next()) {
+                        taticaDto = com.gameplan.dto.TaticaDTO(
+                            id = taticaRes.getInt("id"),
+                            planoJogo = taticaRes.getString("plano_jogo"),
+                            conduta = taticaRes.getString("conduta"),
+                            instrucaoAtaque = taticaRes.getString("instrucao_ataque"),
+                            instrucaoDefesa = taticaRes.getString("instrucao_defesa"),
+                            instrucaoMeio = taticaRes.getString("instrucao_meio"),
+                            pressao = taticaRes.getInt("pressao"),
+                            estilo = taticaRes.getInt("estilo"),
+                            tempo = taticaRes.getInt("tempo")
+                        )
+                        println("[DEBUG] Tática encontrada: $taticaDto")
+                    } else {
+                        println("[DEBUG] Nenhuma tática encontrada para id: $taticaId")
+                    }
+                } else {
+                    println("[DEBUG] taticaId é null")
+                }
+                // Buscar jogadores do time
+                val jogadoresStmt = dbConnection.prepareStatement("SELECT nome FROM Jogador WHERE clube = ?")
+                jogadoresStmt.setInt(1, timeId)
+                val jogadoresRes = jogadoresStmt.executeQuery()
+                val jogadores = mutableListOf<String>()
+                while (jogadoresRes.next()) {
+                    jogadores.add(jogadoresRes.getString("nome"))
+                }
+                println("[DEBUG] Jogadores encontrados: $jogadores")
+                // Buscar nome do técnico
+                val tecnicoId = resultSet.getObject("tecnico") as? Int
+                var tecnicoNome: String? = null
+                if (tecnicoId != null) {
+                    val tecnicoStmt = dbConnection.prepareStatement("SELECT nome FROM Tecnico WHERE id = ?")
+                    tecnicoStmt.setInt(1, tecnicoId)
+                    val tecnicoRes = tecnicoStmt.executeQuery()
+                    if (tecnicoRes.next()) {
+                        tecnicoNome = tecnicoRes.getString("nome")
+                    }
+                }
+                // Montar DTO de resposta
+                val dto = com.gameplan.dto.TimeComTaticaEJogadoresDTO(
+                    id = timeId,
+                    nome = resultSet.getString("nome"),
+                    nacionalidade = resultSet.getString("nacionalidade"),
+                    dataFundacao = resultSet.getString("data_fundacao"),
+                    artilheiro = artilheiroNome,
+                    maiorAssistente = maiorAssistenteNome,
+                    partidasJogadas = resultSet.getInt("partidas_jogadas_totais"),
+                    golsMarcados = resultSet.getInt("gols_marcados"),
+                    golsSofridos = resultSet.getInt("gols_sofridos"),
+                    pontos = resultSet.getInt("pontos"),
+                    vitorias = resultSet.getInt("vitorias"),
+                    derrotas = resultSet.getInt("derrotas"),
+                    tatica = taticaDto,
+                    jogadores = jogadores,
+                    tecnicoNome = tecnicoNome
+                )
+                println("[DEBUG] TimeComTaticaEJogadoresDTO montado: $dto")
+                call.respond(HttpStatusCode.OK, dto)
+            } else {
+                println("[DEBUG] Nenhum time encontrado com nome: $nome")
+                call.respond(HttpStatusCode.NotFound, "Time não encontrado")
+            }
+        }
+
         // CRUD para Tecnico
         post("/tecnicos") {
             try {
