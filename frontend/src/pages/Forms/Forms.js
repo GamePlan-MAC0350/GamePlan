@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Forms.css';
+
 function Forms() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');

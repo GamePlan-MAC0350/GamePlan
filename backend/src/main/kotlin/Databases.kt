@@ -221,6 +221,53 @@ fun Application.configureDatabases() {
             statement.executeUpdate()
             call.respond(HttpStatusCode.Created)
         }
+
+        // Login para Técnico
+        post("/login") {
+            try {
+                val rawBody = call.receiveText()
+                println("[DEBUG] Corpo recebido em /login: $rawBody")
+                val json = kotlinx.serialization.json.Json.decodeFromString<Map<String, String>>(rawBody)
+                val email = json["email"]
+                val senha = json["senha"]
+                println("[DEBUG] Email recebido: '$email', Senha recebida: '$senha'")
+                if (email == null || senha == null) {
+                    call.respond(HttpStatusCode.BadRequest, "Email e senha são obrigatórios.")
+                    return@post
+                }
+                val statement = dbConnection.prepareStatement("SELECT * FROM Tecnico WHERE email = ? AND senha = ?")
+                statement.setString(1, email)
+                statement.setString(2, senha)
+                val resultSet = statement.executeQuery()
+                if (resultSet.next()) {
+                    val tecnicoId = resultSet.getInt("id")
+                    // Buscar o id do time comandado por esse técnico
+                    val timeStmt = dbConnection.prepareStatement("SELECT id FROM Team WHERE tecnico = ?")
+                    timeStmt.setInt(1, tecnicoId)
+                    val timeResult = timeStmt.executeQuery()
+                    var timeId: Int? = null
+                    if (timeResult.next()) {
+                        timeId = timeResult.getInt("id")
+                    }
+                    val dto = com.gameplan.dto.TecnicoDTO(
+                        id = tecnicoId,
+                        nome = resultSet.getString("nome"),
+                        nacionalidade = resultSet.getString("nacionalidade"),
+                        dataNascimento = resultSet.getString("data_nascimento"),
+                        email = resultSet.getString("email"),
+                        senha = resultSet.getString("senha")
+                    )
+                    val loginResponse = com.gameplan.dto.LoginResponseDTO(tecnico = dto, timeId = timeId)
+                    call.respond(HttpStatusCode.OK, loginResponse)
+                } else {
+                    println("[DEBUG] Nenhum técnico encontrado para email='$email' e senha='$senha'")
+                    call.respond(HttpStatusCode.Unauthorized, "Email ou senha incorretos.")
+                }
+            } catch (e: Exception) {
+                println("[ERROR] Erro ao processar /login: ${e.message}")
+                call.respond(HttpStatusCode.BadRequest, "Erro ao processar login: ${e.message}")
+            }
+        }
     }
 }
 
