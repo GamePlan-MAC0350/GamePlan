@@ -27,7 +27,7 @@ function HomeUsuario() {
       const handleSubmit = (e) => {
         e.preventDefault();
         goToMostrarJogador();
-        alert(`Nome do jogador: ${nome}`);
+        //alert(`Nome do jogador: ${nome}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };
     

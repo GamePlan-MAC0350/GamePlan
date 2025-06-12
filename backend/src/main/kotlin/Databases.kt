@@ -7,6 +7,7 @@ import com.gameplan.dto.TimeDTO
 import com.gameplan.dto.TecnicoDTO
 import com.gameplan.dto.TaticaDTO
 import com.gameplan.dto.PartidaDTO
+import com.gameplan.dto.JogadorComTimeDTO
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -16,6 +17,25 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.sql.Connection
 import java.sql.DriverManager
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class JogadorComTimeDTO(
+    val id: Int?,
+    val nome: String,
+    val altura: Int,
+    val nacionalidade: String,
+    val dataNascimento: String,
+    val numeroCamisa: Int,
+    val posicao: String,
+    val peDominante: String,
+    val golsTotais: Int,
+    val assistenciasTotais: Int,
+    val cartoesAmarelos: Int,
+    val cartoesVermelhos: Int,
+    val clubeId: Int?,
+    val nomeTime: String?
+)
 
 fun Application.configureDatabases() {
     val dbConnection: Connection = connectToPostgres(embedded = false)
@@ -134,6 +154,74 @@ fun Application.configureDatabases() {
                 call.respond(HttpStatusCode.OK, dto)
             } else {
                 call.respond(HttpStatusCode.NotFound)
+            }
+        }
+
+        // GET /jogadores?nome=... - busca jogador pelo nome e retorna também o nome do time
+        get("/jogadores") {
+            val nome = call.request.queryParameters["nome"]
+            println("[DEBUG] GET /jogadores?nome chamado com nome: $nome")
+            if (nome == null) {
+                call.respond(HttpStatusCode.BadRequest, "Nome do jogador não informado")
+                return@get
+            }
+            val statement = dbConnection.prepareStatement("SELECT * FROM Jogador WHERE nome = ?")
+            statement.setString(1, nome)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                val clubeId = resultSet.getObject("clube")
+                var nomeTime: String? = null
+                println("[DEBUG] Valor bruto de clubeId: $clubeId (tipo: ${clubeId?.javaClass})")
+                if (clubeId != null) {
+                    try {
+                        val clubeIdInt = when (clubeId) {
+                            is Int -> clubeId
+                            is Long -> clubeId.toInt()
+                            is Number -> clubeId.toInt()
+                            is String -> clubeId.toIntOrNull()
+                            else -> null
+                        }
+                        println("[DEBUG] clubeId convertido para Int: $clubeIdInt")
+                        if (clubeIdInt != null) {
+                            val timeStmt = dbConnection.prepareStatement("SELECT nome FROM Team WHERE id = ?")
+                            timeStmt.setInt(1, clubeIdInt)
+                            val timeResult = timeStmt.executeQuery()
+                            if (timeResult.next()) {
+                                nomeTime = timeResult.getString("nome")
+                                println("[DEBUG] Nome do time encontrado: $nomeTime")
+                            } else {
+                                println("[DEBUG] Nenhum time encontrado para clubeId: $clubeIdInt")
+                            }
+                        } else {
+                            println("[DEBUG] clubeIdInt é null após conversão")
+                        }
+                    } catch (e: Exception) {
+                        println("[DEBUG] Erro ao buscar nome do time: ${e.message}")
+                    }
+                } else {
+                    println("[DEBUG] clubeId é null")
+                }
+                val dto = JogadorComTimeDTO(
+                    id = resultSet.getInt("id"),
+                    nome = resultSet.getString("nome"),
+                    altura = resultSet.getInt("altura"),
+                    nacionalidade = resultSet.getString("nacionalidade"),
+                    dataNascimento = resultSet.getString("data_nascimento"),
+                    numeroCamisa = resultSet.getInt("numero_camisa"),
+                    posicao = resultSet.getString("posicao"),
+                    peDominante = resultSet.getString("pe_dominante"),
+                    golsTotais = resultSet.getInt("gols_totais"),
+                    assistenciasTotais = resultSet.getInt("assistencias_totais"),
+                    cartoesAmarelos = resultSet.getInt("cartoes_amarelos"),
+                    cartoesVermelhos = resultSet.getInt("cartoes_vermelhos"),
+                    clubeId = (clubeId as? Int),
+                    nomeTime = nomeTime
+                )
+                println("[DEBUG] Jogador encontrado: $dto")
+                call.respond(HttpStatusCode.OK, dto)
+            } else {
+                println("[DEBUG] Nenhum jogador encontrado com nome: $nome")
+                call.respond(HttpStatusCode.NotFound, "Jogador não encontrado")
             }
         }
 

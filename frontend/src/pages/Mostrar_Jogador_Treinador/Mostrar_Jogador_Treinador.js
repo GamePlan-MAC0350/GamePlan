@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom'; 
 import { data, useNavigate } from 'react-router-dom';
 import './Mostrar_Jogador_Treinador.css';
@@ -7,6 +7,11 @@ import './Mostrar_Jogador_Treinador.css';
 
 function MostrarJogadorTreinador() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [nome, setNome] = useState(location.state?.nomeJog || '');
+    const [jogador, setJogador] = useState(null);
+    const [nomeTime, setNomeTime] = useState('');
+    
     const goToCadastrarJogadores = () => {
         navigate('/Cadastrar_Jogadores');
       };
@@ -28,53 +33,55 @@ function MostrarJogadorTreinador() {
     const goToMostrarJogador = () => {
         navigate('/Mostrar_Jogador_Treinador', { state: { nomeJog: nome} });
       };
-    const [nome, setNome] = useState('');
     
-    //exemplo do banco de dados
-    var jogador = { 
-        nome: 'Cristiano Ronaldo', 
-        time: 'Al Nassr', 
-        nacionalidade: 'Português', 
-        posicao: 'Atacante',
-        altura: '1.87m',
-        idade: '38 anos',
-        numeroCamisa: '7',
-        peDominante: 'Direito',
-        gols: 800,
-        assistencias: 230,
-        partidasJogadas: 1100,
-        minutosJogados: 90000,
-        cartoesAmarelos: 100,
-        cartoesVermelhos: 10,
-     };
-
-
-
-
-
-
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        alert(`Nome do jogador: ${nome}`);
-        
-        //fazer a lógica para buscar o jogador no banco de dados
-        // Aqui você pode fazer a lógica para enviar pro backend
-      };
     
-      const location = useLocation(); // dentro do componente
-        const nomeRecebido = location.state?.nomeJog;
 
-        useEffect(() => {
-        document.body.classList.add('mostrar-jogador-treinador-page');
 
-        if (nomeRecebido) {
-            setNome(nomeRecebido);
+
+
+
+
+    // Função para buscar jogador por nome
+    const buscarJogadorPorNome = async (nomeBusca) => {
+        console.log('[DEBUG] Iniciando busca do jogador com nome:', nomeBusca);
+        try {
+            const resp = await fetch(`http://localhost:8080/jogadores?nome=${encodeURIComponent(nomeBusca)}`);
+            console.log('[DEBUG] Resposta recebida do backend:', resp);
+            if (resp.ok) {
+                const data = await resp.json();
+                setJogador(data);
+                setNomeTime(data.nomeTime || '');
+                console.log('[DEBUG] Dados do jogador recebidos:', data, 'Nome do time:', data.nomeTime);
+            } else {
+                const erro = await resp.text();
+                console.log('[DEBUG] Erro ao buscar jogador:', erro);
+                setJogador(null);
+                setNomeTime('');
+                alert('Jogador não encontrado!');
+            }
+        } catch (err) {
+            console.log('[DEBUG] Erro de conexão ao buscar jogador:', err);
+            setJogador(null);
+            setNomeTime('');
+            alert('Erro de conexão com o backend!');
         }
+    };
 
-        return () => {
-            document.body.classList.remove('mostrar-jogador-treinador-page');
-        };
-        }, [nomeRecebido]);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('[DEBUG] handleSubmit chamado com nome:', nome);
+        if (nome) {
+            buscarJogadorPorNome(nome);
+        }
+    };
+    
+    // useEffect para buscar automaticamente apenas na primeira navegação com nomeJog
+    React.useEffect(() => {
+        if (location.state?.nomeJog) {
+            buscarJogadorPorNome(location.state.nomeJog);
+        }
+        // eslint-disable-next-line
+    }, []);
 
   return (
     <div className="mostrar-jogador-treinador-page">
@@ -104,21 +111,20 @@ function MostrarJogadorTreinador() {
             onChange={(e) => setNome(e.target.value)}
             required
             />
-            <button className="botao-pesquisa" type="submit" />
+            <button className="botao-pesquisa" type="submit">Buscar</button>
         </div>
     </form>
-        </div>
-
-       
+    </div>
+    {/* Exibe informações do jogador se encontrado */}
+    {jogador && (
     <div className="jogador-info">
         <div className="jogador-header">
             <h2 className="jogador-nome">{jogador.nome}</h2>
-            <h3 className="jogador-time">{jogador.time}</h3>
+            <h3 className="jogador-time">{nomeTime ? nomeTime : 'Sem clube'}</h3>
         </div>
-
         <div className="jogador-grid">
             <div className="jogador-card">
-            <p><strong>Idade:</strong> {jogador.idade}</p>
+            <p><strong>Data de Nascimento:</strong> {jogador.dataNascimento}</p>
             <p><strong>Nacionalidade:</strong> {jogador.nacionalidade}</p>
             </div>
             <div className="jogador-card">
@@ -130,12 +136,8 @@ function MostrarJogadorTreinador() {
             <p><strong>Pé Dominante:</strong> {jogador.peDominante}</p>
             </div>
             <div className="jogador-card">
-            <p><strong>Gols:</strong> {jogador.gols}</p>
-            <p><strong>Assistências:</strong> {jogador.assistencias}</p>
-            </div>
-            <div className="jogador-card">
-            <p><strong>Partidas Jogadas:</strong> {jogador.partidasJogadas}</p>
-            <p><strong>Minutos Jogados:</strong> {jogador.minutosJogados}</p>
+            <p><strong>Gols:</strong> {jogador.golsTotais}</p>
+            <p><strong>Assistências:</strong> {jogador.assistenciasTotais}</p>
             </div>
             <div className="jogador-card">
             <p><strong>Cartões Amarelos:</strong> {jogador.cartoesAmarelos}</p>
@@ -143,9 +145,7 @@ function MostrarJogadorTreinador() {
             </div>
         </div>
     </div>
-
-
-
+    )}
     </div>
 
     
