@@ -13,11 +13,43 @@ function Cadastrar_Times() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // 1. Cria a tática padrão
+    const taticaPadrao = {
+      planoJogo: 'Posse de Bola',
+      conduta: 'Agressivo',
+      instrucaoAtaque: 'Apenas Ataque',
+      instrucaoDefesa: 'Marcação Alta',
+      instrucaoMeio: 'Apoiar a Defesa',
+      pressao: 50,
+      estilo: 50,
+      tempo: 50
+    };
+    let taticaId = null;
+    try {
+      const taticaResp = await fetch('http://localhost:8080/taticas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(taticaPadrao)
+      });
+      if (taticaResp.ok) {
+        const taticaData = await taticaResp.json();
+        taticaId = taticaData.id;
+        console.log('Tática criada com id:', taticaId);
+      } else {
+        alert('Erro ao criar tática padrão!');
+        return;
+      }
+    } catch (err) {
+      alert('Erro de conexão ao criar tática!');
+      return;
+    }
+    // 2. Cria o time com o id da tática
     const time = {
       nome: nome,
       nacionalidade: nacionalidade,
       dataFundacao: dataFundacao,
-      tecnicoId: tecnicoId
+      tecnicoId: tecnicoId,
+      taticaId: taticaId
     };
     try {
       const response = await fetch('http://localhost:8080/times', {

@@ -143,26 +143,30 @@ fun Application.configureDatabases() {
                 val rawBody = call.receiveText()
                 println("[DEBUG] Corpo recebido em /times: $rawBody")
                 val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.TimeDTO>(rawBody)
+                println("[DEBUG] DTO recebido: $dto")
                 val statement = dbConnection.prepareStatement(
-                    "INSERT INTO Team (nome, nacionalidade, data_fundacao, tecnico) VALUES (?, ?, ?, ?)",
+                    "INSERT INTO Team (nome, nacionalidade, data_fundacao, tecnico, tatica) VALUES (?, ?, ?, ?, ?)",
                     java.sql.Statement.RETURN_GENERATED_KEYS
                 )
                 statement.setString(1, dto.nome)
                 statement.setString(2, dto.nacionalidade)
                 statement.setString(3, dto.dataFundacao)
                 statement.setObject(4, dto.tecnicoId)
-                statement.executeUpdate()
+                statement.setObject(5, dto.taticaId)
+                val rows = statement.executeUpdate()
                 val generatedKeys = statement.generatedKeys
                 var id: Int? = null
                 if (generatedKeys.next()) {
                     id = generatedKeys.getInt(1)
                 }
+                println("[DEBUG] Time inserido com id: $id (linhas afetadas: $rows)")
                 val responseDto = com.gameplan.dto.TimeDTO(
                     id = id,
                     nome = dto.nome,
                     nacionalidade = dto.nacionalidade,
                     dataFundacao = dto.dataFundacao,
-                    tecnicoId = dto.tecnicoId
+                    tecnicoId = dto.tecnicoId,
+                    taticaId = dto.taticaId
                 )
                 call.respond(HttpStatusCode.Created, responseDto)
             } catch (e: Exception) {
@@ -217,18 +221,46 @@ fun Application.configureDatabases() {
 
         // CRUD para Tatica
         post("/taticas") {
-            val dto = call.receive<TaticaDTO>()
-            val statement = dbConnection.prepareStatement("INSERT INTO Tatica (plano_jogo, conduta, instrucao_ataque, instrucao_defesa, instrucao_meio, pressao, estilo, tempo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-            statement.setString(1, dto.planoJogo)
-            statement.setString(2, dto.conduta)
-            statement.setString(3, dto.instrucaoAtaque)
-            statement.setString(4, dto.instrucaoDefesa)
-            statement.setString(5, dto.instrucaoMeio)
-            statement.setInt(6, dto.pressao)
-            statement.setInt(7, dto.estilo)
-            statement.setInt(8, dto.tempo)
-            statement.executeUpdate()
-            call.respond(HttpStatusCode.Created)
+            try {
+                val rawBody = call.receiveText()
+                println("[DEBUG] Corpo recebido em /taticas: $rawBody")
+                val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.TaticaDTO>(rawBody)
+                println("[DEBUG] DTO recebido: $dto")
+                val statement = dbConnection.prepareStatement(
+                    "INSERT INTO Tatica (plano_jogo, conduta, instrucao_ataque, instrucao_defesa, instrucao_meio, pressao, estilo, tempo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    java.sql.Statement.RETURN_GENERATED_KEYS
+                )
+                statement.setString(1, dto.planoJogo)
+                statement.setString(2, dto.conduta)
+                statement.setString(3, dto.instrucaoAtaque)
+                statement.setString(4, dto.instrucaoDefesa)
+                statement.setString(5, dto.instrucaoMeio)
+                statement.setInt(6, dto.pressao)
+                statement.setInt(7, dto.estilo)
+                statement.setInt(8, dto.tempo)
+                val rows = statement.executeUpdate()
+                val generatedKeys = statement.generatedKeys
+                var taticaId: Int? = null
+                if (generatedKeys.next()) {
+                    taticaId = generatedKeys.getInt(1)
+                }
+                println("[DEBUG] Tática inserida com id: $taticaId (linhas afetadas: $rows)")
+                val responseDto = com.gameplan.dto.TaticaDTO(
+                    id = taticaId,
+                    planoJogo = dto.planoJogo,
+                    conduta = dto.conduta,
+                    instrucaoAtaque = dto.instrucaoAtaque,
+                    instrucaoDefesa = dto.instrucaoDefesa,
+                    instrucaoMeio = dto.instrucaoMeio,
+                    pressao = dto.pressao,
+                    estilo = dto.estilo,
+                    tempo = dto.tempo
+                )
+                call.respond(HttpStatusCode.Created, responseDto)
+            } catch (e: Exception) {
+                println("[ERROR] Erro ao processar /taticas: ${e.message}")
+                call.respond(HttpStatusCode.BadRequest, "Erro ao processar tática: ${e.message}")
+            }
         }
 
         // CRUD para Partida
