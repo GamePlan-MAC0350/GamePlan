@@ -113,26 +113,27 @@ function MostrarTimeUsuario() {
     {time && (
       <div className="time-info-container" style={{ marginTop: '50px' }}>
         {/* Nome do time em destaque */}
-        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#333' }}>{time.nome}</h2>
-        </div>
+        
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           {/* Seção de informações do time */}
           <div className="time-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', basckgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
             <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#555' }}>Informações do Time</h3>
-            {Object.entries(time).map(([key, value]) => (
-              key !== 'jogadores' && key !== 'tatica' && key !== 'id' && key !== 'tecnicoId' && key !== 'tecnicoNome' ? (
-                <p key={key} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
-                  <strong style={{ color: '#222', textTransform: 'capitalize' }}>{key.replace('_', ' ')}:</strong> {value}
-                </p>
-              ) : null
-            ))}
-            {/* Exibe o nome do técnico se existir */}
+            {/* Nome do time e técnico no mesmo padrão dos outros atributos */}
+            <p style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
+              <strong style={{ color: '#222', textTransform: 'capitalize' }}>Nome:</strong> {time.nome}
+            </p>
             {time.tecnicoNome && (
               <p style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
                 <strong style={{ color: '#222', textTransform: 'capitalize' }}>Técnico:</strong> {time.tecnicoNome}
               </p>
             )}
+            {Object.entries(time).map(([key, value]) => (
+              key !== 'jogadores' && key !== 'tatica' && key !== 'id' && key !== 'tecnicoId' && key !== 'tecnicoNome' && key !== 'nome' ? (
+                <p key={key} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
+                  <strong style={{ color: '#222', textTransform: 'capitalize' }}>{key.replace('_', ' ')}:</strong> {value}
+                </p>
+              ) : null
+            ))}
           </div>
           {/* Seção de lista de jogadores */}
           <div className="jogadores-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
