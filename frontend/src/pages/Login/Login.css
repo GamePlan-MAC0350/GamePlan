@@ -1,55 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chau+Philomene+One:ital@0;1&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* Estilo específico para a página Login */
 body.login-page {
-  background-color: #fff9c4; /* Cor de fundo amarela clara */
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   height: 100vh;
+  text-align: center;
+  background-image: url('../../assets/images/bg2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  color: #000000;
+  padding: 0;
   margin: 0;
-  font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 /* Container do formulário de login */
-.login-page form {
-  margin-top: 50px;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
+.login-box {
+  width: 400px;
+  min-height: 320px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 2px solid #2c2c2c;
+  border-radius: 25px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px;
+  color: white;
 }
 
-/* Campos de entrada */
-input[type="email"],
-input[type="password"] {
+.login-box form {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: transparent;
+}
+
+.login-box h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: #000000 2px 2px 4px;
+  font-family: 'Chau Philomene One', sans-serif;
+  margin-bottom: -10%;
+}
+
+
+
+/* Campos de entrada */
+.login-box input[type="email"],
+.login-box input[type="password"] {
+  width: 90%; /* largura aumentada */
+  padding: 16px;
+  margin: 12px 0;
+  border: 1.5px solid #FFC300;
+  border-radius: 12px;
+  font-size: 1.15rem;
+  font-family: 'Nunito Sans', sans-serif;
   box-sizing: border-box;
+  background: rgba(255,255,255,0.85);
+  color: #222;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-box input[type="email"]:focus,
+.login-box input[type="password"]:focus {
+  border-color: #af7800;
+  box-shadow: 0 0 0 2px #FFC30055;
+  background: #fff;
+  color: #000;
 }
 
 /* Botões */
 .login-page button {
-  padding: 10px 20px;
-  background-color: #64b5f6; /* Cinza claro */
-  color: #000000; /* Preto para contraste */
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #051932;
+  color: white;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.25em;
 }
 
-button:hover {
-  background-color: #d6d6d6; /* Cinza um pouco mais escuro ao passar o mouse */
+.login-page button:hover {
+  background-color: #0f4a92;
+  transform: scale(1.05);
+}
+
+.login-box button {
+  padding: 18px 40px; /* aumente aqui conforme desejar */
+  font-size: 1.2rem;
+  margin: 10px 0;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #051932;
+  font-family: 'Raleway', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
 /* Parágrafo com botão de criar conta */
 .login-page p {
   margin-top: 15px;
-  font-size: 0.9rem;
-  color: #333333;
+  font-size: 1.25em;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
 }

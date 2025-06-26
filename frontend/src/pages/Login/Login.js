@@ -46,7 +46,7 @@ function Login() {
     navigate('/home_treinador');
   };
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div style={{ textAlign: 'center', marginTop: '50px' }} className='login-box'>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -70,10 +70,10 @@ function Login() {
           />
         </div>
         {erro && <p style={{ color: 'red' }}>{erro}</p>}
-        <button type="submit" style={{ padding: '8px 16px' }}>
+        <button type="submit">
           Entrar
         </button>
-        <p>Ainda não possui sua conta?       
+        <p>Ainda não possui uma conta?       
         <button type="button" onClick={goToForms}>Crie sua conta</button>
         </p>
       </form>
