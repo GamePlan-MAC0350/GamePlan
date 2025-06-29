@@ -49,11 +49,11 @@ function Forms() {
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div style={{ textAlign: 'center', marginTop: '50px' }}  className = "forms-box">
       <h1>Preencha seus dados: </h1>
       <form onSubmit={handleSubmit}>
       <div>
-        <p>Nome completo:
+        <p>Nome completo</p>
           <input
             type="String"
             placeholder="ex: Cristiano Ronaldo"
@@ -62,10 +62,9 @@ function Forms() {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Data de Nascimento:
+        <p>Data de Nascimento</p>
           <input
             type="String"
             placeholder="ex: 30/11/2000"
@@ -74,10 +73,9 @@ function Forms() {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Nacionalidade:
+        <p>Nacionalidade:</p>
           <input
             type="String"
             placeholder="ex: Brasileiro"
@@ -86,10 +84,9 @@ function Forms() {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Email:
+        <p>Email:</p>
           <input
             type="String"
             placeholder="Email"
@@ -98,10 +95,9 @@ function Forms() {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Senha:
+        <p>Senha:</p>
           <input
             type="password"
             placeholder="Senha"
@@ -110,7 +106,6 @@ function Forms() {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-        </p>
         </div>
         <button type="submit" style={{ padding: '8px 16px' }}>
           Criar login
