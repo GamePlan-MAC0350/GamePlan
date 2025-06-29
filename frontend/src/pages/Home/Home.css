@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Chau+Philomene+One:ital@0;1&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
-.home-container {
+body {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,7 +15,7 @@
   background-repeat: no-repeat;
   font-family: 'Poppins', sans-serif;
   font-weight: bold;
-  color: #000000; /* texto escuro */
+  color: #000000;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -28,84 +28,82 @@
 }
 
 .home-container button {
-    padding: 14px 28px;
-    font-size: 1.2rem;
-    margin: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    color: #000; /* Letras pretas */
-    transition: transform 0.2s ease, background-color 0.3s ease;
-  }
-  
-  .home-box {
-    width: 400px;
-    min-height: 320px;
-    background: rgba(0, 0, 0, 0.55); /* Preto com transparência */
-    border: 2px solid #2c2c2c;
-    border-radius: 25px; /* Bordas arredondadas */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 16px 10px; /* padding reduzido */
-    color: white;
- }
-
- .home-box h2 {
-    font-size: 1.5rem;
-    color: white;
-    text-shadow: #000000 2px 2px 4px;
-    font-family: 'Raleway', sans-serif;
-    margin-bottom: 8px; /* menos espaço abaixo do h2 */
-    font-weight: 600;
+  padding: 14px 28px;
+  font-size: 1.2rem;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #000;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
- .home-box h1 {
-    font-size: 3.5rem;
-    font-weight: bold;
-    color: white;
-    text-shadow: #000000 2px 2px 4px;
-    font-family: 'Chau Philomene One', sans-serif;
-    margin-bottom: 6px; /* menos espaço abaixo do h1 */
+.home-box {
+  width: 400px;
+  min-height: 320px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 2px solid #2c2c2c;
+  border-radius: 25px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  color: white;
+}
+
+.home-box h2 {
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: #000000 2px 2px 4px;
+  font-family: 'Raleway', sans-serif;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.home-box h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: #000000 2px 2px 4px;
+  font-family: 'Chau Philomene One', sans-serif;
+  margin-bottom: 6px;
 }
 
 .home-box img {
-    width: 100%;
-    height: auto;
-    margin-bottom: 4px; /* imagem mais próxima do h1 */
+  width: 100%;
+  height: auto;
+  margin-bottom: 4px;
 }
 
 .button-group {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
 }
 
-/* Botão 1: modo usuário - cor vibrante */
 .home-container button:first-of-type {
-    background-color: #af7800; /* amarelo ouro */
-    color: white;
-    font-family: 'Raleway', sans-serif;
-    text-shadow: #000000 1px 1px 2px;
-  }
-  
-  .home-container button:first-of-type:hover {
-    background-color: #FFC300;
-    transform: scale(1.05);
-  }
-  
-  /* Botão 2: modo treinador - cor vibrante */
-  .home-container button:last-of-type {
-    background-color: #051932; /* verde neon */
-    color: white;
-    text-shadow: #000000 1px 1px 2px;
-    font-family: 'Raleway', sans-serif;
-  }
-  
-  .home-container button:last-of-type:hover {
-    background-color: #0f4a92;
-    transform: scale(1.05);
-  }
+  background-color: #af7800;
+  color: white;
+  font-family: 'Raleway', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
+}
+
+.home-container button:first-of-type:hover {
+  background-color: #FFC300;
+  transform: scale(1.05);
+}
+
+.home-container button:last-of-type {
+  background-color: #051932;
+  color: white;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.home-container button:last-of-type:hover {
+  background-color: #0f4a92;
+  transform: scale(1.05);
+}
