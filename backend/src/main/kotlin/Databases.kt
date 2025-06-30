@@ -972,13 +972,14 @@ fun Application.configureDatabases() {
             // Incrementa vitorias do vencedor, derrotas do perdedor e remove campeonato do perdedor
             if (vencedorId != null) {
                 // Buscar times da partida
-                val stmt = dbConnection.prepareStatement("SELECT time_1, time_2, campeonato FROM Partida WHERE id = ?")
+                val stmt = dbConnection.prepareStatement("SELECT time_1, time_2, campeonato, numero_partida FROM Partida WHERE id = ?")
                 stmt.setInt(1, partidaId)
                 val rs = stmt.executeQuery()
                 if (rs.next()) {
                     val time1Id = rs.getInt("time_1")
                     val time2Id = rs.getInt("time_2")
                     val campeonatoId = rs.getInt("campeonato")
+                    val numeroPartida = rs.getInt("numero_partida")
                     val perdedorId = if (vencedorId == time1Id) time2Id else time1Id
                     // Incrementa vitorias do vencedor
                     val updV = dbConnection.prepareStatement("UPDATE Team SET vitorias = vitorias + 1 WHERE id = ?")
@@ -1001,6 +1002,105 @@ fun Application.configureDatabases() {
                         updC.setInt(1, perdedorId)
                         updC.executeUpdate()
                     }
+
+                    // --- NOVO: Chaveamento eliminatório automático (GENÉRICO) ---
+                    // Função para calcular o número da próxima partida e os jogos anteriores
+                    fun proximaPartidaInfo(numeroPartida: Int, totalTimes: Int): Pair<Int, Pair<Int, Int>>? {
+                        // totalTimes: 8, 16, 32, ...
+                        // Jogos da primeira rodada: 1..(totalTimes/2)
+                        // Segunda rodada: (totalTimes/2+1)..(totalTimes/2+totalTimes/4)
+                        // ...
+                        var rodada = 0
+                        var jogosNaRodada = totalTimes / 2
+                        var inicioRodada = 1
+                        var fimRodada = jogosNaRodada
+                        while (numeroPartida > fimRodada) {
+                            rodada++
+                            jogosNaRodada /= 2
+                            inicioRodada = fimRodada + 1
+                            fimRodada = inicioRodada + jogosNaRodada - 1
+                        }
+                        // Se já é a última rodada, não há próxima
+                        if (jogosNaRodada == 1) return null
+                        // Índice do jogo na rodada (0-based)
+                        val idx = numeroPartida - inicioRodada
+                        // Próxima partida está na próxima rodada
+                        val proxInicio = fimRodada + 1
+                        val proxIdx = idx / 2
+                        val proxNum = proxInicio + proxIdx
+                        // Os dois jogos que formam a próxima partida
+                        val jogo1 = inicioRodada + (idx / 2) * 2
+                        val jogo2 = jogo1 + 1
+                        return Pair(proxNum, Pair(jogo1, jogo2))
+                    }
+                    // Descobrir o total de times do campeonato
+                    val campStmt = dbConnection.prepareStatement("SELECT numero_times FROM Campeonato WHERE id = ?")
+                    campStmt.setInt(1, campeonatoId)
+                    val campRs = campStmt.executeQuery()
+                    var totalTimes = 0
+                    if (campRs.next()) totalTimes = campRs.getInt("numero_times")
+                    val proxInfo = proximaPartidaInfo(numeroPartida, totalTimes)
+                    if (proxInfo != null) {
+                        val proxNum = proxInfo.first
+                        val jogosAnt = proxInfo.second
+                        // Buscar vencedores dos dois jogos anteriores
+                        val stmtV = dbConnection.prepareStatement("SELECT numero_partida, vencedor FROM Partida WHERE campeonato = ? AND numero_partida IN (?, ?)")
+                        stmtV.setInt(1, campeonatoId)
+                        stmtV.setInt(2, jogosAnt.first)
+                        stmtV.setInt(3, jogosAnt.second)
+                        val rsV = stmtV.executeQuery()
+                        val vencedores = mutableMapOf<Int, Int?>()
+                        while (rsV.next()) {
+                            vencedores[rsV.getInt("numero_partida")] = rsV.getObject("vencedor") as? Int
+                        }
+                        if (vencedores.size == 2 && vencedores.values.all { it != null }) {
+                            // Verifica se a partida já existe
+                            val check = dbConnection.prepareStatement("SELECT COUNT(*) FROM Partida WHERE campeonato = ? AND numero_partida = ?")
+                            check.setInt(1, campeonatoId)
+                            check.setInt(2, proxNum)
+                            val checkRs = check.executeQuery()
+                            if (checkRs.next() && checkRs.getInt(1) == 0) {
+                                // Cria a próxima partida
+                                val insert = dbConnection.prepareStatement(
+                                    "INSERT INTO Partida (time_1, time_2, lugar, data_partida, hora_partida, empate, campeonato, numero_partida) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                                )
+                                insert.setInt(1, vencedores[jogosAnt.first]!!)
+                                insert.setInt(2, vencedores[jogosAnt.second]!!)
+                                insert.setString(3, "A definir")
+                                insert.setString(4, "A definir")
+                                insert.setString(5, "A definir")
+                                insert.setBoolean(6, false)
+                                insert.setInt(7, campeonatoId)
+                                insert.setInt(8, proxNum)
+                                insert.executeUpdate()
+                            }
+                        }
+                    } else {
+                        // Se não há próxima partida, é a final.
+                        // Remover todos os times restantes do campeonato (setar campo campeonato = NULL)
+                        val updTimes = dbConnection.prepareStatement("UPDATE Team SET campeonato = NULL WHERE campeonato = ?")
+                        updTimes.setInt(1, campeonatoId)
+                        updTimes.executeUpdate()
+
+                        // Atualizar o campo campeao na tabela Campeonato
+                        val updCamp = dbConnection.prepareStatement("UPDATE Campeonato SET campeao = ? WHERE id = ?")
+                        updCamp.setInt(1, vencedorId)
+                        updCamp.setInt(2, campeonatoId)
+                        updCamp.executeUpdate()
+
+                        // Somar os pontos do campeonato ao time vencedor
+                        val pontosStmt = dbConnection.prepareStatement("SELECT pontos FROM Campeonato WHERE id = ?")
+                        pontosStmt.setInt(1, campeonatoId)
+                        val pontosRs = pontosStmt.executeQuery()
+                        if (pontosRs.next()) {
+                            val pontos = pontosRs.getInt("pontos")
+                            val updPontos = dbConnection.prepareStatement("UPDATE Team SET pontos = pontos + ? WHERE id = ?")
+                            updPontos.setInt(1, pontos)
+                            updPontos.setInt(2, vencedorId)
+                            updPontos.executeUpdate()
+                        }
+                    }
+                    // --- FIM chaveamento ---
                 }
             }
             call.respond(HttpStatusCode.OK, "Resultado registrado com sucesso!")
