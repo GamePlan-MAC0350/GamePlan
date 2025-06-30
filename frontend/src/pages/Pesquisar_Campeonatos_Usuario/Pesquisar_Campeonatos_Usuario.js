@@ -16,11 +16,14 @@ function PesquisarCampeonatosUsuario() {
       navigate('/pesquisar_times_usuario');
     };
   
-
+ const goToMostrarCampeonato = () => {
+      navigate('/Mostrar_Campeonatos_Usuario', { state: { nomeT: nomeCampeonato} });
+    };
     const [nomeCampeonato, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
+        goToMostrarCampeonato();
         alert(`Nome do campeonato: ${nomeCampeonato}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };

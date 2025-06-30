@@ -1,0 +1,66 @@
+.chaveamento-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.chaveamento-coluna {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 180px;
+}
+
+.chaveamento-rodada-titulo {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.chaveamento-partida {
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  margin-bottom: 16px;
+  padding: 12px 10px;
+  width: 100%;
+  min-width: 120px;
+  text-align: center;
+}
+
+.chaveamento-times {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.chaveamento-resultado {
+  margin-bottom: 4px;
+}
+
+.chaveamento-penaltis {
+  font-size: 0.95em;
+  color: #555;
+}
+
+.chaveamento-vencedor {
+  font-size: 0.95em;
+  color: #28a745;
+  font-weight: 500;
+}
+
+.chaveamento-aguardando {
+  color: #888;
+  font-size: 0.95em;
+}
+
+.chaveamento-linha {
+  height: 12px;
+  border-left: 2px solid #e0e0e0;
+  margin: 0 auto 8px auto;
+  width: 10px;
+}

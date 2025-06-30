@@ -140,5 +140,24 @@
     margin-top: 4px;
     margin-bottom: 0;
   }
-  
-  
+
+  .mostrar-jogador-usuario-page .busca-jogador-container {
+    text-align: center;
+    margin-top: 180px;
+    margin-bottom: 10px;
+  }
+  .mostrar-jogador-usuario-page .input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .mostrar-jogador-usuario-page .jogador-info {
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: inline-block;
+    padding: 30px 40px;
+  }
+

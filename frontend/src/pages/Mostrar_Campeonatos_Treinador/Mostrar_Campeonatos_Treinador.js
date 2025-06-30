@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { TimeContext } from '../../context/TimeContext';
+import ChaveamentoCampeonato from '../../components/ChaveamentoCampeonato';
 import './Mostrar_Campeonatos_Treinador.css';
 
 function MostrarCampeonatosTreinador() {
@@ -12,6 +13,8 @@ function MostrarCampeonatosTreinador() {
   const [erro, setErro] = useState(null);
   const [busca, setBusca] = useState('');
   const [timeInfo, setTimeInfo] = useState(null);
+  const [partidas, setPartidas] = useState([]);
+  const [timesMap, setTimesMap] = useState({});
 
   // Funções de navegação
   const goToCadastrarJogadores = () => navigate('/Cadastrar_Jogadores');
@@ -73,6 +76,38 @@ function MostrarCampeonatosTreinador() {
     }
   }, [timeId]);
 
+  // Buscar partidas e nomes dos times se o campeonato já foi sorteado
+  useEffect(() => {
+    async function fetchPartidasENomes() {
+      if (campeonato && campeonato.sorteio) {
+        try {
+          const resp = await fetch(`http://localhost:8080/partidas?campeonatoId=${campeonato.id}`);
+          if (resp.ok) {
+            const partidasData = await resp.json();
+            setPartidas(partidasData);
+            // Buscar nomes dos times
+            const ids = Array.from(new Set(partidasData.flatMap(p => [p.time1Id, p.time2Id, p.vencedorId].filter(Boolean))));
+            const nomes = {};
+            for (const id of ids) {
+              try {
+                const respTime = await fetch(`http://localhost:8080/times/${id}`);
+                if (respTime.ok) {
+                  const t = await respTime.json();
+                  nomes[id] = t.nome;
+                }
+              } catch {}
+            }
+            setTimesMap(nomes);
+          }
+        } catch {}
+      } else {
+        setPartidas([]);
+        setTimesMap({});
+      }
+    }
+    fetchPartidasENomes();
+  }, [campeonato]);
+
   const handleBuscar = (e) => {
     e.preventDefault();
     if (busca.trim()) {
@@ -94,7 +129,7 @@ function MostrarCampeonatosTreinador() {
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores</button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
+      <div style={{ textAlign: 'center', marginTop: '540px' }}>
         <h1>Pesquise o campeonato: </h1>
         <form onSubmit={handleBuscar}>
           <div className="input-group">
@@ -132,6 +167,24 @@ function MostrarCampeonatosTreinador() {
               }}>
                 Seu time já está inscrito nesse ou em outro campeonato
               </div>
+            ) : campeonato.sorteio ? (
+              <>
+                <div style={{
+                  position: 'absolute',
+                  top: 20,
+                  right: 20,
+                  color: '#dc3545',
+                  background: '#fff3cd',
+                  border: '1px solid #ffeeba',
+                  borderRadius: '5px',
+                  padding: '10px 20px',
+                  fontWeight: 'bold',
+                  zIndex: 2
+                }}>
+                  O campeonato já começou e não aceita mais inscrições.
+                </div>
+                
+              </>
             ) : (
               <button
                 style={{
@@ -186,6 +239,12 @@ function MostrarCampeonatosTreinador() {
               <p><b>Times Inscritos:</b> {campeonato.timesInscritos}</p>
               <p><b>Time Fundador:</b> {campeonato.nomeTimeFundador || 'Não encontrado'}</p>
             </div>
+            {campeonato.sorteio === true && (
+              <div style={{ marginTop: 40 }}>
+                <h2>Chaveamento</h2>
+                <ChaveamentoCampeonato partidas={partidas} timesMap={timesMap} />
+              </div>
+            )}
           </>
         )}
       </div>

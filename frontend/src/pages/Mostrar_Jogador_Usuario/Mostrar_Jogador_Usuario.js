@@ -67,29 +67,29 @@ function Mostrar_Jogador_Usuario() {
       <h1></h1>
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
-        <button className="botao-destaque" >Pesquisar Jogadores </button>
+        <button onClick={() => {}} className="botao-destaque">Pesquisar Jogadores</button>
         <button onClick={goToPesquisarTimesUsuario}>Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosUsuario}>Pesquisar Campeonatos</button>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
-      <h1>Pesquise o jogador: </h1>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
+      <div className="busca-jogador-container">
+        <h1>Pesquise o jogador: </h1>
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
             <p>Nome do jogador: </p>
             <input
-            type="text"
-            placeholder="ex: Cristiano Ronaldo"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
+              type="text"
+              placeholder="ex: Cristiano Ronaldo"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
             />
             <button className="botao-pesquisa" type="submit">Buscar</button>
-        </div>
-    </form>
-    </div>
-    {/* Exibe informações do jogador se encontrado */}
-    {jogador && (
-    <div className="jogador-info">
+          </div>
+        </form>
+      </div>
+      {/* Exibe informações do jogador se encontrado */}
+      {jogador && (
+      <div className="jogador-info" style={{ marginTop: 10 }}>
         <div className="jogador-header">
             <h2 className="jogador-nome">{jogador.nome}</h2>
             <h3 className="jogador-time">{nomeTime ? nomeTime : 'Sem clube'}</h3>
@@ -116,8 +116,8 @@ function Mostrar_Jogador_Usuario() {
             <p><strong>Cartões Vermelhos:</strong> {jogador.cartoesVermelhos}</p>
             </div>
         </div>
-    </div>
-    )}
+      </div>
+      )}
     </div>
     );
 }

@@ -65,7 +65,12 @@ data class PartidaSimplesDTO(
     val time2Id: Int,
     val numeroPartida: Int,
     val time1Nome: String,
-    val time2Nome: String
+    val time2Nome: String,
+    val golsTime1: Int?,
+    val golsTime2: Int?,
+    val vencedorId: Int?,
+    val penaltisTime1: Int?,
+    val penaltisTime2: Int?
 )
 
 fun Application.configureDatabases() {
@@ -903,7 +908,7 @@ fun Application.configureDatabases() {
                 call.respond(HttpStatusCode.BadRequest, "campeonatoId obrigatório")
                 return@get
             }
-            val query = StringBuilder("SELECT p.id, p.time_1, p.time_2, p.numero_partida, t1.nome as time1_nome, t2.nome as time2_nome FROM Partida p ")
+            val query = StringBuilder("SELECT p.id, p.time_1, p.time_2, p.numero_partida, t1.nome as time1_nome, t2.nome as time2_nome, p.gols_time_1, p.gols_time_2, p.vencedor, p.gols_time_1_penaltis, p.gols_time_2_penaltis FROM Partida p ")
             query.append("JOIN Team t1 ON p.time_1 = t1.id ")
             query.append("JOIN Team t2 ON p.time_2 = t2.id ")
             query.append("WHERE p.campeonato = ? ")
@@ -921,7 +926,12 @@ fun Application.configureDatabases() {
                         time2Id = rs.getInt("time_2"),
                         numeroPartida = rs.getInt("numero_partida"),
                         time1Nome = rs.getString("time1_nome"),
-                        time2Nome = rs.getString("time2_nome")
+                        time2Nome = rs.getString("time2_nome"),
+                        golsTime1 = rs.getObject("gols_time_1") as? Int,
+                        golsTime2 = rs.getObject("gols_time_2") as? Int,
+                        vencedorId = rs.getObject("vencedor") as? Int,
+                        penaltisTime1 = rs.getObject("gols_time_1_penaltis") as? Int,
+                        penaltisTime2 = rs.getObject("gols_time_2_penaltis") as? Int
                     )
                 )
             }
