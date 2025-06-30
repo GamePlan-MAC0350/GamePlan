@@ -4,7 +4,7 @@ import GamePlan.model.Jogador
 import GamePlan.model.Time
 
 const val PONTUACAO_MAXIMA = 2000
-const val NUM_MAX_TIMES = 128
+const val NUM_MAX_TIMES = 64
 
 class Campeonato(
     private var id: Int,
@@ -66,7 +66,9 @@ class Campeonato(
     }
 
     fun definirPontos() {
-        setPontos(numero_times / NUM_MAX_TIMES * PONTUACAO_MAXIMA)
+        val pontosCalculados = numero_times * PONTUACAO_MAXIMA / NUM_MAX_TIMES
+        println("[DEBUG] definirPontos: numero_times=$numero_times, pontosCalculados=$pontosCalculados")
+        setPontos(pontosCalculados)
     }
 
     fun ordenaTimes(): List<Time> {

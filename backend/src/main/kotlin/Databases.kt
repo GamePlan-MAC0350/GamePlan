@@ -93,15 +93,30 @@ fun Application.configureDatabases() {
                     call.respond(HttpStatusCode.BadRequest, "Time fundador não encontrado.")
                     return@post
                 }
-                // Cria o campeonato
+                // Cria o objeto Campeonato para calcular a pontuação
+                val campeonatoTemp = GamePlan.model.Campeonato(
+                    id = 0, // será gerado pelo banco
+                    nome = dto.nome,
+                    numero_times = dto.numeroTimes,
+                    premio = dto.premio,
+                    pontos = 0, // será definido pelo método
+                    data_comeco = dto.dataComeco,
+                    data_final = dto.dataFinal,
+                    data_inscricao = dto.dataInscricao,
+                    id_time_fundador = dto.idTimeFundador
+                )
+                campeonatoTemp.definirPontos()
+                val pontosCalculados = campeonatoTemp.getPontos()
+                println("[DEBUG] Pontos calculados para o campeonato: $pontosCalculados (numero_times=${dto.numeroTimes})")
+                // Cria o campeonato no banco com a pontuação calculada
                 val statement = dbConnection.prepareStatement(
                     "INSERT INTO Campeonato (nome, numero_times, premio, pontos, data_comeco, data_final, data_inscricao, campeao, times_inscritos, id_time_fundador, sorteio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     java.sql.Statement.RETURN_GENERATED_KEYS
                 )
-                statement.setString(1, dto.nome) // NOVO CAMPO
+                statement.setString(1, dto.nome)
                 statement.setInt(2, dto.numeroTimes)
                 statement.setString(3, dto.premio)
-                statement.setInt(4, dto.pontos)
+                statement.setInt(4, pontosCalculados)
                 statement.setString(5, dto.dataComeco)
                 statement.setString(6, dto.dataFinal)
                 statement.setString(7, dto.dataInscricao)
