@@ -22,11 +22,11 @@ INSERT INTO Tatica (plano_jogo, conduta, instrucao_ataque, instrucao_defesa, ins
   ('3-4-3', 'Equilibrada', 'Ataque pelos lados', 'Defesa compacta', 'Troca de passes', 7, 7, 90); -- Chelsea
 
 -- Times
-INSERT INTO Team (nome, nacionalidade, data_fundacao, tecnico, tatica) VALUES
-  ('Real Madrid', 'Espanha', '1902-03-06', 1, 1),
-  ('Barcelona', 'Espanha', '1899-11-29', 2, 2),
-  ('Liverpool', 'Inglaterra', '1892-06-03', 3, 3),
-  ('Chelsea', 'Inglaterra', '1905-03-10', 4, 4);
+INSERT INTO Team (nome, nacionalidade, data_fundacao, tecnico, tatica, pontos) VALUES
+  ('Real Madrid', 'Espanha', '1902-03-06', 1, 1, 25),
+  ('Barcelona', 'Espanha', '1899-11-29', 2, 2, 18),
+  ('Liverpool', 'Inglaterra', '1892-06-03', 3, 3, 22),
+  ('Chelsea', 'Inglaterra', '1905-03-10', 4, 4, 15);
 
 -- Jogadores Real Madrid (id time = 1)
 INSERT INTO Jogador (nome, altura, nacionalidade, data_nascimento, numero_camisa, posicao, pe_dominante, gols_totais, assistencias_totais, cartoes_amarelos, cartoes_vermelhos, clube) VALUES
