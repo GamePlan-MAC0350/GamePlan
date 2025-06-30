@@ -47,6 +47,7 @@ const goToModificarTatica = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          nome: nome, // Adicionado campo nome
           numeroTimes: parseInt(numTimes),
           premio: premio,
           pontos: 0, // Inicialmente zero

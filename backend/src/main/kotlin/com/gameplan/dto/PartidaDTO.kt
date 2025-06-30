@@ -13,5 +13,6 @@ data class PartidaDTO(
     val golsTime1Penaltis: Int,
     val golsTime2Penaltis: Int,
     val vencedorId: Int? = null,
-    val campeonatoId: Int? = null
+    val campeonatoId: Int? = null,
+    val numeroPartida: Int? = null
 )

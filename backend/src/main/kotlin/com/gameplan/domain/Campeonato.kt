@@ -8,6 +8,7 @@ const val NUM_MAX_TIMES = 128
 
 class Campeonato(
     private var id: Int,
+    private var nome: String, // NOVO CAMPO
     private var numero_times: Int,
     private var premio: String,
     private var pontos: Int,
@@ -22,6 +23,7 @@ class Campeonato(
 
     // Getters
     fun getId(): Int = id
+    fun getNome(): String = nome // NOVO GETTER
     fun getNumeroTimes(): Int = numero_times
     fun getPremio(): String = premio
     fun getPontos(): Int = pontos
@@ -35,6 +37,7 @@ class Campeonato(
 
     // Setters
     fun setId(novoId: Int) { id = novoId }
+    fun setNome(novoNome: String) { nome = novoNome } // NOVO SETTER
     fun setNumeroTimes(novoNumero: Int) { numero_times = novoNumero }
     fun setPremio(novoPremio: String) { premio = novoPremio }
     fun setPontos(novosPontos: Int) { pontos = novosPontos }
@@ -90,6 +93,7 @@ class Campeonato(
     // Método para exibir informações do campeonato
     fun exibirCampeonato() {
         println("Campeonato ID: $id")
+        println("Nome do Campeonato: $nome") // Exibe o nome do campeonato
         println("Número de times: $numero_times")
         println("Prêmio: $premio")
         println("Pontos: $pontos")

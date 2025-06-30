@@ -18,6 +18,9 @@ import Mostrar_Jogador_Usuario from './pages/Mostrar_Jogador_Usuario/Mostrar_Jog
 import MostrarTimeTreinador from './pages/Mostrar_Time_Treinador/Mostrar_Time_Treinador';
 import MostrarTimeUsuario from './pages/Mostrar_Time_Usuario/Mostrar_Time_Usuario';
 import CadastrarTimes from './pages/Cadastrar_Times/Cadastrar_Times';
+import Mostrar_Campeonatos_Treinador from './pages/Mostrar_Campeonatos_Treinador/Mostrar_Campeonatos_Treinador';
+
+
 
 
 function App() {
@@ -42,6 +45,8 @@ function App() {
         <Route path="/mostrar_time_treinador" element={<MostrarTimeTreinador />} />
         <Route path="/mostrar_time_usuario" element={<MostrarTimeUsuario />} />
         <Route path="/cadastrar_times" element={<CadastrarTimes />} />
+        <Route path="/mostrar_campeonatos_treinador" element={<Mostrar_Campeonatos_Treinador />} />
+
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>

@@ -26,10 +26,14 @@ function PesquisarCampeonatosTreinador() {
     const goToModificarTatica = () => {
       navigate('/Modificar_Tatica');
     };
+    const goToMostrarCampeonato = () => {
+      navigate('/Mostrar_Campeonatos_Treinador', { state: { nomeT: nomeCampeonato} });
+    };
     const [nomeCampeonato, setNome] = useState('');
       
       const handleSubmit = (e) => {
         e.preventDefault();
+        goToMostrarCampeonato();
         alert(`Nome do campeonato: ${nomeCampeonato}`);
         // Aqui você pode fazer a lógica para enviar pro backend
       };

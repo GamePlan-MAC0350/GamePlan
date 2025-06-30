@@ -39,6 +39,7 @@ CREATE TABLE Team (
 
 CREATE TABLE Campeonato (
     id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL, -- NOVO CAMPO
     numero_times INT NOT NULL,
     premio VARCHAR(255) NOT NULL,
     pontos INT NOT NULL,
@@ -47,7 +48,8 @@ CREATE TABLE Campeonato (
     data_inscricao VARCHAR(255) NOT NULL,
     campeao VARCHAR(255),
     times_inscritos INT NOT NULL DEFAULT 0,
-    id_time_fundador INT REFERENCES Team(id)
+    id_time_fundador INT REFERENCES Team(id),
+    sorteio BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE Jogador (
@@ -79,5 +81,6 @@ CREATE TABLE Partida (
     gols_time_1_penaltis INT NOT NULL DEFAULT 0,
     gols_time_2_penaltis INT NOT NULL DEFAULT 0,
     vencedor INT REFERENCES Team(id),
-    campeonato INT REFERENCES Campeonato(id)
+    campeonato INT REFERENCES Campeonato(id),
+    numero_partida INT
 );

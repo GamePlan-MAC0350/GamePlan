@@ -37,6 +37,21 @@ data class JogadorComTimeDTO(
     val nomeTime: String?
 )
 
+@kotlinx.serialization.Serializable
+data class CampeonatoComTimeFundadorDTO(
+    val id: Int, // ADICIONADO
+    val nome: String,
+    val numeroTimes: Int,
+    val premio: String,
+    val pontos: Int,
+    val dataComeco: String,
+    val dataFinal: String,
+    val dataInscricao: String,
+    val timesInscritos: Int,
+    val nomeTimeFundador: String?,
+    val sorteio: Boolean // ADICIONADO
+)
+
 fun Application.configureDatabases() {
     val dbConnection: Connection = connectToPostgres(embedded = false)
 
@@ -64,18 +79,20 @@ fun Application.configureDatabases() {
                 }
                 // Cria o campeonato
                 val statement = dbConnection.prepareStatement(
-                    "INSERT INTO Campeonato (numero_times, premio, pontos, data_comeco, data_final, data_inscricao, campeao, times_inscritos, id_time_fundador) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO Campeonato (nome, numero_times, premio, pontos, data_comeco, data_final, data_inscricao, campeao, times_inscritos, id_time_fundador, sorteio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     java.sql.Statement.RETURN_GENERATED_KEYS
                 )
-                statement.setInt(1, dto.numeroTimes)
-                statement.setString(2, dto.premio)
-                statement.setInt(3, dto.pontos)
-                statement.setString(4, dto.dataComeco)
-                statement.setString(5, dto.dataFinal)
-                statement.setString(6, dto.dataInscricao)
-                statement.setObject(7, dto.campeaoId)
-                statement.setInt(8, 1) // times_inscritos inicia em 1
-                statement.setInt(9, dto.idTimeFundador)
+                statement.setString(1, dto.nome) // NOVO CAMPO
+                statement.setInt(2, dto.numeroTimes)
+                statement.setString(3, dto.premio)
+                statement.setInt(4, dto.pontos)
+                statement.setString(5, dto.dataComeco)
+                statement.setString(6, dto.dataFinal)
+                statement.setString(7, dto.dataInscricao)
+                statement.setObject(8, dto.campeaoId)
+                statement.setInt(9, 1) // times_inscritos inicia em 1
+                statement.setInt(10, dto.idTimeFundador)
+                statement.setBoolean(11, dto.sorteio)
                 val rows = statement.executeUpdate()
                 val generatedKeys = statement.generatedKeys
                 var campeonatoId: Int? = null
@@ -105,6 +122,7 @@ fun Application.configureDatabases() {
             if (resultSet.next()) {
                 val dto = CampeonatoDTO(
                     id = resultSet.getInt("id"),
+                    nome = resultSet.getString("nome"), // NOVO CAMPO
                     numeroTimes = resultSet.getInt("numero_times"),
                     premio = resultSet.getString("premio"),
                     pontos = resultSet.getInt("pontos"),
@@ -112,13 +130,52 @@ fun Application.configureDatabases() {
                     dataFinal = resultSet.getString("data_final"),
                     dataInscricao = resultSet.getString("data_inscricao"),
                     campeaoId = resultSet.getObject("campeao") as? Int,
-                    artilheiroId = resultSet.getObject("artilheiro") as? Int,
-                    maiorAssistenteId = resultSet.getObject("maior_assistencia") as? Int,
-                    idTimeFundador = resultSet.getInt("id_time_fundador")
+                    timesInscritos = resultSet.getInt("times_inscritos"),
+                    idTimeFundador = resultSet.getInt("id_time_fundador"),
+                    sorteio = resultSet.getBoolean("sorteio")
                 )
                 call.respond(HttpStatusCode.OK, dto)
             } else {
                 call.respond(HttpStatusCode.NotFound)
+            }
+        }
+
+        // GET /campeonatos?nome=... - busca campeonato pelo nome (prêmio)
+        get("/campeonatos") {
+            val nome = call.request.queryParameters["nome"]
+            if (nome == null) {
+                call.respond(HttpStatusCode.BadRequest, "Nome do campeonato não informado")
+                return@get
+            }
+            val statement = dbConnection.prepareStatement("SELECT * FROM Campeonato WHERE nome = ?")
+            statement.setString(1, nome)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                val idTimeFundador = resultSet.getInt("id_time_fundador")
+                // Buscar nome do time fundador
+                var nomeTimeFundador: String? = null
+                val timeStmt = dbConnection.prepareStatement("SELECT nome FROM Team WHERE id = ?")
+                timeStmt.setInt(1, idTimeFundador)
+                val timeResult = timeStmt.executeQuery()
+                if (timeResult.next()) {
+                    nomeTimeFundador = timeResult.getString("nome")
+                }
+                val dto = CampeonatoComTimeFundadorDTO(
+                    id = resultSet.getInt("id"), // ADICIONADO
+                    nome = resultSet.getString("nome"),
+                    numeroTimes = resultSet.getInt("numero_times"),
+                    premio = resultSet.getString("premio"),
+                    pontos = resultSet.getInt("pontos"),
+                    dataComeco = resultSet.getString("data_comeco"),
+                    dataFinal = resultSet.getString("data_final"),
+                    dataInscricao = resultSet.getString("data_inscricao"),
+                    timesInscritos = resultSet.getInt("times_inscritos"),
+                    nomeTimeFundador = nomeTimeFundador,
+                    sorteio = resultSet.getBoolean("sorteio") // ADICIONADO
+                )
+                call.respond(HttpStatusCode.OK, dto)
+            } else {
+                call.respond(HttpStatusCode.NotFound, "Campeonato não encontrado")
             }
         }
 
@@ -223,17 +280,17 @@ fun Application.configureDatabases() {
                         }
                         println("[DEBUG] clubeId convertido para Int: $clubeIdInt")
                         if (clubeIdInt != null) {
-                            val timeStmt = dbConnection.prepareStatement("SELECT nome FROM Team WHERE id = ?")
-                            timeStmt.setInt(1, clubeIdInt)
-                            val timeResult = timeStmt.executeQuery()
-                            if (timeResult.next()) {
-                                nomeTime = timeResult.getString("nome")
-                                println("[DEBUG] Nome do time encontrado: $nomeTime")
-                            } else {
-                                println("[DEBUG] Nenhum time encontrado para clubeId: $clubeIdInt")
-                            }
+                          val timeStmt = dbConnection.prepareStatement("SELECT nome FROM Team WHERE id = ?")
+                          timeStmt.setInt(1, clubeIdInt)
+                          val timeResult = timeStmt.executeQuery()
+                          if (timeResult.next()) {
+                            nomeTime = timeResult.getString("nome")
+                            println("[DEBUG] Nome do time encontrado: $nomeTime")
+                          } else {
+                            println("[DEBUG] Nenhum time encontrado para clubeId: $clubeIdInt")
+                          }
                         } else {
-                            println("[DEBUG] clubeIdInt é null após conversão")
+                          println("[DEBUG] clubeIdInt é null após conversão")
                         }
                     } catch (e: Exception) {
                         println("[DEBUG] Erro ao buscar nome do time: ${e.message}")
@@ -315,13 +372,30 @@ fun Application.configureDatabases() {
             statement.setInt(1, id)
             val resultSet = statement.executeQuery()
             if (resultSet.next()) {
+                val campeonatoObj = resultSet.getObject("campeonato")
+                val campeonatoId = when (campeonatoObj) {
+                    is Int -> campeonatoObj
+                    is Long -> campeonatoObj.toInt()
+                    is Number -> campeonatoObj.toInt()
+                    is String -> campeonatoObj.toIntOrNull()
+                    else -> null
+                }
                 val dto = com.gameplan.dto.TimeDTO(
                     id = resultSet.getInt("id"),
                     nome = resultSet.getString("nome"),
                     nacionalidade = resultSet.getString("nacionalidade"),
                     dataFundacao = resultSet.getString("data_fundacao"),
+                    artilheiroId = resultSet.getObject("artilheiro") as? Int,
+                    maiorAssistenteId = resultSet.getObject("maior_assistente") as? Int,
+                    partidasJogadas = resultSet.getInt("partidas_jogadas_totais"),
+                    golsMarcados = resultSet.getInt("gols_marcados"),
+                    golsSofridos = resultSet.getInt("gols_sofridos"),
+                    pontos = resultSet.getInt("pontos"),
+                    vitorias = resultSet.getInt("vitorias"),
+                    derrotas = resultSet.getInt("derrotas"),
+                    taticaId = resultSet.getObject("tatica") as? Int,
                     tecnicoId = resultSet.getObject("tecnico") as? Int,
-                    taticaId = resultSet.getObject("tatica") as? Int
+                    campeonatoId = campeonatoId
                 )
                 println("[DEBUG] Time encontrado: $dto")
                 call.respond(HttpStatusCode.OK, dto)
@@ -408,7 +482,7 @@ fun Application.configureDatabases() {
                     val tecnicoRes = tecnicoStmt.executeQuery()
                     if (tecnicoRes.next()) {
                         tecnicoNome = tecnicoRes.getString("nome")
-                    }
+                      }
                 }
                 // Montar DTO de resposta
                 val dto = com.gameplan.dto.TimeComTaticaEJogadoresDTO(
@@ -602,7 +676,7 @@ fun Application.configureDatabases() {
         // CRUD para Partida
         post("/partidas") {
             val dto = call.receive<PartidaDTO>()
-            val statement = dbConnection.prepareStatement("INSERT INTO Partida (time_1, time_2, gols_time_1, gols_time_2, lugar, data_partida, hora_partida, empate, gols_time_1_penaltis, gols_time_2_penaltis, vencedor, campeonato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            val statement = dbConnection.prepareStatement("INSERT INTO Partida (time_1, time_2, gols_time_1, gols_time_2, lugar, data_partida, hora_partida, empate, gols_time_1_penaltis, gols_time_2_penaltis, vencedor, campeonato, numero_partida) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
             statement.setInt(1, dto.time1Id)
             statement.setInt(2, dto.time2Id)
             statement.setInt(3, dto.golsTime1)
@@ -615,6 +689,7 @@ fun Application.configureDatabases() {
             statement.setInt(10, dto.golsTime2Penaltis)
             statement.setObject(11, dto.vencedorId)
             statement.setObject(12, dto.campeonatoId)
+            statement.setObject(13, dto.numeroPartida)
             statement.executeUpdate()
             call.respond(HttpStatusCode.Created)
         }
@@ -664,6 +739,55 @@ fun Application.configureDatabases() {
                 println("[ERROR] Erro ao processar /login: ${e.message}")
                 call.respond(HttpStatusCode.BadRequest, "Erro ao processar login: ${e.message}")
             }
+        }
+
+        // Inscrever time em campeonato
+        post("/campeonatos/{id}/inscrever-time") {
+            val campeonatoId = call.parameters["id"]?.toIntOrNull()
+            val rawBody = call.receiveText()
+            val json = kotlinx.serialization.json.Json.decodeFromString<Map<String, Int>>(rawBody)
+            val timeId = json["timeId"]
+            if (campeonatoId == null || timeId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID do campeonato e do time são obrigatórios.")
+                return@post
+            }
+            // Buscar dados do campeonato
+            val campStmt = dbConnection.prepareStatement("SELECT numero_times, times_inscritos FROM Campeonato WHERE id = ?")
+            campStmt.setInt(1, campeonatoId)
+            val campRes = campStmt.executeQuery()
+            if (!campRes.next()) {
+                call.respond(HttpStatusCode.NotFound, "Campeonato não encontrado.")
+                return@post
+            }
+            val numeroTimes = campRes.getInt("numero_times")
+            val timesInscritos = campRes.getInt("times_inscritos")
+            if (timesInscritos >= numeroTimes) {
+                call.respond(HttpStatusCode.BadRequest, "Não é possível se inscrever: número máximo de times atingido.")
+                return@post
+            }
+            // Verifica se o time já está inscrito em algum campeonato
+            val timeStmt = dbConnection.prepareStatement("SELECT campeonato FROM Team WHERE id = ?")
+            timeStmt.setInt(1, timeId)
+            val timeRes = timeStmt.executeQuery()
+            if (!timeRes.next()) {
+                call.respond(HttpStatusCode.NotFound, "Time não encontrado.")
+                return@post
+            }
+            val campeonatoAtual = timeRes.getObject("campeonato")
+            if (campeonatoAtual != null) {
+                call.respond(HttpStatusCode.BadRequest, "O time já está inscrito em um campeonato.")
+                return@post
+            }
+            // Atualiza o número de times inscritos no campeonato
+            val updCampStmt = dbConnection.prepareStatement("UPDATE Campeonato SET times_inscritos = times_inscritos + 1 WHERE id = ?")
+            updCampStmt.setInt(1, campeonatoId)
+            updCampStmt.executeUpdate()
+            // Atualiza o campo campeonato do time
+            val updTimeStmt = dbConnection.prepareStatement("UPDATE Team SET campeonato = ? WHERE id = ?")
+            updTimeStmt.setInt(1, campeonatoId)
+            updTimeStmt.setInt(2, timeId)
+            updTimeStmt.executeUpdate()
+            call.respond(HttpStatusCode.OK, "Time inscrito com sucesso!")
         }
     }
 }
