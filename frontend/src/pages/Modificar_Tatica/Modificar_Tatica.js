@@ -117,14 +117,21 @@ const goToRegistrarResultados = () => {
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
-        <h1>Modifique a Tática: </h1>
-        <p style={{color: 'green'}}>ID do time: {timeId}</p>
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1px' }}>
+      <div style={{
+        minHeight: '80vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%'
+      }}>
+        <h1 style={{ marginBottom: '32px', textAlign: 'center', width: '100%', marginLeft: '30vw' }}>Modifique a Tática: </h1>
+        {/* <p style={{color: 'green'}}>ID do time: {timeId}</p> */}
+        <form onSubmit={handleSubmit} style={{ width: '80%', maxWidth: '900px', display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '30vw' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '1px' }}>
             <div style={{ width: '45%' }}>
               <div>
-                <p>Defina o plano de jogo:
+                <p style={{textAlign: 'center'}}>Defina o plano de jogo:
                   <input
                     type="String"
                     placeholder="ex: Posse de bola, Jogo direto"
@@ -136,7 +143,7 @@ const goToRegistrarResultados = () => {
                 </p>
               </div>
               <div>
-                <p>Defina a conduta de marcação:
+                <p style={{textAlign: 'center'}}>Defina a conduta de marcação:
                   <input
                     type="String"
                     placeholder="ex: Agressivo, Cuidadoso, Normal"
@@ -148,7 +155,7 @@ const goToRegistrarResultados = () => {
                 </p>
               </div>
               <div>
-                <p>Defina a instrução de ataque:
+                <p style={{textAlign: 'center'}}>Defina a instrução de ataque:
                   <input
                     type="String"
                     placeholder="ex: Apoiar o meio-campo, Apenas atacar"
@@ -160,7 +167,7 @@ const goToRegistrarResultados = () => {
                 </p>
               </div>
               <div>
-                <p>Defina a instrução do meio-campo:
+                <p style={{textAlign: 'center'}}>Defina a instrução do meio-campo:
                   <input
                     type="String"
                     placeholder="ex: Apoiar a defesa, Ficar em posição"
@@ -172,7 +179,7 @@ const goToRegistrarResultados = () => {
                 </p>
               </div>
               <div>
-                <p>Defina a instrução de defesa:
+                <p style={{textAlign: 'center'}}>Defina a instrução de defesa:
                   <input
                     type="String"
                     placeholder="ex: Marcação alta, Marcação baixa"

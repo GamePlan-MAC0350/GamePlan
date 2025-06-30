@@ -107,9 +107,9 @@ const goToRegistrarResultados = () => {
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
 
-    <div style={{ textAlign: 'center', marginTop: '150px' }}>
-      <h1>Preencha os dados do jogador: </h1>
-      <p style={{color: 'green'}}>ID do time: {timeId}</p>
+    <div style={{ textAlign: 'center', marginTop: '150px', marginLeft: '33vw' }}>
+      <h1 style={{ marginLeft: '0vw' }}>Preencha os dados do jogador: </h1>
+      {/* <p style={{color: 'green'}}>ID do time: {timeId}</p> */}
       <form onSubmit={handleSubmit}>
       <div>
         <p>Nome completo:

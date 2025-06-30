@@ -100,8 +100,8 @@ const goToRegistrarResultados = () => {
         <button className="botao-destaque">Criar Campeonato</button>
       </div>
 
-    <div style={{ textAlign: 'center', marginTop: '150px' }}>
-      <h1>Preencha os dados do campeonato: </h1>
+    <div style={{ textAlign: 'center', marginTop: '150px', marginLeft: '32vw' }}>
+      <h1 style={{ marginLeft: '0vw' }}>Preencha os dados do campeonato: </h1>
       <form onSubmit={handleSubmit}>
       <div>
         <p>Nome do campeonato:
@@ -178,7 +178,7 @@ const goToRegistrarResultados = () => {
         <button type="submit" style={{ padding: '8px 16px' }}>
           Criar Campeonato</button>
       </form>
-      <p style={{color: 'green'}}>ID do time: {timeId}</p>
+      {/* <p style={{color: 'green'}}>ID do time: {timeId}</p> */}
     </div>
     </div>
   );
