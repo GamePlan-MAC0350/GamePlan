@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'; 
 import { useNavigate } from 'react-router-dom';
 import './Mostrar_Jogador_Usuario.css';

@@ -114,7 +114,7 @@ function MostrarJogadorTreinador() {
             onChange={(e) => setNome(e.target.value)}
             required
             />
-            <button className="botao-pesquisa" type="submit">Buscar</button>
+            <button className="botao-pesquisa" type="submit"></button>
         </div>
     </form>
     </div>

@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'; 
 import './Mostrar_Time_Treinador.css';
 
-
-
 function MostrarTimeTreinador() {
     const navigate = useNavigate();
     const goToCadastrarJogadores = () => {
@@ -19,11 +17,9 @@ function MostrarTimeTreinador() {
     const goToHomeTreinador = () => {
       navigate('/Home_Treinador');
     };
-
     const goToPesquisarCampeonatosTreinador = () => {
       navigate('/Pesquisar_Campeonatos_Treinador');
     };
-  
     const goToModificarTatica = () => {
       navigate('/Modificar_Tatica');
     };
@@ -33,43 +29,57 @@ function MostrarTimeTreinador() {
 
     const [nomeTime, setNome] = useState('');
     const [jogadores, setJogadores] = useState([]); // Estado para armazenar jogadores
+    const [jogadoresCompletos, setJogadoresCompletos] = useState([]); // Novo estado
     const location = useLocation();
     const nomeRecebido = location.state?.nomeT;
     const [time, setTime] = useState(null);
     const [tatica, setTatica] = useState({});
 
+    // Função para buscar jogadores completos pelo id do time
+    const buscarJogadoresCompletos = async (idTime) => {
+      console.log('[DEBUG] Chamando /times/' + idTime + '/jogadores-completos');
+      try {
+        const resp = await fetch(`http://localhost:8080/times/${idTime}/jogadores-completos`);
+        if (resp.ok) {
+          const data = await resp.json();
+          setJogadoresCompletos(data);
+        } else {
+          setJogadoresCompletos([]);
+        }
+      } catch (err) {
+        setJogadoresCompletos([]);
+      }
+    };
+
     // Função para buscar time por nome
     const buscarTimePorNome = async (nomeBusca) => {
-        console.log('[DEBUG] Iniciando busca do time com nome:', nomeBusca);
         try {
             const resp = await fetch(`http://localhost:8080/times?nome=${encodeURIComponent(nomeBusca)}`);
-            console.log('[DEBUG] Resposta recebida do backend:', resp);
             if (resp.ok) {
                 const data = await resp.json();
+                console.log('[DEBUG] Time retornado:', data);
                 setTime(data);
                 setJogadores(data.jogadores || []);
                 setTatica(data.tatica || {});
-                console.log('[DEBUG] Dados do time recebidos:', data);
+                if (data.id) buscarJogadoresCompletos(data.id);
             } else {
-                const erro = await resp.text();
-                console.log('[DEBUG] Erro ao buscar time:', erro);
                 setTime(null);
                 setJogadores([]);
                 setTatica({});
+                setJogadoresCompletos([]);
                 alert('Time não encontrado!');
             }
         } catch (err) {
-            console.log('[DEBUG] Erro de conexão ao buscar time:', err);
             setTime(null);
             setJogadores([]);
             setTatica({});
+            setJogadoresCompletos([]);
             alert('Erro de conexão com o backend!');
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('[DEBUG] handleSubmit chamado com nome:', nomeTime);
         if (nomeTime) {
             buscarTimePorNome(nomeTime);
         }
@@ -80,23 +90,33 @@ function MostrarTimeTreinador() {
       navigate('/Mostrar_Jogador_Treinador', { state: { nomeJog } });
     };
 
-        useEffect(() => {
+    useEffect(() => {
         document.body.classList.add('mostrar-time-treinador-page');
-
         if (nomeRecebido) {
             setNome(nomeRecebido);
             buscarTimePorNome(nomeRecebido);
         }
-
         return () => {
             document.body.classList.remove('mostrar-time-treinador-page');
         };
         // eslint-disable-next-line
-        }, [nomeRecebido]);
+    }, [nomeRecebido]);
+
+    // Função utilitária para encontrar o artilheiro
+    function getArtilheiro(jogadores) {
+      if (!jogadores || jogadores.length === 0) return null;
+      let artilheiro = jogadores[0];
+      for (const jogador of jogadores) {
+        if ((jogador.golsTotais || 0) > (artilheiro.golsTotais || 0)) {
+          artilheiro = jogador;
+        }
+      }
+      return artilheiro;
+    }
+
   return (
     <div className="mostrar-time-treinador-page">
       <h1>Mostrar Time Treinador</h1>
-
       <div className="button-grid">
         <button className="botao-imagem" onClick={goToHome}></button>
         <button onClick={goToHomeTreinador}>Pesquisar Jogadores </button>
@@ -107,8 +127,7 @@ function MostrarTimeTreinador() {
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
-
-      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <div style={{ textAlign: 'center', marginTop: '150px' }}>
       <h1>Pesquise o time: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
@@ -120,28 +139,18 @@ function MostrarTimeTreinador() {
             onChange={(e) => setNome(e.target.value)}
             required
             />
-            <button className="botao-pesquisa" type="submit">Pesquisar</button>
+            <button className="botao-pesquisa" type="submit"></button>
         </div>
     </form>
     </div>
-
     {time && (
       <div className="time-info-container" style={{ marginTop: '50px' }}>
-        {/* Nome do time em destaque */}
         <div style={{ textAlign: 'center', marginBottom: '10px' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#333' }}>{time.nome}</h2>
-          {/* Nome do técnico logo abaixo do nome do time */}
-          {time.tecnicoNome && (
-            <div style={{ fontSize: '1.3rem', fontWeight: '500', color: '#555', marginTop: '5px', marginBottom: '25px' }}>
-              Técnico: {time.tecnicoNome}
-            </div>
-          )}
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          {/* Seção de informações do time */}
           <div className="time-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
             <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#555' }}>Informações do Time</h3>
-            {/* Nome do time e técnico no mesmo padrão dos outros atributos */}
             <p style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
               <strong style={{ color: '#222', textTransform: 'capitalize' }}>Nome:</strong> {time.nome}
             </p>
@@ -150,29 +159,33 @@ function MostrarTimeTreinador() {
                 <strong style={{ color: '#222', textTransform: 'capitalize' }}>Técnico:</strong> {time.tecnicoNome}
               </p>
             )}
+            {/* Artilheiro - sempre calculado pelo frontend */}
+            <p style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
+              <strong style={{ color: '#222', textTransform: 'capitalize' }}>Artilheiro:</strong> {getArtilheiro(jogadoresCompletos) ? getArtilheiro(jogadoresCompletos).nome + ' (' + getArtilheiro(jogadoresCompletos).golsTotais + ' gols)' : (jogadoresCompletos.length === 0 ? 'Não disponível' : 'Não encontrado')}
+            </p>
             {Object.entries(time).map(([key, value]) => (
-              key !== 'jogadores' && key !== 'tatica' && key !== 'id' && key !== 'tecnicoId' && key !== 'tecnicoNome' && key !== 'nome' ? (
+              key !== 'jogadores' && key !== 'tatica' && key !== 'id' && key !== 'tecnicoId' && key !== 'tecnicoNome' && key !== 'nome' && key !== 'artilheiro' && key !== 'maiorAssistente' && key !== 'maior_assistente' ? (
                 <p key={key} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
                   <strong style={{ color: '#222', textTransform: 'capitalize' }}>{key.replace('_', ' ')}:</strong> {value}
                 </p>
               ) : null
             ))}
           </div>
-
-          {/* Seção de lista de jogadores */}
           <div className="jogadores-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
             <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#555' }}>Jogadores</h3>
             <ul style={{ listStyleType: 'none', padding: 0 }}>
-              {jogadores.map((jogador, index) => (
+              {jogadoresCompletos.length > 0 ? jogadoresCompletos.map((jogador, index) => (
                 <li key={index} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444', cursor: 'pointer' }}
-                    onClick={() => goToMostrarJogador(jogador)}>
-                  <span style={{ fontWeight: 'bold', color: '#222', textDecoration: 'underline' }}>{jogador}</span>
+                    onClick={() => goToMostrarJogador(jogador.nome)}>
+                  <span style={{ fontWeight: 'bold', color: '#222', textDecoration: 'underline' }}>{jogador.nome}</span>
+                </li>
+              )) : jogadores.map((jogador, index) => (
+                <li key={index} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
+                  <span style={{ fontWeight: 'bold', color: '#222' }}>{jogador}</span>
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Seção de tática */}
           <div className="tatica-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
             <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#555' }}>Tática</h3>
             {tatica && Object.entries(tatica).length > 0 ? (
@@ -191,8 +204,6 @@ function MostrarTimeTreinador() {
       </div>
     )}
     </div>
-
-    
   );
 }
 

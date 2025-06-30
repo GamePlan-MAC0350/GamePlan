@@ -1130,6 +1130,43 @@ fun Application.configureDatabases() {
             }
             call.respond(HttpStatusCode.OK, "Resultado registrado com sucesso!")
         }
+
+        // GET /times/{id}/jogadores-completos - retorna todos os jogadores do time como objetos completos
+        get("/times/{id}/jogadores-completos") {
+            val idRaw = call.parameters["id"]
+            println("[DEBUG] GET /times/{id}/jogadores-completos chamado com id (raw): $idRaw (tipo: ${idRaw?.javaClass})")
+            val id = idRaw?.toIntOrNull()
+            if (id == null) {
+                println("[DEBUG] ID inválido recebido: $idRaw")
+                call.respond(HttpStatusCode.BadRequest, "ID inválido")
+                return@get
+            }
+            val jogadoresStmt = dbConnection.prepareStatement("SELECT * FROM Jogador WHERE clube = ?")
+            jogadoresStmt.setInt(1, id)
+            val jogadoresRes = jogadoresStmt.executeQuery()
+            val jogadores = mutableListOf<com.gameplan.dto.JogadorDTO>()
+            while (jogadoresRes.next()) {
+                jogadores.add(
+                    com.gameplan.dto.JogadorDTO(
+                        id = jogadoresRes.getInt("id"),
+                        nome = jogadoresRes.getString("nome"),
+                        altura = jogadoresRes.getInt("altura"),
+                        nacionalidade = jogadoresRes.getString("nacionalidade"),
+                        dataNascimento = jogadoresRes.getString("data_nascimento"),
+                        numeroCamisa = jogadoresRes.getInt("numero_camisa"),
+                        posicao = jogadoresRes.getString("posicao"),
+                        peDominante = jogadoresRes.getString("pe_dominante"),
+                        golsTotais = jogadoresRes.getInt("gols_totais"),
+                        assistenciasTotais = jogadoresRes.getInt("assistencias_totais"),
+                        cartoesAmarelos = jogadoresRes.getInt("cartoes_amarelos"),
+                        cartoesVermelhos = jogadoresRes.getInt("cartoes_vermelhos"),
+                        clubeId = jogadoresRes.getObject("clube") as? Int
+                    )
+                )
+            }
+            println("[DEBUG] Jogadores completos encontrados para o time $id: $jogadores (total: ${jogadores.size})")
+            call.respond(HttpStatusCode.OK, jogadores)
+        }
     }
 }
 
