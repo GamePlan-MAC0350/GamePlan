@@ -96,3 +96,24 @@ body {
     margin: 8px 0;
     font-size: 1.1rem;
 }
+.mostrar-campeonatos-usuario-page .botao-pesquisa {
+  background-color: #af7800;
+  color: #fff;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  outline: none;
+  display: inline-block;
+}
+.mostrar-campeonatos-usuario-page .botao-pesquisa:hover {
+  background-color: #FFC300;
+  transform: scale(1.05);
+}

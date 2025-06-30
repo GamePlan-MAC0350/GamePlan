@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chau+Philomene+One:ital@0;1&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 .mostrar-time-usuario-page {
     text-align: center;
     margin-top: 0; /* Remove espaço superior */
@@ -13,33 +17,71 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #f0f8ff; /* Mesma cor de fundo da página */
     padding: 10px;
     z-index: 1000; /* Garante que fique acima de outros elementos */
+    background: rgba(0, 0, 0, 0.55);
+    border-bottom: 2px solid #2c2c2c;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    color: white;
   }
   
   /* Botões pequenos e retangulares */
-  .mostrar-time-usuario-page .button-grid button {
-    padding: 10px 20px;
-    font-size: 1rem;
+  .mostrar-time-usuario-page .button-grid button,
+  .mostrar-time-usuario-page button,
+  button {
+    background-color: #af7800;
+    color: #fff;
+    text-shadow: #000000 1px 1px 2px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 16px 36px;
     border: none;
-    border-radius: 5px;
-    background-color: #64b5f6;
-    color: white;
+    border-radius: 10px;
+    margin: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    
+    transition: transform 0.2s, background-color 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    outline: none;
+    display: inline-block;
   }
   
-  .mostrar-time-usuario-page .button-grid button:hover {
-    background-color: #42a5f5;
+  .mostrar-time-usuario-page .button-grid button:hover,
+  .mostrar-time-usuario-page button:hover,
+  button:hover {
+    background-color: #FFC300;
+    transform: scale(1.05);
   }
   
   .mostrar-time-usuario-page .botao-destaque {
-    background-color: #28a745 !important;  /* Verde, por exemplo */
-    color: white;
+    background-color: #005e0c !important;
+    color: #ffffff !important;
+    text-shadow: none !important;
   }
   
   .mostrar-time-usuario-page .botao-destaque:hover {
-    background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
+    background-color: #218838 !important;
+    color: #fff !important;
+  }
+  
+  .botao-imagem {
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    background-color: #64b5f6;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 100px;
+    color: white;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  /* Colunas de informações do time (garante fundo branco/brando para todas) */
+  .time-info, .jogadores-info, .tatica-info {
+    background-color: #f9f9f9 !important;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
   }
