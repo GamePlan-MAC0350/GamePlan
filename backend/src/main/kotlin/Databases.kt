@@ -18,6 +18,12 @@ import io.ktor.server.routing.*
 import java.sql.Connection
 import java.sql.DriverManager
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.intOrNull
 
 @Serializable
 data class JogadorComTimeDTO(
@@ -905,6 +911,99 @@ fun Application.configureDatabases() {
                 )
             }
             call.respond(HttpStatusCode.OK, partidas)
+        }
+
+        // REGISTRA RESULTADO DA PARTIDA
+        post("/partidas/{id}/registrar-resultado") {
+            val partidaId = call.parameters["id"]?.toIntOrNull()
+            if (partidaId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID da partida inválido.")
+                return@post
+            }
+            val rawBody = call.receiveText()
+            println("[DEBUG] Corpo recebido em /partidas/{id}/registrar-resultado: $rawBody")
+            val json = kotlinx.serialization.json.Json.parseToJsonElement(rawBody).jsonObject
+            val golsTime1 = json["golsTime1"]?.jsonPrimitive?.intOrNull ?: 0
+            val golsTime2 = json["golsTime2"]?.jsonPrimitive?.intOrNull ?: 0
+            val vencedorId = json["vencedorId"]?.jsonPrimitive?.intOrNull
+            val penaltisTime1 = json["penaltisTime1"]?.jsonPrimitive?.intOrNull
+            val penaltisTime2 = json["penaltisTime2"]?.jsonPrimitive?.intOrNull
+            val goleadores1 = json["goleadores1"]?.jsonArray?.mapNotNull { g ->
+                val obj = g.jsonObject
+                obj["goleador"]?.jsonPrimitive?.contentOrNull
+            } ?: emptyList()
+            val goleadores2 = json["goleadores2"]?.jsonArray?.mapNotNull { g ->
+                val obj = g.jsonObject
+                obj["goleador"]?.jsonPrimitive?.contentOrNull
+            } ?: emptyList()
+
+            // Atualiza gols dos jogadores
+            fun atualizaJogador(nome: String, campo: String) {
+                val stmt = dbConnection.prepareStatement("SELECT id FROM Jogador WHERE nome = ?")
+                stmt.setString(1, nome)
+                val rs = stmt.executeQuery()
+                if (!rs.next()) throw IllegalArgumentException("Jogador '$nome' não encontrado!")
+                val jogadorId = rs.getInt("id")
+                val upd = dbConnection.prepareStatement("UPDATE Jogador SET $campo = $campo + 1 WHERE id = ?")
+                upd.setInt(1, jogadorId)
+                upd.executeUpdate()
+            }
+            try {
+                for (nomeGoleador in goleadores1) {
+                    if (!nomeGoleador.isNullOrBlank()) atualizaJogador(nomeGoleador, "gols_totais")
+                }
+                for (nomeGoleador in goleadores2) {
+                    if (!nomeGoleador.isNullOrBlank()) atualizaJogador(nomeGoleador, "gols_totais")
+                }
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Jogador não encontrado!")
+                return@post
+            }
+            // Atualiza partida
+            val updPartida = dbConnection.prepareStatement("UPDATE Partida SET gols_time_1 = ?, gols_time_2 = ?, gols_time_1_penaltis = ?, gols_time_2_penaltis = ?, vencedor = ? WHERE id = ?")
+            updPartida.setInt(1, golsTime1)
+            updPartida.setInt(2, golsTime2)
+            updPartida.setInt(3, penaltisTime1 ?: 0)
+            updPartida.setInt(4, penaltisTime2 ?: 0)
+            if (vencedorId != null) updPartida.setInt(5, vencedorId) else updPartida.setNull(5, java.sql.Types.INTEGER)
+            updPartida.setInt(6, partidaId)
+            updPartida.executeUpdate()
+
+            // Incrementa vitorias do vencedor, derrotas do perdedor e remove campeonato do perdedor
+            if (vencedorId != null) {
+                // Buscar times da partida
+                val stmt = dbConnection.prepareStatement("SELECT time_1, time_2, campeonato FROM Partida WHERE id = ?")
+                stmt.setInt(1, partidaId)
+                val rs = stmt.executeQuery()
+                if (rs.next()) {
+                    val time1Id = rs.getInt("time_1")
+                    val time2Id = rs.getInt("time_2")
+                    val campeonatoId = rs.getInt("campeonato")
+                    val perdedorId = if (vencedorId == time1Id) time2Id else time1Id
+                    // Incrementa vitorias do vencedor
+                    val updV = dbConnection.prepareStatement("UPDATE Team SET vitorias = vitorias + 1 WHERE id = ?")
+                    updV.setInt(1, vencedorId)
+                    updV.executeUpdate()
+                    // Incrementa derrotas do perdedor
+                    val updD = dbConnection.prepareStatement("UPDATE Team SET derrotas = derrotas + 1 WHERE id = ?")
+                    updD.setInt(1, perdedorId)
+                    updD.executeUpdate()
+                    // Só remove campeonato do perdedor se ele NÃO for o fundador
+                    val fundStmt = dbConnection.prepareStatement("SELECT id_time_fundador FROM Campeonato WHERE id = ?")
+                    fundStmt.setInt(1, campeonatoId)
+                    val fundRes = fundStmt.executeQuery()
+                    var idTimeFundador: Int? = null
+                    if (fundRes.next()) {
+                        idTimeFundador = fundRes.getInt("id_time_fundador")
+                    }
+                    if (idTimeFundador != null && perdedorId != idTimeFundador) {
+                        val updC = dbConnection.prepareStatement("UPDATE Team SET campeonato = NULL WHERE id = ?")
+                        updC.setInt(1, perdedorId)
+                        updC.executeUpdate()
+                    }
+                }
+            }
+            call.respond(HttpStatusCode.OK, "Resultado registrado com sucesso!")
         }
     }
 }
