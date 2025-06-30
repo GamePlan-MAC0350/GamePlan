@@ -27,6 +27,10 @@ function MostrarTimeTreinador() {
     const goToModificarTatica = () => {
       navigate('/Modificar_Tatica');
     };
+    const goToRegistrarResultados = () => {
+      navigate('/Registrar_Resultados');
+    };
+
     const [nomeTime, setNome] = useState('');
     const [jogadores, setJogadores] = useState([]); // Estado para armazenar jogadores
     const location = useLocation();
@@ -99,7 +103,7 @@ function MostrarTimeTreinador() {
         <button className="botao-destaque">Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
         <button onClick={goToModificarTatica}>Modificar Táticas</button>
-        <button>Registrar Resultados</button>
+        <button onClick={goToRegistrarResultados}>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>

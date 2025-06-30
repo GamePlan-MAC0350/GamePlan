@@ -38,6 +38,10 @@ const goToPesquisarCampeonatosTreinador = () => {
   navigate('/Pesquisar_Campeonatos_Treinador');
 };
 
+const goToRegistrarResultados = () => {
+  navigate('/Registrar_Resultados');
+};
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!timeId) {
@@ -109,7 +113,7 @@ const goToPesquisarCampeonatosTreinador = () => {
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
         <button className="botao-destaque">Modificar Táticas</button>
-        <button>Registrar Resultados</button>
+        <button onClick={goToRegistrarResultados}>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>

@@ -1,0 +1,117 @@
+body.registrar-resultados-page {
+  background-color: #e3f2fd;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.registrar-resultados-page {
+  min-height: 100vh;
+  background: #f7f7f7;
+}
+
+.registrar-resultados-page .button-grid {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f8ff;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.registrar-resultados-page .button-grid button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #64b5f6;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.registrar-resultados-page .button-grid button:hover {
+  background-color: #42a5f5;
+}
+
+.botao-destaque {
+  background: #2e8b57;
+  color: #fff;
+  font-weight: bold;
+}
+
+.registrar-resultados-page .botao-destaque {
+  background-color: #28a745 !important;
+  color: white;
+}
+
+.registrar-resultados-page .botao-destaque:hover {
+  background-color: #218838 !important;
+}
+
+.registrar-resultados-page h1 {
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.registrar-resultados-page p {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.registrar-resultados-page > div[style] {
+  margin-top: 120px !important;
+}
+
+.info-container {
+  margin: 180px auto 0 auto;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 44px 48px 36px 48px;
+  text-align: center;
+}
+
+.info-container h1 {
+  font-size: 2rem;
+  color: #2e8b57;
+  margin-bottom: 18px;
+}
+
+.info-container p {
+  font-size: 1.15rem;
+  color: #333;
+  margin: 0;
+}
+
+.partidas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 16px;
+}
+
+.botao-partida {
+  padding: 14px 0;
+  font-size: 1.1rem;
+  border: 2px solid #1976d2;
+  border-radius: 8px;
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin: 0;
+}
+
+.botao-partida:hover {
+  background: #1976d2;
+  color: #fff;
+}

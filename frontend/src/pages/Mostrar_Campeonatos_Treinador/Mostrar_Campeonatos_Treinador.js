@@ -21,6 +21,7 @@ function MostrarCampeonatosTreinador() {
   const goToPesquisarTimesTreinador = () => navigate('/Pesquisar_Times_Treinador');
   const goToPesquisarCampeonatosTreinador = () => navigate('/Pesquisar_Campeonatos_Treinador');
   const goToModificarTatica = () => navigate('/Modificar_Tatica');
+  const goToRegistrarResultados = () => navigate('/Registrar_Resultados');
 
   useEffect(() => {
     document.body.classList.add('mostrar-campeonatos-treinador-page');
@@ -89,7 +90,7 @@ function MostrarCampeonatosTreinador() {
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
         <button className="botao-destaque" onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
         <button onClick={goToModificarTatica}>Modificar Táticas</button>
-        <button>Registrar Resultados</button>
+        <button onClick={goToRegistrarResultados}>Registrar Resultados</button>
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores</button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>

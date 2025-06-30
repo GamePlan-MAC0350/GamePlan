@@ -39,6 +39,9 @@ const goToPesquisarCampeonatosTreinador = () => {
 const goToModificarTatica = () => {
   navigate('/Modificar_Tatica');
 };
+const goToRegistrarResultados = () => {
+  navigate('/Registrar_Resultados');
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Monta o objeto do jogador
@@ -99,7 +102,7 @@ const goToModificarTatica = () => {
         <button onClick={goToPesquisarTimesTreinador}>Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosTreinador}>Pesquisar Campeonatos</button>
         <button onClick={goToModificarTatica}>Modificar Táticas</button>
-        <button>Registrar Resultados</button>
+        <button onClick={goToRegistrarResultados}>Registrar Resultados</button>
         <button className="botao-destaque">Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>

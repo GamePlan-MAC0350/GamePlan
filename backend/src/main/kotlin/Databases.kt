@@ -52,6 +52,16 @@ data class CampeonatoComTimeFundadorDTO(
     val sorteio: Boolean // ADICIONADO
 )
 
+@kotlinx.serialization.Serializable
+data class PartidaSimplesDTO(
+    val id: Int,
+    val time1Id: Int,
+    val time2Id: Int,
+    val numeroPartida: Int,
+    val time1Nome: String,
+    val time2Nome: String
+)
+
 fun Application.configureDatabases() {
     val dbConnection: Connection = connectToPostgres(embedded = false)
 
@@ -788,6 +798,113 @@ fun Application.configureDatabases() {
             updTimeStmt.setInt(2, timeId)
             updTimeStmt.executeUpdate()
             call.respond(HttpStatusCode.OK, "Time inscrito com sucesso!")
+        }
+
+        // SORTEIO/CHAVEAMENTO: Gera confrontos e registra partidas no banco
+        post("/campeonatos/{id}/sorteio") {
+            val campeonatoId = call.parameters["id"]?.toIntOrNull()
+            if (campeonatoId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID do campeonato inválido.")
+                return@post
+            }
+            // Busca todos os times do campeonato
+            val timesStmt = dbConnection.prepareStatement("SELECT id, pontos FROM Team WHERE campeonato = ?")
+            timesStmt.setInt(1, campeonatoId)
+            val timesRes = timesStmt.executeQuery()
+            val timesList = mutableListOf<Pair<Int, Int>>() // Pair<id, pontos>
+            while (timesRes.next()) {
+                timesList.add(Pair(timesRes.getInt("id"), timesRes.getInt("pontos")))
+            }
+            if (timesList.size < 2) {
+                call.respond(HttpStatusCode.BadRequest, "É necessário pelo menos 2 times para o sorteio.")
+                return@post
+            }
+            // Ordena por pontos decrescente
+            val timesOrdenados = timesList.sortedByDescending { it.second }.map { it.first }
+            // Gera chaveamento (usando a lógica já implementada em gerarChaveamento)
+            // Aqui, para simplificar, vamos gerar as triplas diretamente
+            class No(val timeId: Int? = null) {
+                var esq: No? = null
+                var dir: No? = null
+            }
+            fun construir(times: List<Int>): No {
+                if (times.size == 1) return No(times[0])
+                val esquerda = construir(times.filterIndexed { idx, _ -> idx % 2 == 0 })
+                val direita = construir(times.filterIndexed { idx, _ -> idx % 2 == 1 })
+                val pai = No()
+                pai.esq = esquerda
+                pai.dir = direita
+                return pai
+            }
+            val confrontos = mutableListOf<Triple<Int, Int, Int>>()
+            var ordem = 1
+            fun gerarPartidas(no: No?): No? {
+                if (no == null) return null
+                if (no.esq == null && no.dir == null) return no
+                val esq = gerarPartidas(no.esq)
+                val dir = gerarPartidas(no.dir)
+                if (esq?.timeId != null && dir?.timeId != null) {
+                    confrontos.add(Triple(esq.timeId, dir.timeId, ordem))
+                    ordem++
+                }
+                return No()
+            }
+            val raiz = construir(timesOrdenados)
+            gerarPartidas(raiz)
+            // Insere as partidas no banco
+            val insertStmt = dbConnection.prepareStatement(
+                "INSERT INTO Partida (time_1, time_2, lugar, data_partida, hora_partida, empate, campeonato, numero_partida) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            )
+            for ((id1, id2, numeroPartida) in confrontos) {
+                insertStmt.setInt(1, id1)
+                insertStmt.setInt(2, id2)
+                insertStmt.setString(3, "A definir") // lugar
+                insertStmt.setString(4, "A definir") // data_partida
+                insertStmt.setString(5, "A definir") // hora_partida
+                insertStmt.setBoolean(6, false) // empate
+                insertStmt.setInt(7, campeonatoId)
+                insertStmt.setInt(8, numeroPartida)
+                insertStmt.addBatch()
+            }
+            insertStmt.executeBatch()
+            // Atualiza o campo sorteio do campeonato
+            val updCampStmt = dbConnection.prepareStatement("UPDATE Campeonato SET sorteio = TRUE WHERE id = ?")
+            updCampStmt.setInt(1, campeonatoId)
+            updCampStmt.executeUpdate()
+            call.respond(HttpStatusCode.OK, "Chaveamento realizado e partidas registradas!")
+        }
+
+        // GET /partidas?campeonatoId=...&semVencedor=true - retorna partidas do campeonato sem vencedor
+        get("/partidas") {
+            val campeonatoId = call.request.queryParameters["campeonatoId"]?.toIntOrNull()
+            val semVencedor = call.request.queryParameters["semVencedor"] == "true"
+            if (campeonatoId == null) {
+                call.respond(HttpStatusCode.BadRequest, "campeonatoId obrigatório")
+                return@get
+            }
+            val query = StringBuilder("SELECT p.id, p.time_1, p.time_2, p.numero_partida, t1.nome as time1_nome, t2.nome as time2_nome FROM Partida p ")
+            query.append("JOIN Team t1 ON p.time_1 = t1.id ")
+            query.append("JOIN Team t2 ON p.time_2 = t2.id ")
+            query.append("WHERE p.campeonato = ? ")
+            if (semVencedor) query.append("AND p.vencedor IS NULL ")
+            query.append("ORDER BY p.numero_partida ASC")
+            val stmt = dbConnection.prepareStatement(query.toString())
+            stmt.setInt(1, campeonatoId)
+            val rs = stmt.executeQuery()
+            val partidas = mutableListOf<PartidaSimplesDTO>()
+            while (rs.next()) {
+                partidas.add(
+                    PartidaSimplesDTO(
+                        id = rs.getInt("id"),
+                        time1Id = rs.getInt("time_1"),
+                        time2Id = rs.getInt("time_2"),
+                        numeroPartida = rs.getInt("numero_partida"),
+                        time1Nome = rs.getString("time1_nome"),
+                        time2Nome = rs.getString("time2_nome")
+                    )
+                )
+            }
+            call.respond(HttpStatusCode.OK, partidas)
         }
     }
 }
