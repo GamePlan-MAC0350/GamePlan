@@ -38,10 +38,39 @@ const goToModificarTatica = () => {
   navigate('/Modificar_Tatica');
 };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     alert(`Por favor, verifique os dados do campeonato:\n\nNome: ${nome}\nPrêmio: ${premio}\nNúmero de times: ${numTimes}\nData de início: ${dataComeco}\nData da final: ${dataFinal}\nData máxima para inscrição: ${dataInscricao}`);
-    // Aqui você pode fazer a lógica para enviar pro backend
+    // Envia para o backend
+    try {
+      const response = await fetch('http://localhost:8080/campeonatos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          numeroTimes: parseInt(numTimes),
+          premio: premio,
+          pontos: 0, // Inicialmente zero
+          dataComeco: dataComeco,
+          dataFinal: dataFinal,
+          dataInscricao: dataInscricao,
+          campeaoId: null,
+          idTimeFundador: timeId // NOVO CAMPO
+        })
+      });
+      if (response.ok) {
+        alert('Campeonato criado com sucesso!');
+        setNome(''); setPremio(''); setNumTimes(''); setDataComeco(''); setDataFinal(''); setDataInscricao('');
+      } else {
+        const errorMsg = await response.text();
+        if (errorMsg.includes('já pertence a um campeonato')) {
+          alert('Erro: O seu time já está associado a um campeonato. Não é possível criar outro.');
+        } else {
+          alert('Erro ao criar campeonato!');
+        }
+      }
+    } catch (err) {
+      alert('Erro de conexão com o backend!');
+    }
   };
 
   useEffect(() => {

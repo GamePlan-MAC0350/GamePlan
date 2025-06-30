@@ -13,12 +13,12 @@ class Campeonato(
     private var pontos: Int,
     private var data_comeco: String,
     private var data_final: String,
-    private var data_inscricao: String
+    private var data_inscricao: String,
+    private var id_time_fundador: Int // NOVO CAMPO
 ) {
     private val times: MutableList<Time> = mutableListOf()
     private var campeao: Time? = null
-    private var artilheiro: Jogador? = null
-    private var maior_assistente: Jogador? = null
+    private var times_inscritos: Int = 0 // NOVA VARIÁVEL
 
     // Getters
     fun getId(): Int = id
@@ -30,27 +30,26 @@ class Campeonato(
     fun getDataInscricao(): String = data_inscricao
     fun getTimes(): List<Time> = times
     fun getCampeao(): Time? = campeao
-    fun getArtilheiro(): Jogador? = artilheiro
-    fun getMaiorAssistente(): Jogador? = maior_assistente
+    fun getTimesInscritos(): Int = times_inscritos // GETTER NOVO
+    fun getIdTimeFundador(): Int = id_time_fundador
 
     // Setters
     fun setId(novoId: Int) { id = novoId }
     fun setNumeroTimes(novoNumero: Int) { numero_times = novoNumero }
     fun setPremio(novoPremio: String) { premio = novoPremio }
-
     fun setPontos(novosPontos: Int) { pontos = novosPontos }
-
     fun setDataComeco(novaData: String) { data_comeco = novaData }
     fun setDataFinal(novaData: String) { data_final = novaData }
     fun setDataInscricao(novaData: String) { data_inscricao = novaData }
     fun setCampeao(novoCampeao: Time?) { campeao = novoCampeao }
-    fun setArtilheiro(novoArtilheiro: Jogador?) { artilheiro = novoArtilheiro }
-    fun setMaiorAssistente(novoAssistente: Jogador?) { maior_assistente = novoAssistente }
+    fun setTimesInscritos(novoValor: Int) { times_inscritos = novoValor } // SETTER NOVO
+    fun setIdTimeFundador(novoId: Int) { id_time_fundador = novoId }
 
     // Método para adicionar times ao campeonato
     fun adicionarTime(time: Time) {
         if (times.size < numero_times) {
             times.add(time)
+            times_inscritos = times.size // Atualiza o contador
             println("Time ${time.getNome()} adicionado ao campeonato!")
         } else {
             println("O campeonato já atingiu o número máximo de times!")
@@ -99,7 +98,5 @@ class Campeonato(
         println("Times participantes:")
         listarTimes()
         println("Campeão: ${campeao?.getNome() ?: "A definir"}")
-        println("Artilheiro: ${artilheiro?.getNome() ?: "A definir"}")
-        println("Maior Assistente: ${maior_assistente?.getNome() ?: "A definir"}")
     }
 }

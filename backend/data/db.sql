@@ -46,8 +46,8 @@ CREATE TABLE Campeonato (
     data_final VARCHAR(255) NOT NULL,
     data_inscricao VARCHAR(255) NOT NULL,
     campeao VARCHAR(255),
-    artilheiro VARCHAR(255),
-    maior_assistencia VARCHAR(255)
+    times_inscritos INT NOT NULL DEFAULT 0,
+    id_time_fundador INT REFERENCES Team(id)
 );
 
 CREATE TABLE Jogador (
@@ -81,7 +81,3 @@ CREATE TABLE Partida (
     vencedor INT REFERENCES Team(id),
     campeonato INT REFERENCES Campeonato(id)
 );
-
-ALTER TABLE Team
-    ADD CONSTRAINT fk_artilheiro FOREIGN KEY (artilheiro) REFERENCES Jogador(id),
-    ADD CONSTRAINT fk_maior_assistente FOREIGN KEY (maior_assistente) REFERENCES Jogador(id);

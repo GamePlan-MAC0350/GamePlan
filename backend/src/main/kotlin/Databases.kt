@@ -43,19 +43,58 @@ fun Application.configureDatabases() {
     routing {
         // CRUD para Campeonato
         post("/campeonatos") {
-            val dto = call.receive<CampeonatoDTO>()
-            val statement = dbConnection.prepareStatement("INSERT INTO Campeonato (numero_times, premio, pontos, data_comeco, data_final, data_inscricao, campeao, artilheiro, maior_assistencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
-            statement.setInt(1, dto.numeroTimes)
-            statement.setString(2, dto.premio)
-            statement.setInt(3, dto.pontos)
-            statement.setString(4, dto.dataComeco)
-            statement.setString(5, dto.dataFinal)
-            statement.setString(6, dto.dataInscricao)
-            statement.setObject(7, dto.campeaoId)
-            statement.setObject(8, dto.artilheiroId)
-            statement.setObject(9, dto.maiorAssistenteId)
-            statement.executeUpdate()
-            call.respond(HttpStatusCode.Created)
+            try {
+                val rawBody = call.receiveText()
+                println("[DEBUG] Corpo recebido em /campeonatos: $rawBody")
+                val dto = kotlinx.serialization.json.Json.decodeFromString<com.gameplan.dto.CampeonatoDTO>(rawBody)
+                println("[DEBUG] DTO recebido: $dto")
+                // Verifica se o time já possui campeonato
+                val checkStmt = dbConnection.prepareStatement("SELECT campeonato FROM Team WHERE id = ?")
+                checkStmt.setInt(1, dto.idTimeFundador)
+                val checkResult = checkStmt.executeQuery()
+                if (checkResult.next()) {
+                    val campeonatoExistente = checkResult.getObject("campeonato") as? Int
+                    if (campeonatoExistente != null) {
+                        call.respond(HttpStatusCode.BadRequest, "O time já pertence a um campeonato.")
+                        return@post
+                    }
+                } else {
+                    call.respond(HttpStatusCode.BadRequest, "Time fundador não encontrado.")
+                    return@post
+                }
+                // Cria o campeonato
+                val statement = dbConnection.prepareStatement(
+                    "INSERT INTO Campeonato (numero_times, premio, pontos, data_comeco, data_final, data_inscricao, campeao, times_inscritos, id_time_fundador) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    java.sql.Statement.RETURN_GENERATED_KEYS
+                )
+                statement.setInt(1, dto.numeroTimes)
+                statement.setString(2, dto.premio)
+                statement.setInt(3, dto.pontos)
+                statement.setString(4, dto.dataComeco)
+                statement.setString(5, dto.dataFinal)
+                statement.setString(6, dto.dataInscricao)
+                statement.setObject(7, dto.campeaoId)
+                statement.setInt(8, 1) // times_inscritos inicia em 1
+                statement.setInt(9, dto.idTimeFundador)
+                val rows = statement.executeUpdate()
+                val generatedKeys = statement.generatedKeys
+                var campeonatoId: Int? = null
+                if (generatedKeys.next()) {
+                    campeonatoId = generatedKeys.getInt(1)
+                }
+                println("[DEBUG] Campeonato inserido (linhas afetadas: $rows, id: $campeonatoId)")
+                // Atualiza o campo campeonato do time fundador
+                if (campeonatoId != null) {
+                    val updateStmt = dbConnection.prepareStatement("UPDATE Team SET campeonato = ? WHERE id = ?")
+                    updateStmt.setInt(1, campeonatoId)
+                    updateStmt.setInt(2, dto.idTimeFundador)
+                    updateStmt.executeUpdate()
+                }
+                call.respond(HttpStatusCode.Created)
+            } catch (e: Exception) {
+                println("[ERRO] Falha ao criar campeonato: ${e.message}")
+                call.respond(HttpStatusCode.BadRequest, "Erro ao criar campeonato: ${e.message}")
+            }
         }
 
         get("/campeonatos/{id}") {
@@ -74,7 +113,8 @@ fun Application.configureDatabases() {
                     dataInscricao = resultSet.getString("data_inscricao"),
                     campeaoId = resultSet.getObject("campeao") as? Int,
                     artilheiroId = resultSet.getObject("artilheiro") as? Int,
-                    maiorAssistenteId = resultSet.getObject("maior_assistencia") as? Int
+                    maiorAssistenteId = resultSet.getObject("maior_assistencia") as? Int,
+                    idTimeFundador = resultSet.getInt("id_time_fundador")
                 )
                 call.respond(HttpStatusCode.OK, dto)
             } else {
