@@ -994,6 +994,34 @@ fun Application.configureDatabases() {
             updPartida.setInt(6, partidaId)
             updPartida.executeUpdate()
 
+            // INÍCIO: Incrementa partidas jogadas, gols marcados e sofridos dos times
+            val stmtTimes = dbConnection.prepareStatement("SELECT time_1, time_2 FROM Partida WHERE id = ?")
+            stmtTimes.setInt(1, partidaId)
+            val rsTimes = stmtTimes.executeQuery()
+            if (rsTimes.next()) {
+                val time1Id = rsTimes.getInt("time_1")
+                val time2Id = rsTimes.getInt("time_2")
+                // Incrementa partidas jogadas
+                val updPJ1 = dbConnection.prepareStatement("UPDATE Team SET partidas_jogadas_totais = partidas_jogadas_totais + 1 WHERE id = ?")
+                updPJ1.setInt(1, time1Id)
+                updPJ1.executeUpdate()
+                val updPJ2 = dbConnection.prepareStatement("UPDATE Team SET partidas_jogadas_totais = partidas_jogadas_totais + 1 WHERE id = ?")
+                updPJ2.setInt(1, time2Id)
+                updPJ2.executeUpdate()
+                // Atualiza gols marcados e sofridos
+                val updGM1 = dbConnection.prepareStatement("UPDATE Team SET gols_marcados = gols_marcados + ? , gols_sofridos = gols_sofridos + ? WHERE id = ?")
+                updGM1.setInt(1, golsTime1)
+                updGM1.setInt(2, golsTime2)
+                updGM1.setInt(3, time1Id)
+                updGM1.executeUpdate()
+                val updGM2 = dbConnection.prepareStatement("UPDATE Team SET gols_marcados = gols_marcados + ? , gols_sofridos = gols_sofridos + ? WHERE id = ?")
+                updGM2.setInt(1, golsTime2)
+                updGM2.setInt(2, golsTime1)
+                updGM2.setInt(3, time2Id)
+                updGM2.executeUpdate()
+            }
+            // FIM: Incrementa partidas jogadas, gols marcados e sofridos dos times
+
             // Incrementa vitorias do vencedor, derrotas do perdedor e remove campeonato do perdedor
             if (vencedorId != null) {
                 // Buscar times da partida

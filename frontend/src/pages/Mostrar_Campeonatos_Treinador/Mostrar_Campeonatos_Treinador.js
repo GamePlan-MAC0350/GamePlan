@@ -155,7 +155,7 @@ function MostrarCampeonatosTreinador() {
             {timeInfo && timeInfo.campeonatoId ? (
               <div style={{
                 position: 'absolute',
-                top: 20,
+                top: 0,
                 right: 20,
                 color: '#dc3545',
                 background: '#fff3cd',
@@ -198,7 +198,8 @@ function MostrarCampeonatosTreinador() {
                   borderRadius: '5px',
                   cursor: 'pointer',
                   fontWeight: 'bold',
-                  zIndex: 2
+                  zIndex: 2,
+                  marginRight: '40px' // aumenta o espaço entre o botão e o nome do campeonato
                 }}
                 onClick={async () => {
                   if (!timeId || !campeonato) return;

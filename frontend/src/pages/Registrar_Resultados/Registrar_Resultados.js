@@ -214,6 +214,13 @@ function Registrar_Resultados() {
         if (Number(golsTime1) > Number(golsTime2)) vencedorId = partida.time1Id;
         else if (Number(golsTime2) > Number(golsTime1)) vencedorId = partida.time2Id;
       }
+      // Novos campos de estatísticas
+      const partidas_jogadas_totais_1 = 1;
+      const partidas_jogadas_totais_2 = 1;
+      const gols_marcados_1 = Number(golsTime1);
+      const gols_marcados_2 = Number(golsTime2);
+      const gols_sofridos_1 = Number(golsTime2);
+      const gols_sofridos_2 = Number(golsTime1);
       const body = {
         golsTime1: Number(golsTime1),
         golsTime2: Number(golsTime2),
@@ -221,7 +228,14 @@ function Registrar_Resultados() {
         goleadores2,
         penaltisTime1: penaltisUsados ? Number(penaltis.golsTime1) : undefined,
         penaltisTime2: penaltisUsados ? Number(penaltis.golsTime2) : undefined,
-        vencedorId
+        vencedorId,
+        // Novos campos enviados explicitamente
+        partidas_jogadas_totais_1,
+        partidas_jogadas_totais_2,
+        gols_marcados_1,
+        gols_marcados_2,
+        gols_sofridos_1,
+        gols_sofridos_2
       };
       try {
         const resp = await fetch(`http://localhost:8080/partidas/${partida.id}/registrar-resultado`, {
