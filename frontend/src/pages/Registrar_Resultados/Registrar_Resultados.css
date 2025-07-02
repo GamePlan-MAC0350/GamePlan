@@ -1,28 +1,44 @@
-body.registrar-resultados-page {
-  background-color: #e3f2fd;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  margin: 0;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chau+Philomene+One:ital@0;1&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
-.registrar-resultados-page {
-  min-height: 100vh;
-  background: #f7f7f7;
-}
-
-.registrar-resultados-page .button-grid {
+body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 10px;
-  position: fixed;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-image: url('../../assets/images/bg2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  color: #000000;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo para o container dos botões */
+.registrar-resultados-page .button-grid {
+  display: flex; /* Alinha lado a lado */
+  justify-content: center; /* Centraliza horizontalmente */
+  gap: 10px; /* Espaçamento entre botões */
+  position: fixed; /* Fixa no topo */
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #f0f8ff;
   padding: 10px;
-  z-index: 1000;
+  z-index: 1000; /* Garante que fique acima de outros elementos */
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom: 2px solid #2c2c2c;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  color: white;
 }
 
+/* Botões pequenos e retangulares */
 .registrar-resultados-page .button-grid button {
   padding: 10px 20px;
   font-size: 1rem;
@@ -32,86 +48,101 @@ body.registrar-resultados-page {
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  
 }
 
 .registrar-resultados-page .button-grid button:hover {
   background-color: #42a5f5;
 }
 
-.botao-destaque {
-  background: #2e8b57;
-  color: #fff;
-  font-weight: bold;
-}
-
 .registrar-resultados-page .botao-destaque {
-  background-color: #28a745 !important;
+  background-color: #28a745 !important;  /* Verde, por exemplo */
   color: white;
 }
 
 .registrar-resultados-page .botao-destaque:hover {
-  background-color: #218838 !important;
+  background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
 }
 
-.registrar-resultados-page h1 {
-  font-size: 2.2rem;
-  color: #333;
-  margin-bottom: 20px;
-}
 
-.registrar-resultados-page p {
-  font-size: 1.1rem;
-  color: #333;
-}
 
-.registrar-resultados-page > div[style] {
-  margin-top: 120px !important;
-}
-
-.info-container {
-  margin: 180px auto 0 auto;
-  max-width: 600px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  padding: 44px 48px 36px 48px;
-  text-align: center;
-}
-
-.info-container h1 {
-  font-size: 2rem;
-  color: #2e8b57;
-  margin-bottom: 18px;
-}
-
-.info-container p {
-  font-size: 1.15rem;
-  color: #333;
+body {
+  background-color: #f0f8ff; /* Cor de fundo azul claro */
+  font-family: Arial, sans-serif;
   margin: 0;
+  padding: 0;
 }
 
-.partidas-grid {
+h1 {
+  font-size: 2.5rem; /* Texto maior */
+  color: #333333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.botao-imagem {
+  display: inline-block;
+  width: 100px; /* Largura do botão */
+  height: 50px; /* Altura do botão */
+  background-color: #64b5f6; /* Cor de fundo azul */
+  border-radius: 50%; /* Botão circular */
+  text-align: center;
+  line-height: 100px; /* Centraliza o texto verticalmente */
+  color: white; /* Cor do texto */
+  font-size: 1.2rem; /* Tamanho do texto */
+  text-decoration: none; /* Remove sublinhado */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transição suave */
+}
+
+/* Botões principais estilo Forms */
+.registrar-resultados-page .button-grid button,
+.registrar-resultados-page button,
+button {
+  background-color: #af7800;
+  color: #fff;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 16px 16px;
+  border: none;
+  border-radius: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  outline: none;
+  display: inline-block;
+}
+
+.registrar-resultados-page .button-grid button:hover,
+.registrar-resultados-page button:hover,
+button:hover {
+  background-color: #FFC300;
+  transform: scale(1.05);
+}
+
+/* Botão destaque */
+.registrar-resultados-page .botao-destaque {
+  background-color: #005e0c !important;
+  color: #ffffff !important;
+}
+
+.search-box {
+  width: 400px;
+  min-height: 320px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 2px solid #2c2c2c;
+  border-radius: 25px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  align-items: stretch;
-  margin-top: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  color: white;
 }
 
-.botao-partida {
-  padding: 14px 0;
-  font-size: 1.1rem;
-  border: 2px solid #1976d2;
-  border-radius: 8px;
-  background: #e3f2fd;
-  color: #1976d2;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  margin: 0;
-}
-
-.botao-partida:hover {
-  background: #1976d2;
-  color: #fff;
+.search-box h1 {
+  color: white;                                                                                                                           
 }

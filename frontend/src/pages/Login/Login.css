@@ -52,28 +52,25 @@ body.login-page {
   color: white;
   text-shadow: #000000 2px 2px 4px;
   font-family: 'Chau Philomene One', sans-serif;
-  margin-bottom: -10%;
+  margin-bottom: 2px;
 }
-
-
 
 /* Campos de entrada */
 .login-box input[type="email"],
 .login-box input[type="password"] {
-  width: 90%; /* largura aumentada */
+  width: 95%;
   padding: 16px;
   margin: 12px 0;
   border: 1.5px solid #FFC300;
   border-radius: 12px;
   font-size: 1.15rem;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
   box-sizing: border-box;
   background: rgba(255,255,255,0.85);
   color: #222;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  font-family: 'Poppins', sans-serif;
 }
 
 .login-box input[type="email"]:focus,
@@ -100,7 +97,7 @@ body.login-page {
 }
 
 .login-box button {
-  padding: 18px 40px; /* aumente aqui conforme desejar */
+  padding: 18px 40px;
   font-size: 1.2rem;
   margin: 10px 0;
   cursor: pointer;
