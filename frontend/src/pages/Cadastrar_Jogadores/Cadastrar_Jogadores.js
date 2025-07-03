@@ -107,12 +107,12 @@ const goToRegistrarResultados = () => {
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
 
-    <div style={{ textAlign: 'center', marginTop: '150px', marginLeft: '33vw' }}>
+  <div class = "forms-box">
       <h1 style={{ marginLeft: '0vw' }}>Preencha os dados do jogador: </h1>
       {/* <p style={{color: 'green'}}>ID do time: {timeId}</p> */}
       <form onSubmit={handleSubmit}>
       <div>
-        <p>Nome completo:
+        <p>Nome completo</p>
           <input
             type="String"
             placeholder="ex: Cristiano Ronaldo"
@@ -121,10 +121,9 @@ const goToRegistrarResultados = () => {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Nacionalidade:
+        <p>Nacionalidade</p>
           <input
             type="String"
             placeholder="ex: Português"
@@ -133,10 +132,9 @@ const goToRegistrarResultados = () => {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Posição:
+        <p>Posição</p>
           <input
             type="String"
             placeholder="ex: Atacante, Meia, Lateral, Zagueiro, Goleiro"
@@ -145,10 +143,9 @@ const goToRegistrarResultados = () => {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Altura em cm:
+        <p>Altura em cm</p>
           <input
             type="Integer"
             placeholder="ex: 180"
@@ -157,10 +154,9 @@ const goToRegistrarResultados = () => {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Data de Nascimento:
+        <p>Data de Nascimento</p>
           <input
             type="String"
             placeholder="ex: 30/01/2000"
@@ -169,10 +165,9 @@ const goToRegistrarResultados = () => {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Número da camisa:
+        <p>Número da camisa</p>
           <input
             type="Integer"
             placeholder="ex: 7"
@@ -181,10 +176,9 @@ const goToRegistrarResultados = () => {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Pé Dominante:
+        <p>Pé Dominante</p>
           <input
             type="String"
             placeholder="ex: Direito ou Esquerdo"
@@ -193,10 +187,10 @@ const goToRegistrarResultados = () => {
             required
             style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
-        <button type="submit" style={{ padding: '8px 16px' }}>
-          Registar Jogador       </button>
+        <button type="submit">
+          Registar Jogador      
+        </button>
       </form>
     </div>
   </div>
