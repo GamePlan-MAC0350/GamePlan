@@ -100,80 +100,69 @@ const goToRegistrarResultados = () => {
         <button className="botao-destaque">Criar Campeonato</button>
       </div>
 
-    <div style={{ textAlign: 'center', marginTop: '150px', marginLeft: '32vw' }}>
-      <h1 style={{ marginLeft: '0vw' }}>Preencha os dados do campeonato: </h1>
+    <div class = "forms-box">
+      <h1>Preencha os dados do campeonato: </h1>
       <form onSubmit={handleSubmit}>
       <div>
-        <p>Nome do campeonato:
+        <p>Nome do campeonato:</p>
           <input
             type="String"
             placeholder="ex: Campeonato Brasileiro"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
-            style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Prêmio:
+        <p>Prêmio:</p>
           <input
             type="String"
             placeholder="ex: R$ 1000,00"
             value={premio}
             onChange={(e) => setPremio(e.target.value)}
             required
-            style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Número de times:
+        <p>Número de times:</p>
           <input
             type="Integer"
             placeholder="ex: 32"
             value={numTimes}
             onChange={(e) => setNumTimes(e.target.value)}
             required
-            style={{ padding: '8px', margin: '10px' }}
+
           />
-          </p>
         </div>
         <div>
-        <p>Data do começo do campeonato:
+        <p>Data do começo do campeonato:</p>
           <input
             type="String"
             placeholder="ex: 30/01/2025"
             value={dataComeco}
             onChange={(e) => setDataComeco(e.target.value)}
             required
-            style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Data da final do campeonato:
+        <p>Data da final do campeonato:</p>
           <input
             type="String"
             placeholder="ex: 30/02/2025"
             value={dataFinal}
             onChange={(e) => setDataFinal(e.target.value)}
             required
-            style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <div>
-        <p>Data máxima para inscrição:
+        <p>Data máxima para inscrição:</p>
           <input
             type="String"
             placeholder="ex: 30/01/2025"
             value={dataInscricao}
             onChange={(e) => setDataInscricao(e.target.value)}
             required
-            style={{ padding: '8px', margin: '10px' }}
           />
-          </p>
         </div>
         <button type="submit" style={{ padding: '8px 16px' }}>
           Criar Campeonato</button>

@@ -64,8 +64,6 @@ body {
   background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
 }
 
-
-
 body {
   background-color: #f0f8ff; /* Cor de fundo azul claro */
   font-family: Arial, sans-serif;
@@ -122,15 +120,10 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* Botão destaque */
-.criar-campeonato-page .botao-destaque {
-  background-color: #005e0c !important;
-  color: #ffffff !important;
-}
-
-.search-box {
-  width: 400px;
-  min-height: 320px;
+.forms-box {
+  margin-top: 30vw;
+  margin-bottom: 50px;
+  width: 600px;
   background: rgba(0, 0, 0, 0.55);
   border: 2px solid #2c2c2c;
   border-radius: 25px;
@@ -139,10 +132,101 @@ button:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px 10px;
+  padding: 24px 18px;
   color: white;
 }
 
-.search-box h1 {
-  color: white;                                                                                                                           
+.forms-box form {
+  width: 100%; /* garante largura uniforme para os campos */
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  background-color: transparent !important;
+  margin-top: 5px;
+}
+
+.forms-box form > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px; /* espaçamento entre os campos */
+}
+
+.forms-box h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: #000000 2px 2px 4px;
+  font-family: 'Chau Philomene One', sans-serif;
+  margin-bottom: 15px;
+}
+
+/* Campos de entrada */
+.forms-box input[type="text"],
+.forms-box input[type="email"],
+.forms-box input[type="password"],
+.forms-box input[type="Integer"],
+.forms-box input[type="String"] {
+  width: 95%;      /* aumenta a largura dos campos */
+  max-width: 700px; /* limite para não ultrapassar muito a caixa */
+  border: 1.5px solid #FFC300;
+  border-radius: 12px;
+  font-size: 1.15rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.85);
+  color: #222;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.forms-box input[type="text"]:focus,
+.forms-box input[type="email"]:focus,
+.forms-box input[type="password"]:focus,
+.forms-box input[type="String"]:focus {
+  border-color: #af7800;
+  box-shadow: 0 0 0 2px #FFC30055;
+  background: #fff;
+  color: #000;
+}
+
+/* Botões */
+.forms-page button {
+  height: fit-content;
+  background-color: #051932;
+  color: white;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+.forms-page button:hover {
+  background-color: #0f4a92;
+  transform: scale(1.05);
+}
+
+.forms-box button {
+  margin: 10px auto 0 auto; /* centraliza o botão horizontalmente */
+  display: block;           /* garante centralização */
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #051932;
+  font-family: 'Raleway', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Parágrafos */
+.forms-box p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 1.25em;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
 }
