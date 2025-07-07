@@ -51,35 +51,6 @@ body {
   
 }
 
-.modificar-tatica-page .button-grid button:hover {
-  background-color: #42a5f5;
-}
-
-.modificar-tatica-page .botao-destaque {
-  background-color: #28a745 !important;  /* Verde, por exemplo */
-  color: white;
-}
-
-.modificar-tatica-page .botao-destaque:hover {
-  background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
-}
-
-
-
-body {
-  background-color: #f0f8ff; /* Cor de fundo azul claro */
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  font-size: 2.5rem; /* Texto maior */
-  color: #333333;
-  text-align: center;
-  margin-top: 20px;
-}
-
 .botao-imagem {
   display: inline-block;
   width: 100px; /* Largura do botão */
@@ -145,4 +116,71 @@ button:hover {
 
 .search-box h1 {
   color: white;                                                                                                                           
+}
+
+.levels div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.forms-box input[type="range"] {
+  width: 400px; /* ajuste o valor conforme necessário */
+  margin: 8px 0;
+}
+
+.classification {
+  font-size: 1.2rem;
+  color: #ffae00; /* Exemplo de cor para destaque */
+  font-weight: bold;
+  text-shadow: #000000 1px 1px 2px;
+}
+
+.modificar-tatica-page .forms-box {
+  margin-top: 32vw;
+}
+
+/* Botões */
+.forms-page button {
+  height: fit-content;
+  background-color: #051932;
+  color: white;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+.forms-page button:hover {
+  background-color: #0f4a92;
+  transform: scale(1.05);
+}
+
+.forms-box button {
+  margin: 10px auto 0 auto; /* centraliza o botão horizontalmente */
+  display: block;           /* garante centralização */
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #051932;
+  font-family: 'Raleway', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Parágrafos */
+.forms-box p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 1.25em;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
+}
+
+.forms-box div div {
+  padding-bottom: 3pt;
 }
