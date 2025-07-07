@@ -65,7 +65,7 @@ function PesquisarTimesTreinador() {
       </div>
 
       
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
+      <div class = "forms-box">
       <h1>Pesquise o time: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">

@@ -51,21 +51,6 @@ body {
   
 }
 
-.pesquisar-times-treinador-page .button-grid button:hover {
-  background-color: #42a5f5;
-}
-
-.pesquisar-times-treinador-page .botao-destaque {
-  background-color: #28a745 !important;  /* Verde, por exemplo */
-  color: white;
-}
-
-.pesquisar-times-treinador-page .botao-destaque:hover {
-  background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
-}
-
-
-
 body {
   background-color: #f0f8ff; /* Cor de fundo azul claro */
   font-family: Arial, sans-serif;
@@ -145,4 +130,8 @@ button:hover {
 
 .search-box h1 {
   color: white;                                                                                                                           
+}
+
+.pesquisar-times-treinador-page .forms-box {
+  margin-top: 5vw;
 }
