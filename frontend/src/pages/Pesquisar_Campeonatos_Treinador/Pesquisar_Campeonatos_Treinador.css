@@ -51,19 +51,6 @@ body {
   
 }
 
-.pesquisar-campeonatos-treinador-page .button-grid button:hover {
-  background-color: #42a5f5;
-}
-
-.pesquisar-campeonatos-treinador-page .botao-destaque {
-  background-color: #28a745 !important;  /* Verde, por exemplo */
-  color: white;
-}
-
-.pesquisar-campeonatos-treinador-page .botao-destaque:hover {
-  background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
-}
-
 
 
 body {
@@ -145,4 +132,8 @@ button:hover {
 
 .search-box h1 {
   color: white;                                                                                                                           
+}
+
+.pesquisar-campeonatos-treinador-page .forms-box {
+  margin-top: 5vw;
 }
