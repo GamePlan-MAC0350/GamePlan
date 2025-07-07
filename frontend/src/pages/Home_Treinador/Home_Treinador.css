@@ -51,20 +51,6 @@ body {
   
 }
 
-.home-treinador-page .button-grid button:hover {
-  background-color: #42a5f5;
-}
-
-.home-treinador-page .botao-destaque {
-  background-color: #28a745 !important;  /* Verde, por exemplo */
-  color: white;
-}
-
-.home-treinador-page .botao-destaque:hover {
-  background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
-}
-
-
 
 body {
   background-color: #f0f8ff; /* Cor de fundo azul claro */
@@ -145,4 +131,8 @@ button:hover {
 
 .search-box h1 {
   color: white;                                                                                                                           
+}
+
+.home-treinador-page .forms-box {
+  margin-top: 5vw;
 }

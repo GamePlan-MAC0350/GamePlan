@@ -64,7 +64,7 @@ function HomeTreinador() {
       </div>
 
       
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
+      <div class = "forms-box">
       <h1>Pesquise o jogador: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
