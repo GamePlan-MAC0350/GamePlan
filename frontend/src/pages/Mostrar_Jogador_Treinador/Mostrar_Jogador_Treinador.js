@@ -102,7 +102,7 @@ function MostrarJogadorTreinador() {
       </div>
 
       
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
+      <div class = "forms-box">
       <h1>Pesquise o jogador: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
@@ -122,8 +122,8 @@ function MostrarJogadorTreinador() {
     {jogador && (
     <div className="jogador-info">
         <div className="jogador-header">
-            <h2 className="jogador-nome">{jogador.nome}</h2>
-            <h3 className="jogador-time">{nomeTime ? nomeTime : 'Sem clube'}</h3>
+            <h1 className="jogador-nome">{jogador.nome}</h1>
+            <h2 className="jogador-time">{nomeTime ? nomeTime : 'Sem clube'}</h2>
         </div>
         <div className="jogador-grid">
             <div className="jogador-card">
