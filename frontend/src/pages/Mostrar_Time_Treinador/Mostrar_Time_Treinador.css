@@ -1,49 +1,219 @@
-.mostrar-time-treinador-page {
-    text-align: center;
-    margin-top: 0; /* Remove espaço superior */
-    padding-top: 10px; /* Pequeno padding */
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chau+Philomene+One:ital@0;1&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-image: url('../../assets/images/bg2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  color: #000000;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo para o container dos botões */
+.mostrar-time-treinador-page .button-grid {
+  display: flex; /* Alinha lado a lado */
+  justify-content: center; /* Centraliza horizontalmente */
+  gap: 10px; /* Espaçamento entre botões */
+  position: fixed; /* Fixa no topo */
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  z-index: 1000; /* Garante que fique acima de outros elementos */
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom: 2px solid #2c2c2c;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  color: white;
+}
+
+/* Botões pequenos e retangulares */
+.mostrar-time-treinador-page .button-grid button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #64b5f6;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
   
-  /* Estilo para o container dos botões */
-  .mostrar-time-treinador-page .button-grid {
-    display: flex; /* Alinha lado a lado */
-    justify-content: center; /* Centraliza horizontalmente */
-    gap: 10px; /* Espaçamento entre botões */
-    position: fixed; /* Fixa no topo */
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f0f8ff; /* Mesma cor de fundo da página */
-    padding: 10px;
-    z-index: 1000; /* Garante que fique acima de outros elementos */
-  }
-  
-  /* Botões pequenos e retangulares */
-  .mostrar-time-treinador-page .button-grid button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    background-color: #64b5f6;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    
-  }
-  
-  .mostrar-time-treinador-page .button-grid button:hover {
-    background-color: #42a5f5;
-  }
-  
-  .mostrar-time-treinador-page .botao-destaque {
-    background-color: #28a745 !important;  /* Verde, por exemplo */
-    color: white;
-  }
-  
-  .mostrar-time-treinador-page .botao-destaque:hover {
-    background-color: #218838 !important; /* Tom mais escuro ao passar o mouse */
-  }
-  
-  
-  
-  
+}
+
+.botao-imagem {
+  display: inline-block;
+  width: 100px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 100px;
+  color: white;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  background-image: url('../../assets/images/game.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent !important;
+}
+
+/* Botões principais estilo Forms */
+.mostrar-time-treinador-page .button-grid button,
+.mostrar-time-treinador-page button,
+button {
+  background-color: #af7800;
+  color: #fff;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 16px 16px;
+  border: none;
+  border-radius: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  outline: none;
+  display: inline-block;
+}
+
+.mostrar-time-treinador-page .button-grid button:hover,
+.mostrar-time-treinador-page button:hover,
+button:hover {
+  background-color: #FFC300;
+  transform: scale(1.05);
+}
+
+/* Botão destaque */
+.mostrar-time-treinador-page .botao-destaque {
+  background-color: #005e0c !important;
+  color: #ffffff !important;
+}
+
+/* Botões */
+.forms-page button {
+  height: fit-content;
+  background-color: #051932;
+  color: white;
+  text-shadow: #000000 1px 1px 2px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+.forms-page button:hover {
+  background-color: #0f4a92;
+  transform: scale(1.05);
+}
+
+.forms-box button {
+  margin: 10px auto 0 auto; /* centraliza o botão horizontalmente */
+  display: block;           /* garante centralização */
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #051932;
+  font-family: 'Raleway', sans-serif;
+  text-shadow: #000000 1px 1px 2px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.mostrar-time-treinador-page .forms-box {
+  margin-top: 20vw; /* Ajuste para evitar sobreposição */
+}
+
+.time-info-container {
+  width: 900px;
+  background: rgba(0, 0, 0, 0.55) !important;
+  border: 2px solid #2c2c2c;
+  border-radius: 25px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px;
+  color: white !important;
+  margin: 40px auto 0 auto;
+}
+
+.mostrar-time-treinador-page .time-info-container {
+  background: rgba(0, 0, 0, 0.55) !important;
+}
+
+.mostrar-time-treinador-page .time-info,
+.mostrar-time-treinador-page .jogadores-info,
+.mostrar-time-treinador-page .tatica-info {
+  background: rgba(65, 65, 65, 0.08) !important;
+}
+
+.time-info-container h1, 
+.time-info-container h2, 
+.time-info-container h3 {
+  color: #fff !important;
+  text-shadow: #000 1px 1px 2px !important;
+  font-family: 'Chau Philomene One', sans-serif;
+  font-size: 2em;
+  margin-bottom: 10px;
+  background-color: teansparent;
+}
+
+.time-info-container > div {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.time-info, .jogadores-info, .tatica-info {
+  width: 30%;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border: 1px solid #FFC300;
+  color: #fff !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+.time-info p,
+.jogadores-info li,
+.tatica-info p {
+  font-size: 1.1em;
+  color: #fff !important;
+  text-shadow: #000 1px 1px 2px;
+  margin-bottom: 10px;
+}
+
+.jogadores-info ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.jogadores-info li span {
+  font-weight: bold;
+  color: #FFC300;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mostrar-time-treinador-page .forms-box {
+  margin-top: 30vw; /* Ajuste para evitar sobreposição */
+  margin-left: auto;
+  margin-right: auto;
+}

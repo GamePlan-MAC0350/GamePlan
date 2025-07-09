@@ -114,6 +114,15 @@ function MostrarTimeTreinador() {
       return artilheiro;
     }
 
+    // Função utilitária para formatar nomes de variáveis para texto amigável
+    function formatarCampo(campo) {
+      // Substitui underscores por espaço, separa camelCase e coloca maiúscula inicial
+      return campo
+        .replace(/_/g, ' ')
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/\b\w/g, l => l.toUpperCase());
+    }
+
   return (
     <div className="mostrar-time-treinador-page">
       <h1>Mostrar Time Treinador</h1>
@@ -127,7 +136,7 @@ function MostrarTimeTreinador() {
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores </button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
+      <div class = "forms-box">
       <h1>Pesquise o time: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
@@ -144,60 +153,57 @@ function MostrarTimeTreinador() {
     </form>
     </div>
     {time && (
-      <div className="time-info-container" style={{ marginTop: '50px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#333' }}>{time.nome}</h2>
+      <div className="time-info-container">
+        <div>
+          <h2>{time.nome}</h2>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <div className="time-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-            <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#555' }}>Informações do Time</h3>
-            <p style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
-              <strong style={{ color: '#222', textTransform: 'capitalize' }}>Nome:</strong> {time.nome}
-            </p>
+        <div>
+          <div className="time-info">
+            <h3>Informações do Time</h3>
+            <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Nome:</span> {time.nome}</p>
             {time.tecnicoNome && (
-              <p style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
-                <strong style={{ color: '#222', textTransform: 'capitalize' }}>Técnico:</strong> {time.tecnicoNome}
-              </p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Técnico:</span> {time.tecnicoNome}</p>
             )}
-            {/* Artilheiro - sempre calculado pelo frontend */}
-            <p style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
-              <strong style={{ color: '#222', textTransform: 'capitalize' }}>Artilheiro:</strong> {getArtilheiro(jogadoresCompletos) ? getArtilheiro(jogadoresCompletos).nome + ' (' + getArtilheiro(jogadoresCompletos).golsTotais + ' gols)' : (jogadoresCompletos.length === 0 ? 'Não disponível' : 'Não encontrado')}
+            <p>
+              <span style={{ color: "#FFC300", fontWeight: "bold" }}>Artilheiro:</span>{" "}
+              {getArtilheiro(jogadoresCompletos)
+                ? getArtilheiro(jogadoresCompletos).nome + ' (' + getArtilheiro(jogadoresCompletos).golsTotais + ' gols)'
+                : (jogadoresCompletos.length === 0 ? 'Não disponível' : 'Não encontrado')}
             </p>
             {Object.entries(time).map(([key, value]) => (
               key !== 'jogadores' && key !== 'tatica' && key !== 'id' && key !== 'tecnicoId' && key !== 'tecnicoNome' && key !== 'nome' && key !== 'artilheiro' && key !== 'maiorAssistente' && key !== 'maior_assistente' ? (
-                <p key={key} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
-                  <strong style={{ color: '#222', textTransform: 'capitalize' }}>{key.replace('_', ' ')}:</strong> {value}
+                <p key={key}>
+                  <span style={{ color: "#FFC300", fontWeight: "bold" }}>{formatarCampo(key)}:</span> {value}
                 </p>
               ) : null
             ))}
           </div>
-          <div className="jogadores-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-            <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#555' }}>Jogadores</h3>
-            <ul style={{ listStyleType: 'none', padding: 0 }}>
+          <div className="jogadores-info">
+            <h3>Jogadores</h3>
+            <ul>
               {jogadoresCompletos.length > 0 ? jogadoresCompletos.map((jogador, index) => (
-                <li key={index} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444', cursor: 'pointer' }}
-                    onClick={() => goToMostrarJogador(jogador.nome)}>
-                  <span style={{ fontWeight: 'bold', color: '#222', textDecoration: 'underline' }}>{jogador.nome}</span>
+                <li key={index} onClick={() => goToMostrarJogador(jogador.nome)}>
+                  <span>{jogador.nome}</span>
                 </li>
               )) : jogadores.map((jogador, index) => (
-                <li key={index} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
-                  <span style={{ fontWeight: 'bold', color: '#222' }}>{jogador}</span>
+                <li key={index}>
+                  <span>{jogador}</span>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="tatica-info" style={{ width: '30%', padding: '20px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-            <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#555' }}>Tática</h3>
+          <div className="tatica-info">
+            <h3>Tática</h3>
             {tatica && Object.entries(tatica).length > 0 ? (
               Object.entries(tatica).map(([key, value]) => (
                 key !== 'id' && (
-                  <p key={key} style={{ marginBottom: '10px', fontSize: '1rem', color: '#444' }}>
-                    <strong style={{ color: '#222', textTransform: 'capitalize' }}>{key.replace('_', ' ')}:</strong> {value}
+                  <p key={key}>
+                    <span style={{ color: "#FFC300", fontWeight: "bold" }}>{formatarCampo(key)}:</span> {value}
                   </p>
                 )
               ))
             ) : (
-              <p style={{ color: '#888' }}>Sem tática cadastrada</p>
+              <p>Sem tática cadastrada</p>
             )}
           </div>
         </div>
