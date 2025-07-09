@@ -147,3 +147,7 @@ button:hover {
 .search-box h1 {
   color: white;                                                                                                                           
 }
+
+.home-usuario-page .forms-box {
+  margin-top: 5vw;
+}

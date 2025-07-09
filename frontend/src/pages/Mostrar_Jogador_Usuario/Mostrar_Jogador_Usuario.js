@@ -71,7 +71,7 @@ function Mostrar_Jogador_Usuario() {
         <button onClick={goToPesquisarTimesUsuario}>Pesquisar Times</button>
         <button onClick={goToPesquisarCampeonatosUsuario}>Pesquisar Campeonatos</button>
       </div>
-      <div className="busca-jogador-container">
+      <div class = "forms-box">
         <h1>Pesquise o jogador: </h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
