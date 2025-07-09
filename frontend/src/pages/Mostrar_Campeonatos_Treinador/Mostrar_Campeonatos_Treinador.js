@@ -129,7 +129,7 @@ function MostrarCampeonatosTreinador() {
         <button onClick={goToCadastrarJogadores}>Cadastrar Jogadores</button>
         <button onClick={goToCriarCampeonato}>Criar Campeonato</button>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '540px' }}>
+      <div class = "forms-box">
         <h1>Pesquise o campeonato: </h1>
         <form onSubmit={handleBuscar}>
           <div className="input-group">
@@ -231,14 +231,14 @@ function MostrarCampeonatosTreinador() {
             )}
             <div style={{ marginTop: 60 }}>
               <h2>Campeonato: {campeonato.nome}</h2>
-              <p><b>Número de Times:</b> {campeonato.numeroTimes}</p>
-              <p><b>Prêmio:</b> {campeonato.premio}</p>
-              <p><b>Pontos:</b> {campeonato.pontos}</p>
-              <p><b>Data de Início:</b> {campeonato.dataComeco}</p>
-              <p><b>Data da Final:</b> {campeonato.dataFinal}</p>
-              <p><b>Data de Inscrição:</b> {campeonato.dataInscricao}</p>
-              <p><b>Times Inscritos:</b> {campeonato.timesInscritos}</p>
-              <p><b>Time Fundador:</b> {campeonato.nomeTimeFundador || 'Não encontrado'}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Número de Times:</span> {campeonato.numeroTimes}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Prêmio:</span> {campeonato.premio}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Pontos:</span> {campeonato.pontos}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Data de Início:</span> {campeonato.dataComeco}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Data da Final:</span> {campeonato.dataFinal}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Data de Inscrição:</span> {campeonato.dataInscricao}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Times Inscritos:</span> {campeonato.timesInscritos}</p>
+              <p><span style={{ color: "#FFC300", fontWeight: "bold" }}>Time Fundador:</span> {campeonato.nomeTimeFundador || 'Não encontrado'}</p>
             </div>
             {campeonato.sorteio === true && (
               <div style={{ marginTop: 40 }}>
