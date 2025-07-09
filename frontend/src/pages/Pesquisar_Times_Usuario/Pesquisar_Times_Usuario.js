@@ -48,7 +48,7 @@ function PesquisarTimesUsuario() {
       </div>
 
       
-      <div style={{ textAlign: 'center', marginTop: '150px' }}>
+      <div className="forms-box">
       <h1>Pesquise o time: </h1>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
